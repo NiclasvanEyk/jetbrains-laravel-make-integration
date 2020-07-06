@@ -1,0 +1,99 @@
+<idea-plugin>
+  <id>com.niclas-van-eyk.laravel-make-integration</id>
+  <name>Laravel Make Integration</name>
+  <version>1.0</version>
+  <vendor email="niclas.eyk@gmail.com" url="https://github.com/NiclasvanEyk">Niclas van Eyk</vendor>
+
+  <description>
+    <![CDATA[
+      This package integrates the <code>php artisan make:*</code> commands to the "File > New" menu.
+
+      This way the following types of classes can be generated:
+
+      <ul>
+        <li><code>Cast</code></li>
+        <li><code>Channel</code></li>
+        <li><code>Command</code></li>
+        <li><code>Component</code></li>
+        <li><code>Controller</code></li>
+        <li><code>Event</code></li>
+        <li><code>Exception</code></li>
+        <li><code>Factory</code></li>
+        <li><code>Job</code></li>
+        <li><code>Listener</code></li>
+        <li><code>Mail</code></li>
+        <li><code>Middleware</code></li>
+        <li><code>Migration</code></li>
+        <li><code>Model</code></li>
+        <li><code>Notification</code></li>
+        <li><code>Observer</code></li>
+        <li><code>Policy</code></li>
+        <li><code>Provider</code></li>
+        <li><code>Request</code></li>
+        <li><code>Resource</code></li>
+        <li><code>Rule</code></li>
+        <li><code>Seeder</code></li>
+      </ul>
+
+      Note: This does only work if you have the Laravel project open and the root of your project is the root of your
+      Laravel folder and contains the artisan binary! Also you have to have
+    ]]>
+  </description>
+
+  <change-notes><![CDATA[
+      <h3>v1.0.0</h3>
+
+      <p>
+        This is the initial release, so there are no changes yet.
+      </p>
+    ]]>
+  </change-notes>
+
+  <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+  <idea-version since-build="201.0"/>
+
+  <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+       on how to target different products -->
+  <depends>com.intellij.modules.platform</depends>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- Add your extensions here -->
+  </extensions>
+
+  <actions>
+    <group id="LaravelMakeGroup"
+           text="Laravel"
+           icon="/icons/laravel-logo.svg"
+           popup="true"
+           class="laravel_make_integration.actions.LaravelActionGroup"
+    >
+      <add-to-group group-id="NewGroup" anchor="after" relative-to-action="NewDir" />
+    </group>
+
+    <!-- We add the list of available Actions here, so they are available through the double shift menu
+         and do not get filtered, when you hover over a specific folder -->
+    <action class="laravel_make_integration.actions.make.MakeCastAction" id="MakeCastAction"/>
+    <action class="laravel_make_integration.actions.make.MakeChannelAction" id="MakeChannelAction"/>
+    <action class="laravel_make_integration.actions.make.MakeCommandAction" id="MakeCommandAction"/>
+    <action class="laravel_make_integration.actions.make.MakeComponentAction" id="MakeComponentAction"/>
+    <action class="laravel_make_integration.actions.make.MakeControllerAction" id="MakeControllerAction"/>
+    <action class="laravel_make_integration.actions.make.MakeEventAction" id="MakeEventAction"/>
+    <action class="laravel_make_integration.actions.make.MakeExceptionAction" id="MakeExceptionAction"/>
+    <action class="laravel_make_integration.actions.make.MakeFactoryAction" id="MakeFactoryAction"/>
+    <action class="laravel_make_integration.actions.make.MakeJobAction" id="MakeJobAction"/>
+    <action class="laravel_make_integration.actions.make.MakeListenerAction" id="MakeListenerAction"/>
+    <action class="laravel_make_integration.actions.make.MakeMailAction" id="MakeMailAction"/>
+    <action class="laravel_make_integration.actions.make.MakeMiddlewareAction" id="MakeMiddlewareAction"/>
+    <action class="laravel_make_integration.actions.make.MakeMigrationAction" id="MakeMigrationAction"/>
+    <action class="laravel_make_integration.actions.make.MakeModelAction" id="MakeModelAction"/>
+    <action class="laravel_make_integration.actions.make.MakeNotificationAction" id="MakeNotificationAction"/>
+    <action class="laravel_make_integration.actions.make.MakeObserverAction" id="MakeObserverAction"/>
+    <action class="laravel_make_integration.actions.make.MakePolicyAction" id="MakePolicyAction"/>
+    <action class="laravel_make_integration.actions.make.MakeProviderAction" id="MakeProviderAction"/>
+    <action class="laravel_make_integration.actions.make.MakeRequestAction" id="MakeRequestAction"/>
+    <action class="laravel_make_integration.actions.make.MakeResourceAction" id="MakeResourceAction"/>
+    <action class="laravel_make_integration.actions.make.MakeRuleAction" id="MakeRuleAction"/>
+    <action class="laravel_make_integration.actions.make.MakeSeederAction" id="MakeSeederAction"/>
+  </actions>
+
+</idea-plugin>
