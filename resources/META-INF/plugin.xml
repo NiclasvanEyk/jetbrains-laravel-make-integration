@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>com.niclas-van-eyk.laravel-make-integration</id>
   <name>Laravel Make Integration</name>
-  <version>1.0</version>
+  <version>1.1</version>
   <vendor email="niclas.eyk@gmail.com" url="https://github.com/NiclasvanEyk">Niclas van Eyk</vendor>
 
   <description>
@@ -73,6 +73,12 @@
   </description>
 
   <change-notes><![CDATA[
+      <h3>v1.1.0</h3>
+
+      <p>
+        Updated the documentation and package description.
+      </p>
+
       <h3>v1.0.0</h3>
 
       <p>
