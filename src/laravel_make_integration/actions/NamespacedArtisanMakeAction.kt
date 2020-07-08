@@ -23,13 +23,13 @@ abstract class NamespacedArtisanMakeAction: ArtisanMakeAction() {
 
         if (name.isNullOrEmpty()) return
 
-        val success = laravelProject.artisan.make(subCommand(), listOf(name))
+        laravelProject.artisan.make(subCommand(), listOf(name), event.project!!).thenAccept { success ->
+            if (!success) return@thenAccept
 
-        if (!success) return
+            val createdFilePath = projectBasePath + defaultFolder() + "$name.php"
 
-        val createdFilePath = projectBasePath + defaultFolder() + "$name.php"
-
-        tryToOpenFile(event.project!!, createdFilePath)
+            tryToOpenFile(event.project!!, createdFilePath)
+        }
     }
 
     /**

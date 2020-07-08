@@ -2,13 +2,14 @@ package laravel_make_integration
 
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.LangDataKeys
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.fileEditor.OpenFileDescriptor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
 import laravel_make_integration.filesystem.findArtisanBinaryDirectory
 import laravel_make_integration.laravel.Project as LaravelProject
-import java.io.File
+import com.intellij.openapi.application.runReadAction
 
 fun targetFileFromEvent(event: AnActionEvent): VirtualFile? {
     val view = LangDataKeys.IDE_VIEW.getData(event.dataContext) ?: return null
@@ -28,6 +29,8 @@ fun tryToOpenFile(project: Project, path: String) {
     val file = LocalFileSystem.getInstance().refreshAndFindFileByPath(path)
 
     if (file != null) {
-        OpenFileDescriptor(project, file).navigate(true)
+        ApplicationManager.getApplication().runReadAction {
+            OpenFileDescriptor(project, file).navigate(true)
+        }
     }
 }
