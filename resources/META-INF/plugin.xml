@@ -29,6 +29,8 @@
       namespace, here <code>Images/Resizing/</code>. Now the artisan command to be executed will contain the namespace,
       so your new class will also be created in the "app/Jobs/Images/Resizing" directory.
 
+      Also if you customized any stubs, everything will just work, as this is just a wrapper around the artisan binary.
+
       <h3>Supported Commands</h3>
 
       This way the following types of classes can be generated:
