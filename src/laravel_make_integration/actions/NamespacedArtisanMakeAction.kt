@@ -19,11 +19,15 @@ abstract class NamespacedArtisanMakeAction: ArtisanMakeAction() {
     override fun actionPerformed(event: AnActionEvent) {
         preActionPerformed(event) ?: return
 
-        val name = askForClassName(event.project!!, targetFilePath)
+        var input = askForClassName(event.project!!, targetFilePath)
 
-        if (name.isNullOrEmpty()) return
+        if (input.isNullOrEmpty()) return
 
-        laravelProject.artisan.make(subCommand(), listOf(name), event.project!!).thenAccept { success ->
+        input = input.trim()
+        val parts = input.split(' ')
+        val name = input.split(' ')[0].trim()
+
+        laravelProject.artisan.make(subCommand(), parts, event.project!!).thenAccept { success ->
             if (!success) return@thenAccept
 
             val createdFilePath = projectBasePath + defaultFolder() + "$name.php"
