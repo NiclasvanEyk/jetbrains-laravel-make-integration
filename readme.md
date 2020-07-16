@@ -1,67 +1,41 @@
-# Laravel Make Integration
+# jetbrains-laravel-make-integration
 
-This package integrates the <code>php artisan make:*</code> commands to the "File > New" menu.
+![Build](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/workflows/Build/badge.svg)
+[![Version](https://img.shields.io/jetbrains/plugin/v/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
+[![Downloads](https://img.shields.io/jetbrains/plugin/d/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
 
-![](https://plugins.jetbrains.com/files/14612/screenshot_22560.png)
+## Template ToDo list
+- [x] Create a new [IntelliJ Platform Plugin Template][template] project.
+- [ ] Verify the [pluginGroup](/gradle.properties), [plugin ID](/src/main/resources/META-INF/plugin.xml) and [sources package](/src/main/kotlin).
+- [ ] Review the [Legal Agreements](https://plugins.jetbrains.com/docs/marketplace/legal-agreements.html).
+- [ ] [Publish a plugin manually](https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/publishing_plugin.html) for the first time.
+- [ ] Set the Plugin ID in the above README badges.
+- [ ] Set the [Deployment Token](https://plugins.jetbrains.com/docs/marketplace/plugin-upload.html).
+- [ ] Click the <kbd>Watch</kbd> button on the top of the [IntelliJ Platform Plugin Template][template] to be notified about releases containing new features and fixes.
 
-Once an action, say "File > New > Laravel > Controller" is triggered, a dialog pops up, where you can enter the
-name of the class to be generated. Once you hit enter, the artisan command, here
-<code>php artisan make:controller</code>, will be executed by your local <code>php</code> interpreter.
+<!-- Plugin description -->
+This Fancy IntelliJ Platform Plugin is going to be your implementation of the brilliant ideas that you have.
 
-<h3>Helpful guidance</h3>
+This specific section is a source for the [plugin.xml](/src/main/resources/META-INF/plugin.xml) file which will be
+extracted by the [Gradle](/build.gradle.kts) during the build process.
 
-The plugin tries to be helpful, by <b>highlighting appropriate actions</b>, based on where in your project you
-triggered the action. If you right-click click on the "app/Http" folder, only <code>Controller</code>,
-<code>Middleware</code> and <code>Request</code> would be active, so you are not getting overwhelmed by all the
-other make-commands available.
+To keep everything working, do not remove `<!-- ... -->` sections. 
+<!-- Plugin description end -->
 
-<blockquote>
-<b>Note:</b> You can always trigger the actions from anywhere by using the double-shift/search anything menu and
-search for the action. In this case, nothing will be filtered out based on your selection in the Project-view.
-</blockquote>
+## Installation
 
-It also <b>pre-fills the namespace</b> for the class to be generated. If you try to generate a new
-<code>Job</code> in an "app/Jobs/Images/Resizing" folder, the popup will already be pre-filled with the right
-namespace, here <code>Images/Resizing/</code>. Now the artisan command to be executed will contain the namespace,
-so your new class will also be created in the "app/Jobs/Images/Resizing" directory.
+- Using IDE built-in plugin system:
+  
+  <kbd>Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "jetbrains-laravel-make-integration"</kbd> >
+  <kbd>Install Plugin</kbd>
+  
+- Manually:
 
-<h3>Supported Commands</h3>
+  Download the [latest release](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/releases/latest) and install it manually using
+  <kbd>Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 
-This way the following types of classes can be generated:
 
-<ul>
-    <li><code>Cast</code></li>
-    <li><code>Channel</code></li>
-    <li><code>Command</code></li>
-    <li><code>Component</code></li>
-    <li><code>Controller</code></li>
-    <li><code>Event</code></li>
-    <li><code>Exception</code></li>
-    <li><code>Factory</code></li>
-    <li><code>Job</code></li>
-    <li><code>Listener</code></li>
-    <li><code>Mail</code></li>
-    <li><code>Middleware</code></li>
-    <li><code>Migration</code></li>
-    <li><code>Model</code></li>
-    <li><code>Notification</code></li>
-    <li><code>Observer</code></li>
-    <li><code>Policy</code></li>
-    <li><code>Provider</code></li>
-    <li><code>Request</code></li>
-    <li><code>Resource</code></li>
-    <li><code>Rule</code></li>
-    <li><code>Seeder</code></li>
-</ul>
+---
+Plugin based on the [IntelliJ Platform Plugin Template][template].
 
-<h3>Usage notes</h3>
-
-This does only work if you have the Laravel project open, the root of your project is the root of your Laravel
-folder and contains the artisan binary!
-
-<h3>Feature requests</h3>
-
-If you have an idea for improving this plugin, first take a look at the
-<a href="https://github.com/NiclasvanEyk/intellij-artisan-make-integration/issues">existing feature requests</a>
-and then submit
-<a href="https://github.com/NiclasvanEyk/intellij-artisan-make-integration/issues/new">an issue through Github</a>.
+[template]: https://github.com/JetBrains/intellij-platform-plugin-template
