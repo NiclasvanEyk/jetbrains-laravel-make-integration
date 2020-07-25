@@ -8,8 +8,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
 import com.niclas_van_eyk.laravel_make_integration.filesystem.findArtisanBinaryDirectory
-import com.niclas_van_eyk.laravel_make_integration.laravel.Project as LaravelProject
-import com.intellij.openapi.application.runReadAction
+import com.niclas_van_eyk.laravel_make_integration.laravel.LaravelProject as LaravelProject
 
 fun targetFileFromEvent(event: AnActionEvent): VirtualFile? {
     val view = LangDataKeys.IDE_VIEW.getData(event.dataContext) ?: return null

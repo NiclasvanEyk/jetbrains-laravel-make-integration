@@ -37,9 +37,17 @@ repositories {
     mavenCentral()
     jcenter()
 }
+
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.10.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
+    testImplementation("org.assertj:assertj-core:3.12.2")
+    testRuntimeOnly ("org.junit.jupiter:junit-jupiter-engine:5.4.2")
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 // Configure gradle-intellij-plugin plugin.
@@ -50,6 +58,7 @@ intellij {
     type = platformType
     downloadSources = platformDownloadSources.toBoolean()
     updateSinceUntilBuild = true
+    alternativeIdePath = "/Users/niclasvaneyk/Library/Application Support/JetBrains/Toolbox/apps/PhpStorm/ch-0/201.8538.41/PhpStorm.app/Contents"
 
 //  Plugin Dependencies:
 //  https://www.jetbrains.org/intellij/sdk/docs/basics/plugin_structure/plugin_dependencies.html
@@ -80,6 +89,7 @@ tasks {
         sourceCompatibility = "1.8"
         targetCompatibility = "1.8"
     }
+
     listOf("compileKotlin", "compileTestKotlin").forEach {
         getByName<KotlinCompile>(it) {
             kotlinOptions.jvmTarget = "1.8"
