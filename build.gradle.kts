@@ -64,9 +64,7 @@ intellij {
 //  https://www.jetbrains.org/intellij/sdk/docs/basics/plugin_structure/plugin_dependencies.html
 
   setPlugins(
-          "com.jetbrains.php:201.6668.60",
-          "org.jetbrains.plugins.phpstorm-remote-interpreter:201.6668.60",
-          "org.jetbrains.plugins.phpstorm-docker:201.6668.60"
+      "com.jetbrains.php:201.6668.60"
   )
 }
 
