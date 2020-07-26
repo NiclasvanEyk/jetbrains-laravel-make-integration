@@ -1,26 +1,69 @@
-# jetbrains-laravel-make-integration
+# Laravel Make Integration for the Jetbrains Platform 
 
 ![Build](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/workflows/Build/badge.svg)
 [![Version](https://img.shields.io/jetbrains/plugin/v/14612-laravel-make-integration.svg)](https://plugins.jetbrains.com/plugin/14612-laravel-make-integration)
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/14612-laravel-make-integration.svg)](https://plugins.jetbrains.com/plugin/14612-laravel-make-integration)
 
-## Template ToDo list
-- [x] Create a new [IntelliJ Platform Plugin Template][template] project.
-- [ ] Verify the [pluginGroup](/gradle.properties), [plugin ID](/src/main/resources/META-INF/plugin.xml) and [sources package](/src/main/kotlin).
-- [ ] Review the [Legal Agreements](https://plugins.jetbrains.com/docs/marketplace/legal-agreements.html).
-- [ ] [Publish a plugin manually](https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/publishing_plugin.html) for the first time.
-- [ ] Set the Plugin ID in the above README badges.
-- [ ] Set the [Deployment Token](https://plugins.jetbrains.com/docs/marketplace/plugin-upload.html).
-- [ ] Click the <kbd>Watch</kbd> button on the top of the [IntelliJ Platform Plugin Template][template] to be notified about releases containing new features and fixes.
-
 <!-- Plugin description -->
-This Fancy IntelliJ Platform Plugin is going to be your implementation of the brilliant ideas that you have.
 
-This specific section is a source for the [plugin.xml](/src/main/resources/META-INF/plugin.xml) file which will be
-extracted by the [Gradle](/build.gradle.kts) during the build process.
+This package integrates the `php artisan make:*` commands to the "File > New" menu.
 
-To keep everything working, do not remove `<!-- ... -->` sections. 
+![](https://plugins.jetbrains.com/files/14612/screenshot_22560.png)
+
+Once an action, say <kbd>File</kbd> > <kbd>New</kbd> > <kbd>Laravel</kbd> > <kbd>Controller</kbd> is triggered, a dialog pops up, where you can enter the
+name of the class to be generated. Once you hit enter, the artisan command, here
+<code>php artisan make:controller</code>, will be executed by your configured `php` interpreter.
+
+> A more detailed description can be is located in the [project readme on GitHub](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration)
+
 <!-- Plugin description end -->
+
+## Features
+
+### Helpful guidance
+
+The plugin tries to be helpful, by **highlighting appropriate actions**, based on where in your project you
+triggered the action. If you right-click click on the "app/Http" folder, only `Controller`,
+`Middleware` and `Request` would be active, so you are not getting overwhelmed by all the
+other make-commands available.
+
+> **Note:** You can always trigger the actions from anywhere by using the double-shift/search anything menu and
+> search for the action. In this case, nothing will be filtered out based on your selection in the Project-view.
+
+It also **pre-fills the namespace** for the class to be generated. If you try to generate a new
+`Job` in an "app/Jobs/Images/Resizing" folder, the popup will already be pre-filled with the right
+namespace, here `Images/Resizing/`. Now the artisan command to be executed will contain the namespace,
+so your new class will also be created in the "app/Jobs/Images/Resizing" directory.
+
+### Flags
+
+You can pass every flag that is supported by the artisan sub-command of your choice. Just write all flags
+*after* the name of the class you want to generate, and they will be passed along.
+
+### Supported Commands
+
+- Cast
+- Channel
+- Command
+- Component
+- Controller
+- Event
+- Exception
+- Factory
+- Job
+- Listener
+- Mail
+- Middleware
+- Migration
+- Model
+- Notification
+- Observer
+- Policy
+- Provider
+- Request
+- Resource
+- Rule
+- Seeder
 
 ## Installation
 
@@ -34,8 +77,14 @@ To keep everything working, do not remove `<!-- ... -->` sections.
   Download the [latest release](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/releases/latest) and install it manually using
   <kbd>Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 
+## Usage notes
 
----
-Plugin based on the [IntelliJ Platform Plugin Template][template].
+This does only work if you have the Laravel project open, the root of your project is the root of your Laravel
+folder and contains the artisan binary!
 
-[template]: https://github.com/JetBrains/intellij-platform-plugin-template
+## Feature requests
+
+If you have an idea for improving this plugin, first take a look at the
+<a href="https://github.com/NiclasvanEyk/intellij-artisan-make-integration/issues">existing feature requests</a>
+and then submit
+<a href="https://github.com/NiclasvanEyk/intellij-artisan-make-integration/issues/new">an issue through Github</a>.
