@@ -3,8 +3,10 @@
 <!-- Plugin description -->
 
 <p align="center">
-    This package integrates the <code>php artisan make:*</code> commands to the "File > New" menu.
-    <img alt="Newfile menu with Laravel group provided by this plugin" src="https://plugins.jetbrains.com/files/14612/screenshot_22560.png" />    
+    This package integrates the <code>php artisan make:*</code> commands to the "File > New" menu. 
+    <br/>
+    <img alt="Newfile menu with Laravel group provided by this plugin" src="https://plugins.jetbrains.com/files/14612/screenshot_22560.png" />
+    <br/>
     <a href="https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/actions"><img alt="Build" src="https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/workflows/Build/badge.svg"/></a>
     <a href="https://plugins.jetbrains.com/plugin/14612-laravel-make-integration"><img alt="Version" src="https://img.shields.io/jetbrains/plugin/v/14612-laravel-make-integration.svg"/></a>
     <a href="https://plugins.jetbrains.com/plugin/14612-laravel-make-integration"><img alt="Downloads" src="https://img.shields.io/jetbrains/plugin/d/14612-laravel-make-integration.svg"/></a>
