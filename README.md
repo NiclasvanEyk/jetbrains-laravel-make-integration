@@ -4,7 +4,7 @@
 
 <p align="center">
     This package integrates the <code>php artisan make:*</code> commands to the "File > New" menu. 
-</p
+</p>
 <p align="center">
     <img alt="Newfile menu with Laravel group provided by this plugin" src="https://plugins.jetbrains.com/files/14612/screenshot_22560.png" />
 </p>
