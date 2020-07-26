@@ -3,14 +3,12 @@
 <!-- Plugin description -->
 
 <p align="center">
+    This package integrates the <code>php artisan make:*</code> commands to the "File > New" menu.
+    <img alt="Newfile menu with Laravel group provided by this plugin" src="https://plugins.jetbrains.com/files/14612/screenshot_22560.png" />    
     <a href="https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/actions"><img alt="Build" src="https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/workflows/Build/badge.svg"/></a>
-  <a href="https://plugins.jetbrains.com/plugin/14612-laravel-make-integration"><img alt="Version" src="https://img.shields.io/jetbrains/plugin/v/14612-laravel-make-integration.svg"/></a>
-  <a href="https://plugins.jetbrains.com/plugin/14612-laravel-make-integration"><img alt="Downloads" src="https://img.shields.io/jetbrains/plugin/d/14612-laravel-make-integration.svg"/></a>
+    <a href="https://plugins.jetbrains.com/plugin/14612-laravel-make-integration"><img alt="Version" src="https://img.shields.io/jetbrains/plugin/v/14612-laravel-make-integration.svg"/></a>
+    <a href="https://plugins.jetbrains.com/plugin/14612-laravel-make-integration"><img alt="Downloads" src="https://img.shields.io/jetbrains/plugin/d/14612-laravel-make-integration.svg"/></a>
 </p>
-
-This package integrates the `php artisan make:*` commands to the "File > New" menu.
-
-![](https://plugins.jetbrains.com/files/14612/screenshot_22560.png)
 
 Once an action, say <kbd>File</kbd> > <kbd>New</kbd> > <kbd>Laravel</kbd> > <kbd>Controller</kbd> is triggered, a dialog pops up, where you can enter the
 name of the class to be generated. Once you hit enter, the artisan command, here
