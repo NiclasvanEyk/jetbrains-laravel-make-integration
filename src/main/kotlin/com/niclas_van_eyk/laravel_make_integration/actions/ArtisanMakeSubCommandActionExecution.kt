@@ -48,8 +48,6 @@ open class ArtisanMakeSubCommandActionExecution(
 
         try {
             val commandLine = parameters.humanReadable(command.command)
-            val indicator = ProgressWindow(false, project)
-            indicator.title = commandLine
 
             var makeResult: PHPScriptRun.Result? = null
             val cancelled = !ProgressManager
