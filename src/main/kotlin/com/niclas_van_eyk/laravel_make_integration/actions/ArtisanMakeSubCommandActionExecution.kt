@@ -1,15 +1,16 @@
 package com.niclas_van_eyk.laravel_make_integration.actions
 
-import com.intellij.notification.NotificationDisplayType
-import com.intellij.notification.NotificationGroup
-import com.intellij.notification.NotificationType
+import com.intellij.openapi.progress.ProgressIndicatorProvider
+import com.intellij.openapi.progress.ProgressManager
+import com.intellij.openapi.progress.util.ProgressWindow
 import com.intellij.openapi.project.Project
 import com.niclas_van_eyk.laravel_make_integration.filesystem.CreatedFileResolver
 import com.niclas_van_eyk.laravel_make_integration.filesystem.DirectoryResolver
 import com.niclas_van_eyk.laravel_make_integration.ide.IdeAdapter
-import com.niclas_van_eyk.laravel_make_integration.ide.JetbrainsAdapter
+import com.niclas_van_eyk.laravel_make_integration.ide.jetbrains.JetbrainsAdapter
 import com.niclas_van_eyk.laravel_make_integration.laravel.ArtisanMakeParameters
 import com.niclas_van_eyk.laravel_make_integration.laravel.LaravelProject
+import com.niclas_van_eyk.laravel_make_integration.run.PHPScriptRun
 import com.niclas_van_eyk.laravel_make_integration.run.ScriptRunFailedException
 
 /**
@@ -18,10 +19,10 @@ import com.niclas_van_eyk.laravel_make_integration.run.ScriptRunFailedException
  * inputs.
  */
 open class ArtisanMakeSubCommandActionExecution(
-        protected open val command: SubCommand,
-        protected open val project: Project,
-        protected open val laravelProject: LaravelProject,
-        protected open val target: String?
+    protected open val command: SubCommand,
+    protected open val project: Project,
+    protected open val laravelProject: LaravelProject,
+    protected open val target: String?
 ) {
     protected open val directoryResolver: DirectoryResolver
         get() = DirectoryResolver(command.location)
@@ -36,38 +37,57 @@ open class ArtisanMakeSubCommandActionExecution(
         get() = JetbrainsAdapter(project, command)
 
     fun execute() {
-        // We don't need any feedback here, since the user hit cancel or provided
-        // no input
         val initialInput = targetResolver.suggestInitialInputFor(
             target,
             laravelProject.paths.base
         )
+        // We don't need to provide any feedback here, since the user either
+        // hit cancel or provided no input
         val input = ideAdapter.getUserInput(initialInput) ?: return
         val parameters = ArtisanMakeParameters.fromInput(input)
 
         try {
-            laravelProject.artisan.make(command.command, parameters, project)
+            val commandLine = parameters.humanReadable(command.command)
+            val indicator = ProgressWindow(false, project)
+            indicator.title = commandLine
+
+            var makeResult: PHPScriptRun.Result? = null
+            val cancelled = !ProgressManager
+                .getInstance()
+                .runProcessWithProgressSynchronously({
+                    val indicator = ProgressIndicatorProvider.getGlobalProgressIndicator()
+
+                    if (indicator != null) {
+                        indicator.text = "Attaching to PHP interpreter..."
+                    }
+
+                    makeResult = laravelProject.artisan.make(command.command, parameters, project)
+                }, commandLine, true, project)
+
+            if (cancelled || makeResult == null) return
+
+            if (makeResult is PHPScriptRun.Result.Failure) {
+                ideAdapter.notification((makeResult as PHPScriptRun.Result.Failure).log)
+            }
+
+            val createdFilePath = createdFileResolver.getCreatedFilePath(command, parameters)
+
+            if (createdFilePath == null) {
+                ideAdapter.notification(
+                    "The artisan:make run succeeded, but we were unable to locate the newly created file!"
+                )
+                return
+            }
+
+            println("Success! Trying to open '$createdFilePath'...")
+
+            ideAdapter.openFile(createdFilePath)
         } catch (e: ScriptRunFailedException) {
-            val group = NotificationGroup("laravel_make_integration_errors", NotificationDisplayType.STICKY_BALLOON, true)
-            val notification = group.createNotification(
-                    "Error running make:${command.command}\n\n" + e.output,
-                    NotificationType.ERROR
-            )
+            var message = "No PHP interpreter found!"
+            message += "\nPlease set one in Settings > Languages & Frameworks > PHP"
 
-            notification.isImportant = true
-
-            notification.notify(project)
+            ideAdapter.notification(message)
             return
         }
-
-        val createdFilePath = createdFileResolver.getCreatedFilePath(command, parameters)
-
-        if (createdFilePath == null) {
-            return // TODO: Feedback
-        }
-
-        println("Success! Trying to open '$createdFilePath'...")
-
-        ideAdapter.openFile(createdFilePath)
     }
 }

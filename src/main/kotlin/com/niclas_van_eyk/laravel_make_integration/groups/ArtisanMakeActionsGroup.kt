@@ -6,6 +6,12 @@ import com.niclas_van_eyk.laravel_make_integration.actions.ArtisanMakeSubCommand
 import com.niclas_van_eyk.laravel_make_integration.actions.make.*
 import com.niclas_van_eyk.laravel_make_integration.laravel.LaravelProject
 
+/**
+ * This is the group of Actions for the File > New menu.
+ *
+ * This filters the Actions based on the right-clicked folder.
+ * @see ArtisanMakeSubCommandAction.isFromContextMenu
+ */
 class ArtisanMakeActionsGroup: ActionGroup() {
     override fun canBePerformed(context: DataContext): Boolean {
         val basePath = LangDataKeys.PROJECT.getData(context)?.basePath ?: return false
@@ -42,7 +48,7 @@ class ArtisanMakeActionsGroup: ActionGroup() {
 
         // These are the actions for the New context menu, so we will filter
         // the actions based on the folder that gets right clicked
-        actions.forEach { it.disableBasedOnLocation = true }
+        actions.forEach { it.isFromContextMenu = true }
 
         return actions
     }

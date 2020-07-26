@@ -1,6 +1,6 @@
 package com.niclas_van_eyk.laravel_make_integration.actions
 
-class SubCommand(
+open class SubCommand(
     /**
      * The artisan sub-command, e.g `controller` for `artisan make:controller`.
      */
@@ -9,7 +9,7 @@ class SubCommand(
     /**
      * The location relative from the project root where this class gets generated.
      */
-    val location: String
+    open val location: String
 ) {
     val capitalized: String get() = command.capitalize()
     val description: String get() = "Create a new Laravel $capitalized"

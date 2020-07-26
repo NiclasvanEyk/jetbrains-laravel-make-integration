@@ -20,7 +20,7 @@ class LaravelProjectPaths(private val _base: String) {
                 const val RESOURCES = "$HTTP/Resources"
             const val JOBS = "$APP/Jobs"
             const val LISTENERS = "$APP/Listeners"
-            const val MAILS = "$APP/Middleware"
+            const val MAILS = "$APP/Mail"
             const val MODELS = "$APP/Models"
             const val NOTIFICATIONS = "$APP/Notifications"
             const val OBSERVERS = "$APP/Observers"

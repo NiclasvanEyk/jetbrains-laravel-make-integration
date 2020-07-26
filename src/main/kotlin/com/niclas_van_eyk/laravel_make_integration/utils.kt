@@ -23,13 +23,3 @@ fun resolveLaravelProject(event: AnActionEvent): LaravelProject? {
 
     return LaravelProject(artisanDirectory)
 }
-
-fun tryToOpenFile(project: Project, path: String) {
-    val file = LocalFileSystem.getInstance().refreshAndFindFileByPath(path)
-
-    if (file != null) {
-        ApplicationManager.getApplication().runReadAction {
-            OpenFileDescriptor(project, file).navigate(true)
-        }
-    }
-}

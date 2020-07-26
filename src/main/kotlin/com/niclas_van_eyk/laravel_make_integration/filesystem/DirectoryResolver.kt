@@ -3,8 +3,8 @@ package com.niclas_van_eyk.laravel_make_integration.filesystem
 /**
  * Responsible for finding and asserting paths inside the project.
  */
-class DirectoryResolver (val defaultFolder: String) {
-    private val defaultFolderWithoutTrailingSlash: String
+open class DirectoryResolver (open val defaultFolder: String) {
+    protected val defaultFolderWithoutTrailingSlash: String
         get() = defaultFolder.subSequence(0, defaultFolder.length - 2).toString()
 
     /**
@@ -23,11 +23,11 @@ class DirectoryResolver (val defaultFolder: String) {
                 || isBelowDefaultDirectory(relativePathFromProjectRoot)
     }
 
-    fun isAboveDefaultDirectory(relativePathFromProjectRoot: String): Boolean {
+    open fun isAboveDefaultDirectory(relativePathFromProjectRoot: String): Boolean {
         return defaultFolderWithoutTrailingSlash.startsWith(relativePathFromProjectRoot)
     }
 
-    fun isBelowDefaultDirectory(relativePathFromProjectRoot: String): Boolean {
+    open fun isBelowDefaultDirectory(relativePathFromProjectRoot: String): Boolean {
         return relativePathFromProjectRoot.startsWith(defaultFolderWithoutTrailingSlash)
     }
 }

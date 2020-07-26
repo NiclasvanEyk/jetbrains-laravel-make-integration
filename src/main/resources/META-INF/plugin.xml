@@ -21,7 +21,7 @@
     <actions>
         <group id="LaravelMakeGroup"
                text="Laravel"
-               icon="LaravelIcons.LaravelLogo"
+               icon="/icons/laravel-logo.svg"
                popup="true"
                class="com.niclas_van_eyk.laravel_make_integration.groups.ArtisanMakeActionsGroup"
         >

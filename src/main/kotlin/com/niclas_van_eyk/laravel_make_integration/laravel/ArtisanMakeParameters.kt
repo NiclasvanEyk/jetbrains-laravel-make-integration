@@ -21,4 +21,8 @@ data class ArtisanMakeParameters(val className: String, val parameters: List<Str
 
         return arr
     }
+
+    fun humanReadable(subCommand: String): String {
+        return "artisan make:$subCommand $className ${parameters.joinToString(" ")}"
+    }
 }

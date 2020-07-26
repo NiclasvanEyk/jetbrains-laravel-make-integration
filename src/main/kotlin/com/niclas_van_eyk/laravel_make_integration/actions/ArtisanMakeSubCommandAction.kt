@@ -3,6 +3,7 @@ package com.niclas_van_eyk.laravel_make_integration.actions
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.project.DumbAwareAction
 import com.intellij.openapi.project.Project
+import com.niclas_van_eyk.laravel_make_integration.LaravelIcons
 import com.niclas_van_eyk.laravel_make_integration.filesystem.DirectoryResolver
 import com.niclas_van_eyk.laravel_make_integration.laravel.LaravelProject
 import com.niclas_van_eyk.laravel_make_integration.resolveLaravelProject
@@ -16,20 +17,28 @@ import com.niclas_van_eyk.laravel_make_integration.targetFileFromEvent
  */
 abstract class ArtisanMakeSubCommandAction(
         private val command: SubCommand,
-        var disableBasedOnLocation: Boolean = false
-): DumbAwareAction() {
+        isFromContextMenu: Boolean = false
+): DumbAwareAction(LaravelIcons.LaravelLogo) {
+    var isFromContextMenu: Boolean = false
+        set(value) {
+            templatePresentation.text =
+                // If this Action is displayed in the context menu, we want to
+                // display the short name, as the context is clear
+                if (value) command.capitalized
+                // Otherwise, the action is displayed out of context, e.g while
+                // searching in the double-shift menu. Then we want to provide as
+                // much information as possible, so we show the whole description
+                // as the text.
+                else command.description
+            field = value
+        }
+
     init {
-        templatePresentation.text = command.capitalized
+        this.isFromContextMenu = isFromContextMenu
         templatePresentation.description = command.description
     }
 
-    fun abort(message: String) {
-        // TODO
-    }
-
     override fun actionPerformed(event: AnActionEvent) {
-        // TODO: Provide feedback if we return here!
-
         val project = event.project ?: return
         val service = project.getService(MyProjectService::class.java)
 
@@ -66,7 +75,7 @@ abstract class ArtisanMakeSubCommandAction(
 
         event.presentation.isEnabledAndVisible = true
 
-        if (!disableBasedOnLocation) return
+        if (!isFromContextMenu) return
 
         // We do not want to filter anything from the double shift thingy
         if (event.isFromActionToolbar) return

@@ -5,7 +5,7 @@ import com.niclas_van_eyk.laravel_make_integration.filesystem.DirectoryResolver
 /**
  * Handles the initial input for the modal dialog.
  */
-class TargetResolver(private val directoryResolver: DirectoryResolver) {
+open class TargetResolver(protected open val directoryResolver: DirectoryResolver) {
     /**
      * Computes the namespace for the controller based on the location in the View-Tab.
      *
@@ -14,7 +14,7 @@ class TargetResolver(private val directoryResolver: DirectoryResolver) {
      *
      * The artisan make:controller command will then create the controller inside the subdirectory.
      */
-    fun suggestInitialInputFor(target: String?, projectBasePath: String): String {
+    open fun suggestInitialInputFor(target: String?, projectBasePath: String): String {
         if (target === null) return ""
 
         val normalizedTarget =
