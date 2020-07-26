@@ -1,10 +1,12 @@
 # Laravel Make Integration for the Jetbrains Platform 
 
-![Build](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/workflows/Build/badge.svg)
-[![Version](https://img.shields.io/jetbrains/plugin/v/14612-laravel-make-integration.svg)](https://plugins.jetbrains.com/plugin/14612-laravel-make-integration)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/14612-laravel-make-integration.svg)](https://plugins.jetbrains.com/plugin/14612-laravel-make-integration)
-
 <!-- Plugin description -->
+
+<p align="center">
+    <a href="https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/actions"><img alt="Build" src="https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/workflows/Build/badge.svg"/></a>
+  <a href="https://plugins.jetbrains.com/plugin/14612-laravel-make-integration"><img alt="Version" src="https://img.shields.io/jetbrains/plugin/v/14612-laravel-make-integration.svg"/></a>
+  <a href="https://plugins.jetbrains.com/plugin/14612-laravel-make-integration"><img alt="Downloads" src="https://img.shields.io/jetbrains/plugin/d/14612-laravel-make-integration.svg"/></a>
+</p>
 
 This package integrates the `php artisan make:*` commands to the "File > New" menu.
 
