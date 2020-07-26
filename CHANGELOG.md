@@ -1,7 +1,11 @@
 # Laravel Make Integration Changelog
 
-## [UNRELEASED]
+## [v2.0.0]
 
+- You can pass flags to the commands (#3), just as you would do on the command line
+- The artisan binary now gets executed using the project interpreter, wich has the following impact
+    - The plugin now requires a paid IDE, because it now depends on the PHP-Plugin
+    - Remote Interpreters are supported (#1), so now Docker containers or SSH can be used to execute the artisan commands
 - Updated the plugin infrastructure to use Gradle (should have no user-facing changes)
 
 ## [v1.1.1]
