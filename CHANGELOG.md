@@ -1,6 +1,18 @@
 # Laravel Make Integration Changelog
 
 ## [Unreleased]
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+## [1.2.0]
 
 - You can pass flags to the commands (#3), just as you would do on the command line
 - The artisan binary now gets executed using the project interpreter, wich has the following impact
