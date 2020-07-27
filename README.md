@@ -24,25 +24,41 @@ name of the class to be generated. Once you hit enter, the artisan command, here
 
 ## Features
 
-### Helpful guidance
+### 🎯 Helpful guidance
 
 The plugin tries to be helpful, by **highlighting appropriate actions**, based on where in your project you
 triggered the action. If you right-click click on the "app/Http" folder, only `Controller`,
-`Middleware` and `Request` would be active, so you are not getting overwhelmed by all the
+`Middleware`, `Resource` and `Request` would be active, so you are not getting overwhelmed by all the
 other make-commands available.
+
+![Only a part of the make-commands are active, as the action was triggered from the Http-folder](https://plugins.jetbrains.com/files/14612/screenshot_22856.png)
 
 > **Note:** You can always trigger the actions from anywhere by using the double-shift/search anything menu and
 > search for the action. In this case, nothing will be filtered out based on your selection in the Project-view.
 
-It also **pre-fills the namespace** for the class to be generated. If you try to generate a new
-`Job` in an "app/Jobs/Images/Resizing" folder, the popup will already be pre-filled with the right
-namespace, here `Images/Resizing/`. Now the artisan command to be executed will contain the namespace,
-so your new class will also be created in the "app/Jobs/Images/Resizing" directory.
+### 🤖 Auto filled namespaces
 
-### Flags
+It also **pre-fills the namespace** for the class to be generated. If you try to generate a new
+`Controller` in a `A/Deeply/Nested/Namespace/In/Your/Controllers/Folder`, the input will already be pre-filled with the right
+namespace, as you can see in the image below. Now the artisan command to be executed will contain the namespace,
+so your new class will also be created in the `app/Http/Controllers/A/Deeply/Nested/Namespace/In/Your/Controllers/Folder`.
+
+![The namespace was initially filled, as the action was triggered from a sub-folder of app/Http](https://plugins.jetbrains.com/files/14612/screenshot_22854.png)
+
+### 🏳️‍🌈 Flags
 
 You can pass every flag that is supported by the artisan sub-command of your choice. Just write all flags
 *after* the name of the class you want to generate, and they will be passed along.
+
+![A modal with options passed to the make command](https://plugins.jetbrains.com/files/14612/screenshot_22853.png)
+
+### 🐳 Remote Interpreters
+
+If you are using Docker to run your local development environment, and you have specified path mappings for your project PHP interpreter, everything will just work fine (just make sure you have your path mappings setup). The extension uses the interpreter specified in the project settings, or the first local one it can find, if none is configured.
+
+Because the IDE has to launch a Docker container in the background, which takes some time, you will see a popup like the one below, if you are using a remote interpreter.
+
+![A waiting modal, that indicates that the extension connects to a docker container](https://plugins.jetbrains.com/files/14612/screenshot_22855.png)
 
 ### Supported Commands
 
