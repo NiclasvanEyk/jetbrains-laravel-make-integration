@@ -50,7 +50,7 @@ so your new class will also be created in the `app/Http/Controllers/A/Deeply/Nes
 You can pass every flag that is supported by the artisan sub-command of your choice. Just write all flags
 *after* the name of the class you want to generate, and they will be passed along.
 
-![A modal with options passed to the make command](https://plugins.jetbrains.com/files/14612/screenshot_22853.png)
+<img src="https://plugins.jetbrains.com/files/14612/screenshot_22853.png" alt="A modal with options passed to the make command" width="50%"></img>
 
 ### 🐳 Remote Interpreters
 
@@ -58,7 +58,7 @@ If you are using Docker to run your local development environment, and you have 
 
 Because the IDE has to launch a Docker container in the background, which takes some time, you will see a popup like the one below, if you are using a remote interpreter.
 
-![A waiting modal, that indicates that the extension connects to a docker container](https://plugins.jetbrains.com/files/14612/screenshot_22855.png)
+<img src="https://plugins.jetbrains.com/files/14612/screenshot_22855.png" alt="A waiting modal, that indicates that the extension connects to a docker container" width="50%"></img>
 
 ### Supported Commands
 
