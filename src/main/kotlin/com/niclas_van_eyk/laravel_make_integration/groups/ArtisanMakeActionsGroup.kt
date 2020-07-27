@@ -1,10 +1,10 @@
 package com.niclas_van_eyk.laravel_make_integration.groups
 
+import com.intellij.ide.actions.NonEmptyActionGroup
 import com.intellij.openapi.actionSystem.*
-import com.intellij.openapi.vfs.LocalFileSystem
 import com.niclas_van_eyk.laravel_make_integration.actions.ArtisanMakeSubCommandAction
 import com.niclas_van_eyk.laravel_make_integration.actions.make.*
-import com.niclas_van_eyk.laravel_make_integration.laravel.LaravelProject
+import com.niclas_van_eyk.laravel_make_integration.services.LaravelMakeIntegrationProjectService
 
 /**
  * This is the group of Actions for the File > New menu.
@@ -12,15 +12,8 @@ import com.niclas_van_eyk.laravel_make_integration.laravel.LaravelProject
  * This filters the Actions based on the right-clicked folder.
  * @see ArtisanMakeSubCommandAction.isFromContextMenu
  */
-class ArtisanMakeActionsGroup: ActionGroup() {
-    override fun canBePerformed(context: DataContext): Boolean {
-        val basePath = LangDataKeys.PROJECT.getData(context)?.basePath ?: return false
-        val baseFile = LocalFileSystem.getInstance().findFileByPath(basePath) ?: return false
-
-        return LaravelProject(baseFile).artisan.exists
-    }
-
-    override fun getChildren(event: AnActionEvent?): Array<ArtisanMakeSubCommandAction> {
+class ArtisanMakeActionsGroup: NonEmptyActionGroup() {
+    private fun computeActions(): Array<ArtisanMakeSubCommandAction> {
         val actions = arrayOf(
             MakeCastAction(),
             MakeChannelAction(),
@@ -51,5 +44,22 @@ class ArtisanMakeActionsGroup: ActionGroup() {
         actions.forEach { it.isFromContextMenu = true }
 
         return actions
+    }
+
+    override fun update(e: AnActionEvent) {
+        // Per default we remove all children, because we do not want to show
+        // the group in a non-Laravel project
+        this.removeAll()
+        super.update(e)
+
+        val project = e.project ?: return
+        val service = project.getService(LaravelMakeIntegrationProjectService::class.java)
+
+        if (service.isLaravelProject) {
+            // But if we could find an Artisan binary, we re-add all the actions
+            this.addAll(this.computeActions().toMutableList())
+            // and set our visibility accordingly
+            super.update(e)
+        }
     }
 }

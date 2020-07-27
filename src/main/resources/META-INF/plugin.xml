@@ -10,7 +10,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <applicationService serviceImplementation="com.niclas_van_eyk.laravel_make_integration.services.LaravelMakeIntegration"/>
-        <projectService serviceImplementation="com.niclas_van_eyk.laravel_make_integration.services.MyProjectService"/>
+        <projectService serviceImplementation="com.niclas_van_eyk.laravel_make_integration.services.LaravelMakeIntegrationProjectService"/>
     </extensions>
 
     <projectListeners>

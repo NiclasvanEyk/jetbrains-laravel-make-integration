@@ -7,7 +7,7 @@ import com.niclas_van_eyk.laravel_make_integration.LaravelIcons
 import com.niclas_van_eyk.laravel_make_integration.filesystem.DirectoryResolver
 import com.niclas_van_eyk.laravel_make_integration.laravel.LaravelProject
 import com.niclas_van_eyk.laravel_make_integration.resolveLaravelProject
-import com.niclas_van_eyk.laravel_make_integration.services.MyProjectService
+import com.niclas_van_eyk.laravel_make_integration.services.LaravelMakeIntegrationProjectService
 import com.niclas_van_eyk.laravel_make_integration.targetFileFromEvent
 
 /**
@@ -40,7 +40,7 @@ abstract class ArtisanMakeSubCommandAction(
 
     override fun actionPerformed(event: AnActionEvent) {
         val project = event.project ?: return
-        val service = project.getService(MyProjectService::class.java)
+        val service = project.getService(LaravelMakeIntegrationProjectService::class.java)
 
         if (!service.isLaravelProject) {
             return
