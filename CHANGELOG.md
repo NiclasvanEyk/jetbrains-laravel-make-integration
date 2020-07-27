@@ -2,17 +2,9 @@
 
 ## [Unreleased]
 
-### Added
-
 ### Changed
 
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
+- The "File > New > Laravel"-group now hides in non-Laravel projects anymore
 
 ## [2.0.0]
 
