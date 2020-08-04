@@ -2,7 +2,17 @@
 
 ## [Unreleased]
 
-Added Support for the 202
+Added support for the 2020.2 builds of the Jetbrains platform.
+
+This fixes the message 
+```
+Plugin 'Laravel Make Integration' version 2.1.0 is incompatible with this installation: until build 201.SNAPSHOT < PS-202.6397.115
+```
+that popped up on for example PHPStorm `2020.2`. This will not happen again in the 
+future, because the plugin does not specify the `build-until` property anymore.
+
+This fixes the problem reported in https://plugins.jetbrains.com/plugin/14612-laravel-make-integration/reviews#review=43639
+Thank you RJFares for reporting this issue!
 
 ## [2.1.0]
 
