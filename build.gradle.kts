@@ -58,13 +58,13 @@ intellij {
     type = platformType
     downloadSources = platformDownloadSources.toBoolean()
     updateSinceUntilBuild = true
-    alternativeIdePath = "/Users/niclasvaneyk/Library/Application Support/JetBrains/Toolbox/apps/PhpStorm/ch-0/201.8743.18/PhpStorm.app/Contents"
+    alternativeIdePath = "/Users/niclasvaneyk/Library/Application Support/JetBrains/Toolbox/apps/PhpStorm/ch-0/202.6397.115/PhpStorm.app/Contents"
 
 //  Plugin Dependencies:
 //  https://www.jetbrains.org/intellij/sdk/docs/basics/plugin_structure/plugin_dependencies.html
 
   setPlugins(
-      "com.jetbrains.php:201.6668.60"
+      "com.jetbrains.php:202.6397.115"
   )
 }
 
@@ -101,7 +101,7 @@ tasks {
     patchPluginXml {
         version(pluginVersion)
         sinceBuild(pluginSinceBuild)
-        untilBuild(pluginUntilBuild)
+        untilBuild(null)
 
         // Extract the <!-- Plugin description --> section from README.md and provide for the plugin's manifest
         pluginDescription(closure {
