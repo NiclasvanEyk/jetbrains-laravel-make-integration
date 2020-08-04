@@ -1,17 +1,9 @@
 # Laravel Make Integration Changelog
 
 ## [Unreleased]
-### Added
 
-### Changed
+Added Support for the 202
 
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
 ## [2.1.0]
 
 ### Changed
