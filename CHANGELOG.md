@@ -1,18 +1,12 @@
 # Laravel Make Integration Changelog
 
 ## [Unreleased]
+
 ### Added
 
+The plugin now has a logo
+
 ### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
-## [2.1.1]
 
 Added support for the 2020.2 builds of the Jetbrains platform.
 
