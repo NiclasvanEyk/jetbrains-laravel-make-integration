@@ -13,7 +13,8 @@ import com.niclas_van_eyk.laravel_make_integration.laravel.LaravelProject as Lar
 fun targetFileFromEvent(event: AnActionEvent): VirtualFile? {
     val view = LangDataKeys.IDE_VIEW.getData(event.dataContext) ?: return null
     val directories = view.directories
-    return directories[0].virtualFile
+
+    return if (directories.isNotEmpty()) directories[0].virtualFile else null
 }
 
 fun resolveLaravelProject(event: AnActionEvent): LaravelProject? {
