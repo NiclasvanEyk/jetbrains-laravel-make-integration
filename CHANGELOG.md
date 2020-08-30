@@ -1,17 +1,11 @@
 # Laravel Make Integration Changelog
 
 ## [Unreleased]
-### Added
-
-### Changed
-
-### Deprecated
-
-### Removed
 
 ### Fixed
 
-### Security
+- Fixed unchecked array access (#6)
+
 ## [2.1.1]
 
 ### Added
