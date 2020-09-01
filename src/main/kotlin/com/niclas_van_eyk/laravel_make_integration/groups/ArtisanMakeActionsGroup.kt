@@ -6,15 +6,34 @@ import com.niclas_van_eyk.laravel_make_integration.actions.ArtisanMakeSubCommand
 import com.niclas_van_eyk.laravel_make_integration.actions.make.*
 import com.niclas_van_eyk.laravel_make_integration.services.LaravelMakeIntegrationProjectService
 
+enum class DescriptionMode {
+    /**
+     * The description of the actions in this group is set to the actual description
+     * of the action.
+     */
+    Normal,
+
+    /**
+     * The description is set to the label of the action.
+     *
+     * This makes sense, if you want to use the JBPopupFactory to display
+     * the group, but only want to show the label and not the full description.
+     */
+    Compact,
+}
+
 /**
  * This is the group of Actions for the File > New menu.
  *
  * This filters the Actions based on the right-clicked folder.
  * @see ArtisanMakeSubCommandAction.isFromContextMenu
  */
-class ArtisanMakeActionsGroup: NonEmptyActionGroup() {
-    private fun computeActions(): Array<ArtisanMakeSubCommandAction> {
-        val actions = arrayOf(
+class ArtisanMakeActionsGroup(
+        private val filterBasedOnSelection: Boolean = true,
+        private val descriptionMode: DescriptionMode = DescriptionMode.Normal
+): NonEmptyActionGroup() {
+    companion object {
+        val AVAILABLE_ACTIONS = arrayOf(
             MakeCastAction(),
             MakeChannelAction(),
             MakeCommandAction(),
@@ -38,10 +57,20 @@ class ArtisanMakeActionsGroup: NonEmptyActionGroup() {
             MakeRuleAction(),
             MakeSeederAction()
         )
+    }
+
+    private fun computeActions(): Array<ArtisanMakeSubCommandAction> {
+        val actions = AVAILABLE_ACTIONS
 
         // These are the actions for the New context menu, so we will filter
         // the actions based on the folder that gets right clicked
-        actions.forEach { it.isFromContextMenu = true }
+        actions.forEach {
+            it.isFromContextMenu = filterBasedOnSelection
+
+            if (descriptionMode === DescriptionMode.Compact) {
+                it.templatePresentation.text = it.command.capitalized
+            }
+        }
 
         return actions
     }

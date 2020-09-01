@@ -28,6 +28,8 @@
             <add-to-group group-id="NewGroup" anchor="after" relative-to-action="NewDir" />
         </group>
 
+        <action class="com.niclas_van_eyk.laravel_make_integration.actions.make.RunArtisanMakeDialogAction" id="ArtisanMakeDialogAction"/>
+
         <!-- We add the list of available Actions here, so they are available through the double shift menu
              and do not get filtered, when you hover over a specific folder -->
         <action class="com.niclas_van_eyk.laravel_make_integration.actions.make.MakeCastAction" id="MakeCastAction"/>
