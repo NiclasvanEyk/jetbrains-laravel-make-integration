@@ -22,7 +22,7 @@ class RunArtisanMakeDialogAction: DumbAwareAction(LaravelIcons.LaravelLogo) {
         JBPopupFactory
                 .getInstance()
                 .createActionGroupPopup(
-                        "Choose",
+                        "artisan make",
                         ArtisanMakeActionsGroup(
                                 false,
                                 DescriptionMode.Compact
