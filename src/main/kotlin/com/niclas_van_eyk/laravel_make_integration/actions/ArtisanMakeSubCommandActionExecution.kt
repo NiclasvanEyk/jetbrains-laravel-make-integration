@@ -10,8 +10,8 @@ import com.niclas_van_eyk.laravel_make_integration.ide.IdeAdapter
 import com.niclas_van_eyk.laravel_make_integration.ide.jetbrains.JetbrainsAdapter
 import com.niclas_van_eyk.laravel_make_integration.laravel.ArtisanMakeParameters
 import com.niclas_van_eyk.laravel_make_integration.laravel.LaravelProject
+import com.niclas_van_eyk.laravel_make_integration.run.NoInterpreterSetException
 import com.niclas_van_eyk.laravel_make_integration.run.PHPScriptRun
-import com.niclas_van_eyk.laravel_make_integration.run.ScriptRunFailedException
 
 /**
  * With this class we know, that we have a valid Laravel project, so the action
@@ -46,46 +46,45 @@ open class ArtisanMakeSubCommandActionExecution(
         val input = ideAdapter.getUserInput(initialInput) ?: return
         val parameters = ArtisanMakeParameters.fromInput(input)
 
-        try {
-            val commandLine = parameters.humanReadable(command.command)
+        val commandLine = parameters.humanReadable(command.command)
 
-            var makeResult: PHPScriptRun.Result? = null
-            val cancelled = !ProgressManager
-                .getInstance()
-                .runProcessWithProgressSynchronously({
-                    val indicator = ProgressIndicatorProvider.getGlobalProgressIndicator()
+        var makeResult: PHPScriptRun.Result? = null
+        val cancelled = !ProgressManager
+            .getInstance()
+            .runProcessWithProgressSynchronously({
+                val indicator = ProgressIndicatorProvider.getGlobalProgressIndicator()
 
-                    if (indicator != null) {
-                        indicator.text = "Attaching to PHP interpreter..."
-                    }
+                if (indicator != null) {
+                    indicator.text = "Attaching to PHP interpreter..."
+                }
 
+                try {
                     makeResult = laravelProject.artisan.make(command.command, parameters, project)
-                }, commandLine, true, project)
+                } catch (e: NoInterpreterSetException) {
+                    var message = "No PHP interpreter found!"
+                    message += "\nPlease set one in Settings > Languages & Frameworks > PHP"
 
-            if (cancelled || makeResult == null) return
+                    makeResult = PHPScriptRun.Result.Failure(arrayListOf(message))
+                }
+            }, commandLine, true, project)
 
-            if (makeResult is PHPScriptRun.Result.Failure) {
-                ideAdapter.notification((makeResult as PHPScriptRun.Result.Failure).log)
-            }
+        if (cancelled || makeResult == null) return
 
-            val createdFilePath = createdFileResolver.getCreatedFilePath(command, parameters)
+        if (makeResult is PHPScriptRun.Result.Failure) {
+            ideAdapter.notification((makeResult as PHPScriptRun.Result.Failure).log)
+        }
 
-            if (createdFilePath == null) {
-                ideAdapter.notification(
-                    "The artisan:make run succeeded, but we were unable to locate the newly created file!"
-                )
-                return
-            }
+        val createdFilePath = createdFileResolver.getCreatedFilePath(command, parameters)
 
-            println("Success! Trying to open '$createdFilePath'...")
-
-            ideAdapter.openFile(createdFilePath)
-        } catch (e: ScriptRunFailedException) {
-            var message = "No PHP interpreter found!"
-            message += "\nPlease set one in Settings > Languages & Frameworks > PHP"
-
-            ideAdapter.notification(message)
+        if (createdFilePath == null) {
+            ideAdapter.notification(
+                "The artisan:make run succeeded, but we were unable to locate the newly created file!"
+            )
             return
         }
+
+        println("Success! Trying to open '$createdFilePath'...")
+
+        ideAdapter.openFile(createdFilePath)
     }
 }

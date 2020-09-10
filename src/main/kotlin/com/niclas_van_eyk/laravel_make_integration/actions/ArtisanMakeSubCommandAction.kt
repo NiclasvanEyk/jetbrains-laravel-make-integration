@@ -16,7 +16,7 @@ import com.niclas_van_eyk.laravel_make_integration.targetFileFromEvent
  * This mainly validates the prerequisites for executing artisan.
  */
 abstract class ArtisanMakeSubCommandAction(
-        private val command: SubCommand,
+        val command: SubCommand,
         isFromContextMenu: Boolean = false
 ): DumbAwareAction(LaravelIcons.LaravelLogo) {
     var isFromContextMenu: Boolean = false

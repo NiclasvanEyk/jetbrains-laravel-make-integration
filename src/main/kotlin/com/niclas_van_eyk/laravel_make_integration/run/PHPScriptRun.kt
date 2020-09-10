@@ -111,7 +111,7 @@ class PHPScriptRun(
     private fun inferLocalInterpreter(): PhpInterpreter? {
         return PhpInterpretersManagerImpl.getInstance(project)
             .interpreters
-            .first { !it.isRemote }
+            .firstOrNull { !it.isRemote }
     }
 }
 

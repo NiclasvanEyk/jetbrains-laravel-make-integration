@@ -1,17 +1,15 @@
 # Laravel Make Integration Changelog
 
 ## [Unreleased]
+
 ### Added
 
-### Changed
-
-### Deprecated
-
-### Removed
+- A new action to open the <kbd>File</kbd> > <kbd>New</kbd> > <kbd>Laravel</kbd> popup. Take a look at [the PR](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/pull/8) for screenshots and more information.
 
 ### Fixed
 
-### Security
+- If you had no interpreter set, the generation would just throw an exception and fail. Now we show a little notification that prompts you to set up a PHP interpreter in Settings > Languages & Frameworks > PHP.
+
 ## [2.1.2]
 
 ### Fixed
