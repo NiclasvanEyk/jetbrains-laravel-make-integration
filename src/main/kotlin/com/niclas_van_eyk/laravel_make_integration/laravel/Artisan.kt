@@ -22,7 +22,7 @@ class Artisan(private val basePath: String) {
     fun execute(
         namespace: String,
         subCommand: String,
-        subCommandParams: Iterable<String>,
+        subCommandParams: Collection<String>,
         project: Project
     ): PHPScriptRun.Result {
         val params = mutableListOf("$namespace:$subCommand")
