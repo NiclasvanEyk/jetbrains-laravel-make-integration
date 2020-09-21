@@ -1,14 +1,18 @@
 package com.niclas_van_eyk.laravel_make_integration.services
 
+import com.intellij.openapi.application.ReadAction
 import com.intellij.openapi.project.Project
 import com.niclas_van_eyk.laravel_make_integration.LaravelMakeIntegrationBundle
 import com.niclas_van_eyk.laravel_make_integration.laravel.LaravelProjectFactory
+import com.niclas_van_eyk.laravel_make_integration.laravel.artisan.ProjectCommands
 
 class LaravelMakeIntegrationProjectService(project: Project) {
     private val projectFactory = LaravelProjectFactory(project.basePath!!)
     val laravelProject = projectFactory.build()
     val isLaravelProject: Boolean
         get() = laravelProject != null
+    lateinit var commands: ProjectCommands
+    val hasCommands: Boolean get() = ::commands.isInitialized
 
     init {
         if (!isLaravelProject) {
@@ -17,6 +21,10 @@ class LaravelMakeIntegrationProjectService(project: Project) {
                     "${project.name} is not a valid Laravel project: "
                             + projectFactory.errors.joinToString(", ")
             ))
+        } else {
+            ReadAction.nonBlocking{}.run {
+                commands = ProjectCommands(laravelProject!!, project)
+            }
         }
     }
 }

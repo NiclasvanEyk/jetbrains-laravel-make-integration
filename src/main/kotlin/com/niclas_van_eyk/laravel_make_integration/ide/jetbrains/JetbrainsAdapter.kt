@@ -13,6 +13,11 @@ import com.niclas_van_eyk.laravel_make_integration.LaravelMakeIntegrationBundle
 import com.niclas_van_eyk.laravel_make_integration.actions.SubCommand
 import com.niclas_van_eyk.laravel_make_integration.ide.IdeAdapter
 
+/**
+ * Used to contain the dependence on the jetbrains platform.
+ *
+ * Unsure about how much sense this makes.
+ */
 class JetbrainsAdapter(
     private val project: Project,
     private val meta: SubCommand

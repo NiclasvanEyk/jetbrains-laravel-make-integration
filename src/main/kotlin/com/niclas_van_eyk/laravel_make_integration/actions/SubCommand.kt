@@ -13,4 +13,5 @@ open class SubCommand(
 ) {
     val capitalized: String get() = command.capitalize()
     val description: String get() = "Create a new Laravel $capitalized"
+    val asArtisanCommand: String get() = "make:$command"
 }

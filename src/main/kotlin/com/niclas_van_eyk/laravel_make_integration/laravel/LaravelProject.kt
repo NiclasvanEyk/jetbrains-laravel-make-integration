@@ -12,6 +12,9 @@ class LaravelProject(path: String) {
     constructor(base: VirtualFile) : this(base.path)
 }
 
+/**
+ * Responsible for validating and creating a [LaravelProject].
+ */
 class LaravelProjectFactory(private val path: String) {
     private val _errors = ArrayList<String>()
     val errors: ImmutableList<String>

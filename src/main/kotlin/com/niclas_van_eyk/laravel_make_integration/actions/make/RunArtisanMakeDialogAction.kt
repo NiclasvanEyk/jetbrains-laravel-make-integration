@@ -9,6 +9,8 @@ import com.niclas_van_eyk.laravel_make_integration.groups.DescriptionMode
 
 /**
  * Action for opening a modal from which the sub-actions can be run.
+ *
+ * See https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/pull/8
  */
 class RunArtisanMakeDialogAction: DumbAwareAction(LaravelIcons.LaravelLogo) {
     init {
