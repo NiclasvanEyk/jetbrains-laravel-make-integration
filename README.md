@@ -27,7 +27,7 @@ name of the class to be generated. Once you hit enter, the artisan command, here
 ### 🎯 Helpful guidance
 
 The plugin tries to be helpful, by **highlighting appropriate actions**, based on where in your project you
-triggered the action. If you right-click click on the "app/Http" folder, only `Controller`,
+triggered the action. If you right-click on the "app/Http" folder, only `Controller`,
 `Middleware`, `Resource` and `Request` would be active, so you are not getting overwhelmed by all the
 other make-commands available.
 
