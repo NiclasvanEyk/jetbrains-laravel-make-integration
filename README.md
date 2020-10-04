@@ -105,6 +105,6 @@ folder and contains the artisan binary!
 ## Feature requests
 
 If you have an idea for improving this plugin, first take a look at the
-<a href="https://github.com/NiclasvanEyk/intellij-artisan-make-integration/issues">existing feature requests</a>
+<a href="https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement">existing feature requests</a>
 and then submit
 <a href="https://github.com/NiclasvanEyk/intellij-artisan-make-integration/issues/new">an issue through Github</a>.
