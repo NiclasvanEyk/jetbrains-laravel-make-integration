@@ -60,6 +60,10 @@ Because the IDE has to launch a Docker container in the background, which takes 
 
 <img src="https://plugins.jetbrains.com/files/14612/screenshot_22855.png" alt="A waiting modal, that indicates that the extension connects to a docker container" width="50%"></img>
 
+### 📝 Stub file support
+
+As Laravel Make Integration is basically only a GUI for `php artisan make`, if you [customized the stub files](https://laravel.com/docs/artisan#stub-customization) or prefer [spaties defaults](https://github.com/spatie/laravel-stubs#opinionated-laravel-stubs) the code generation will just work as expected. No more fiddling with PHPStorm file templates needed and everyone one the team is using the same templates for file creation!
+
 ### Supported Commands
 
 - Cast
