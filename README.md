@@ -22,7 +22,7 @@ name of the class to be generated. Once you hit enter, the artisan command, here
 
 <!-- Plugin description end -->
 
-## Features
+## [Features](./features.md)
 
 A full list of all features can be found in [here](./features.md). This also serves as the documentation at the moment.
 
