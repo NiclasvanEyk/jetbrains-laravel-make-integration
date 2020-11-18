@@ -2,7 +2,6 @@ package com.niclas_van_eyk.laravel_make_integration.actions
 
 import com.intellij.openapi.progress.ProgressIndicatorProvider
 import com.intellij.openapi.progress.ProgressManager
-import com.intellij.openapi.progress.util.ProgressWindow
 import com.intellij.openapi.project.Project
 import com.niclas_van_eyk.laravel_make_integration.filesystem.CreatedFileResolver
 import com.niclas_van_eyk.laravel_make_integration.filesystem.DirectoryResolver
@@ -43,8 +42,11 @@ open class ArtisanMakeSubCommandActionExecution(
         )
         // We don't need to provide any feedback here, since the user either
         // hit cancel or provided no input
-        val input = ideAdapter.getUserInput(initialInput) ?: return
-        val parameters = ArtisanMakeParameters.fromInput(input)
+        val dialog = ArtisanMakeDialog(project, laravelProject, command, initialInput)
+
+        if (!dialog.showAndGet()) return
+
+        val parameters = ArtisanMakeParameters.fromInput(dialog.input)
 
         val commandLine = parameters.humanReadable(command.command)
 
@@ -64,14 +66,14 @@ open class ArtisanMakeSubCommandActionExecution(
                     var message = "No PHP interpreter found!"
                     message += "\nPlease set one in Settings > Languages & Frameworks > PHP"
 
-                    makeResult = PHPScriptRun.Result.Failure(arrayListOf(message))
+                    makeResult = PHPScriptRun.Result(false, arrayListOf(message))
                 }
             }, commandLine, true, project)
 
         if (cancelled || makeResult == null) return
 
-        if (makeResult is PHPScriptRun.Result.Failure) {
-            ideAdapter.notification((makeResult as PHPScriptRun.Result.Failure).log)
+        if (makeResult!!.wasFailure) {
+            ideAdapter.notification(makeResult!!.log)
         }
 
         val createdFilePath = createdFileResolver.getCreatedFilePath(command, parameters)

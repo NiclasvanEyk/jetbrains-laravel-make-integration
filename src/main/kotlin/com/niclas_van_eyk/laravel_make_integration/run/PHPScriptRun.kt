@@ -12,6 +12,12 @@ import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl
 import com.jetbrains.php.run.script.PhpScriptRunConfiguration
 import com.jetbrains.php.run.script.PhpScriptRuntimeConfigurationProducer
 
+/**
+ * Represents an execution of a php script, like the artisan script.
+ *
+ * This uses the Jetbrains Run-Configurations, to be able to execute scripts using the
+ * configured project interpreter, which enables the use of docker containers, etc.
+ */
 class PHPScriptRun(
     private val path: String,
     private val arguments: Iterable<String>,
@@ -34,19 +40,16 @@ class PHPScriptRun(
     fun run(): Result {
         processHandler.startNotify()
 
-        return if (!processHandler.waitFor() || processHandler.exitCode != 0) {
-            Result.Failure(processListener.texts)
-        } else {
-            Result.Success()
-        }
+        return Result(processHandler.waitFor() && processHandler.exitCode == 0, processListener.texts)
     }
 
-    open class Result {
-        class Success: Result()
-
-        class Failure(private val logs: List<String>): Result() {
-            val log: String get() = logs.joinToString("\n")
-        }
+    open class Result(
+            private val success: Boolean,
+            private val logs: List<String> = emptyList()) {
+        val wasSuccessful: Boolean get() = success
+        val wasFailure: Boolean get() = !success
+        val log: String get() = logs.joinToString("\n")
+        val logWithoutNewLines: String get() = logs.joinToString("")
     }
 
     private fun buildProcessHandler(): ProcessHandler {

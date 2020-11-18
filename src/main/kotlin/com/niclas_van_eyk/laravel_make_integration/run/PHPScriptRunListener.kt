@@ -4,6 +4,9 @@ import com.intellij.execution.process.ProcessEvent
 import com.intellij.execution.process.ProcessListener
 import com.intellij.openapi.util.Key
 
+/**
+ * Records the log output of a [PHPScriptRun].
+ */
 class PHPScriptRunListener: ProcessListener {
     val texts = ArrayList<String>()
 
