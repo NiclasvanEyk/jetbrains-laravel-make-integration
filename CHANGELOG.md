@@ -1,17 +1,15 @@
 # Laravel Make Integration Changelog
 
 ## [Unreleased]
+
 ### Added
+
+- [Autocompletion for flags](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/blob/8e2e8d67075e5e4080ad4165f41b0f2c968bc180/features.md#%EF%B8%8F-flags)
 
 ### Changed
 
-### Deprecated
+- The [feature documentation on GitHub](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/blob/8e2e8d67075e5e4080ad4165f41b0f2c968bc180/features.md) was rewritten and moved to its own file
 
-### Removed
-
-### Fixed
-
-### Security
 ## [2.2.0]
 
 ### Added
