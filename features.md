@@ -20,14 +20,20 @@ Because this plugin internally executes `php artisan make`, a few features just 
 ### 🏳️‍🌈 Flags
 
 You can pass every flag that is supported by the artisan sub-command of your choice. Just write all flags
-*after* the name of the class you want to generate, and they will be passed along.
+*after* the name of the class you want to generate, and they will be passed along. 
 
-Just be aware that some flags trigger the cli to expect input (e.g. the `--parent` option for `make:controller`). This 
-cannot be handled correctly at this moment, see #13 for more information. 
+![](./docs/images/autocompletion.png)
 
-<img src="https://plugins.jetbrains.com/files/14612/screenshot_22853.png" alt="A modal with options passed to the make command" width="50%"></img>
+The plugin also provides autocompletion for the options of a command where it makes sense. It also assigns one of the 
+following labels to them:
 
-> Auto completion for these is also on the way, see #11
+- **Flag** - Options that do not accept a value, e.g. `make:controller --api`
+- **Parameter** - Options that accept a value, e.g. the widely available `--env=my-environment`
+- **Class** - Options that accept class names, e.g. `make:observer --model=MyEloquentModel`
+
+> Be aware that some flags trigger the cli to expect input (e.g. the `--parent` option for `make:controller` if the 
+> specified model cannot be found). This 
+> cannot be handled correctly at this moment, see #13 for more information.
 
 ### 📝 Stub file support
 
