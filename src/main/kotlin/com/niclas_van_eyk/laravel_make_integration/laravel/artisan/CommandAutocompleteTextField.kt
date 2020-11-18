@@ -16,7 +16,7 @@ class CommandAutocompleteTextField(
 ) : TextFieldWithAutoCompletion<Option>(
         project,
         CommandAutocompletionProvider(withoutUnnecessaryOptions(availableCommands)),
-        true,
+        false,
         initialInput
 ) {
     companion object {
