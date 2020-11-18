@@ -1,8 +1,11 @@
 package com.niclas_van_eyk.laravel_make_integration.laravel.artisan
 
+import com.intellij.concurrency.SensitiveProgressWrapper
+import com.intellij.openapi.progress.EmptyProgressIndicator
+import com.intellij.openapi.progress.ProgressIndicator
+import com.intellij.openapi.progress.ProgressManager
+import com.intellij.openapi.progress.Task.Backgroundable
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.util.Computable
-import com.niclas_van_eyk.laravel_make_integration.ide.jetbrains.runWithProgress
 import com.niclas_van_eyk.laravel_make_integration.laravel.LaravelProject
 import com.niclas_van_eyk.laravel_make_integration.services.LaravelMakeIntegrationProjectService
 
@@ -22,36 +25,43 @@ import com.niclas_van_eyk.laravel_make_integration.services.LaravelMakeIntegrati
 class ProjectCommands(val laravelProject: LaravelProject, val project: Project) {
     var commands = mutableListOf<Command>()
 
-    init {
-        val commandNames = runWithProgress<List<String>>(Computable {
-            val result = laravelProject.artisan.execute(project, "")
+    fun inferFromHelp() {
+        val progressManager = ProgressManager.getInstance()
 
-            if (result.wasFailure) {
-                print(result.log) // TODO
-            }
+        progressManager.run(object: Backgroundable(project, "Scanning for Artisan commands", true, ALWAYS_BACKGROUND) {
+            override fun run(indicator: ProgressIndicator) {
+                indicator.isIndeterminate = true
+                val commandScanResult = laravelProject.artisan.execute(project, "")
 
-            return@Computable parseArtisanMakeCommandNames(result.log)
-        }, "Detecting available commands").get()
-
-        val commands = runWithProgress<MutableList<Command>>(Computable {
-            val commands = mutableListOf<Command>()
-
-            for (commandName in commandNames) {
-                val parts = commandName.split(":")
-                val result = laravelProject.artisan.execute(project, parts[0], parts[1], listOf("--help"))
-
-                if (result.wasFailure) {
-                    continue
+                if (commandScanResult.wasFailure) {
+                    print(commandScanResult.log) // TODO
+                    indicator.stop()
+                    return
                 }
 
-                commands.add(parseArtisanCommandFromHelp(result.logWithoutNewLines.trim(), commandName))
+                val commandNames = parseArtisanMakeCommandNames(commandScanResult.log)
+
+                indicator.isIndeterminate = false
+                indicator.fraction = 0.0
+
+                for ((i, commandName) in commandNames.withIndex()) {
+                    val parts = commandName.split(":")
+                    val result = laravelProject.artisan.execute(project, parts[0], parts[1], listOf("--help"))
+
+                    if (result.wasFailure) {
+                        continue
+                    }
+
+                    this@ProjectCommands.commands.add(parseArtisanCommandFromHelp(result.logWithoutNewLines.trim(), commandName))
+                    indicator.fraction = (i + 1).toDouble() / commandNames.size.toDouble()
+
+                    if (indicator.isCanceled) {
+                        return
+                    }
+                }
+
+                WellKnownCommandInformation().updateOptionTypes(commands)
             }
-
-            return@Computable commands
-        }).get()
-
-        WellKnownCommandInformation().updateOptionTypes(commands)
-
-        this.commands = commands
+        })
     }
 }

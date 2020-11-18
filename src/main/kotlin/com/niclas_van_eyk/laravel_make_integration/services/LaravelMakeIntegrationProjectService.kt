@@ -11,8 +11,8 @@ class LaravelMakeIntegrationProjectService(project: Project) {
     val laravelProject = projectFactory.build()
     val isLaravelProject: Boolean
         get() = laravelProject != null
-    lateinit var commands: ProjectCommands
-    val hasCommands: Boolean get() = ::commands.isInitialized
+    val commands = ProjectCommands(laravelProject!!, project)
+    val hasCommands: Boolean get() = commands.commands.isNotEmpty()
 
     init {
         if (!isLaravelProject) {
@@ -22,9 +22,7 @@ class LaravelMakeIntegrationProjectService(project: Project) {
                             + projectFactory.errors.joinToString(", ")
             ))
         } else {
-            ReadAction.nonBlocking{}.run {
-                commands = ProjectCommands(laravelProject!!, project)
-            }
+            commands.inferFromHelp()
         }
     }
 }
