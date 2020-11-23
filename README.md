@@ -61,7 +61,9 @@ A full list of all features can be found in [here](./features.md). This also ser
 - Manually:
 
   Download the [latest release](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/releases/latest) and install it manually using
-  <kbd>Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
+  <kbd>Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>. After you de-compress the zip-file from the releases page you need to select the file `lib/jetbrains-laravel-make-integration-VERSION.jar` when installing from disk.
+  
+  > Note: When a new version of the plugin is available, your IDE will notify you about it regardless of how you did install it. So even when you install an update from disk once, you will still receive future updates through automated updates.
 
 ## Usage notes
 
