@@ -1,6 +1,5 @@
 package com.niclas_van_eyk.laravel_make_integration.services
 
-import com.intellij.openapi.application.ReadAction
 import com.intellij.openapi.project.Project
 import com.niclas_van_eyk.laravel_make_integration.LaravelMakeIntegrationBundle
 import com.niclas_van_eyk.laravel_make_integration.laravel.LaravelProjectFactory
@@ -11,7 +10,7 @@ class LaravelMakeIntegrationProjectService(project: Project) {
     val laravelProject = projectFactory.build()
     val isLaravelProject: Boolean
         get() = laravelProject != null
-    val commands = ProjectCommands(laravelProject!!, project)
+    lateinit var commands: ProjectCommands
     val hasCommands: Boolean get() = commands.commands.isNotEmpty()
 
     init {
@@ -22,6 +21,7 @@ class LaravelMakeIntegrationProjectService(project: Project) {
                             + projectFactory.errors.joinToString(", ")
             ))
         } else {
+            commands = ProjectCommands(laravelProject!!, project)
             commands.inferFromHelp()
         }
     }

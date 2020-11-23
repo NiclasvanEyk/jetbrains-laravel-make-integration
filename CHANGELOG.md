@@ -1,17 +1,11 @@
 # Laravel Make Integration Changelog
 
 ## [Unreleased]
-### Added
-
-### Changed
-
-### Deprecated
-
-### Removed
 
 ### Fixed
 
-### Security
+- PhpStorm does not crash anymore if you open a non-Laravel project. Thank you Jeremy for reporting this!
+
 ## [2.3.0]
 
 ### Added
