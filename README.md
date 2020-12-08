@@ -50,6 +50,7 @@ A full list of all features can be found in [here](./features.md). This also ser
 - Resource
 - Rule
 - Seeder
+- Test
 
 ## Installation
 
