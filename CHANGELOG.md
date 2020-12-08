@@ -7,7 +7,7 @@
   right-clicked a folder below `tests/Unit`!
 
 ### Fixed
-
+- \#21 Cyclic service initialization
 
 ## [2.3.1]
 

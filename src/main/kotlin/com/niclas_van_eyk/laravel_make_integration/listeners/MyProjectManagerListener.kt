@@ -6,6 +6,5 @@ import com.niclas_van_eyk.laravel_make_integration.services.LaravelMakeIntegrati
 
 internal class MyProjectManagerListener : ProjectManagerListener {
     override fun projectOpened(project: Project) {
-        project.getService(LaravelMakeIntegrationProjectService::class.java)
     }
 }
