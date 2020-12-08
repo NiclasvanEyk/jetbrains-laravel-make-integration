@@ -43,6 +43,10 @@ class CommandAutocompleteTextField(
         }
     }
 
+    init {
+        setCaretPosition(initialInput.split(" ").first().length)
+    }
+
     private class CommandAutocompletionProvider(
             availableOptions: MutableCollection<Option>
     ) : TextFieldWithAutoCompletionListProvider<Option>(availableOptions) {

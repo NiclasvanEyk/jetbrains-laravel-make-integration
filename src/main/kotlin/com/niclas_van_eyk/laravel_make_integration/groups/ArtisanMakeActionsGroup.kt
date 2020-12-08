@@ -55,7 +55,8 @@ class ArtisanMakeActionsGroup(
             MakeRequestAction(),
             MakeResourceAction(),
             MakeRuleAction(),
-            MakeSeederAction()
+            MakeSeederAction(),
+            MakeTestAction()
         )
     }
 

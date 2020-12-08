@@ -1,10 +1,7 @@
 package com.niclas_van_eyk.laravel_make_integration.actions.make
 
 import com.intellij.openapi.project.Project
-import com.niclas_van_eyk.laravel_make_integration.actions.ArtisanMakeSubCommandAction
-import com.niclas_van_eyk.laravel_make_integration.actions.ArtisanMakeSubCommandActionExecution
-import com.niclas_van_eyk.laravel_make_integration.actions.SubCommand
-import com.niclas_van_eyk.laravel_make_integration.actions.TargetResolver
+import com.niclas_van_eyk.laravel_make_integration.actions.*
 import com.niclas_van_eyk.laravel_make_integration.filesystem.CreatedFileResolver
 import com.niclas_van_eyk.laravel_make_integration.filesystem.DirectoryResolver
 import com.niclas_van_eyk.laravel_make_integration.laravel.ArtisanMakeParameters
@@ -15,14 +12,14 @@ import java.io.File
 class MakeModelTargetResolver(
     override val directoryResolver: DirectoryResolver
 ): TargetResolver(directoryResolver) {
-    override fun suggestInitialInputFor(target: String?, projectBasePath: String): String {
+    override fun suggestInitialInputFor(target: String?, projectBasePath: String): InitialInputSuggestion {
         val suggested = super.suggestInitialInputFor(target, projectBasePath)
 
         // If the project contains a /app/Models directory, it is likely that the user wants to store
         // all the models there. Therefore we will prefix the suggested path with Models/ if we detect
         // that this folder exists.
         if (File(projectBasePath + LaravelProjectPaths.MODELS).exists()) {
-            return "Models/$suggested"
+            return InitialInputSuggestion("Models/$suggested")
         }
 
         // Otherwise we will just use the default implementation

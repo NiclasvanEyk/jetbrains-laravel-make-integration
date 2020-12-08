@@ -2,6 +2,18 @@ package com.niclas_van_eyk.laravel_make_integration.actions
 
 import com.niclas_van_eyk.laravel_make_integration.filesystem.DirectoryResolver
 
+data class InitialInputSuggestion(
+        val name: String = "",
+        val parameters: List<String> = emptyList()
+) {
+    val empty: Boolean
+        get() = name.isBlank() && parameters.isEmpty()
+
+    val toInputString: String
+        get() = if (parameters.isNotEmpty()) name + " " + parameters.joinToString(" ")
+                else name
+}
+
 /**
  * Handles the initial input for the modal dialog.
  */
@@ -14,8 +26,8 @@ open class TargetResolver(protected open val directoryResolver: DirectoryResolve
      *
      * The artisan make:controller command will then create the controller inside the subdirectory.
      */
-    open fun suggestInitialInputFor(target: String?, projectBasePath: String): String {
-        if (target === null) return ""
+    open fun suggestInitialInputFor(target: String?, projectBasePath: String): InitialInputSuggestion {
+        if (target === null) return InitialInputSuggestion()
 
         val normalizedTarget =
                 if (target.endsWith("/")) target.removeSuffix("/")
@@ -25,8 +37,9 @@ open class TargetResolver(protected open val directoryResolver: DirectoryResolve
 
         // We only want to add the namespace, when we are inside the default folder
         if (!directoryResolver.isBelowDefaultDirectory(relativeTarget))
-            return ""
+            return InitialInputSuggestion()
 
-        return if (subFolder.isNotBlank()) subFolder.substring(1) else ""
+        return if (subFolder.isNotBlank()) InitialInputSuggestion(subFolder.substring(1))
+               else InitialInputSuggestion()
     }
 }

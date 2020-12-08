@@ -23,16 +23,16 @@ internal class TargetResolverTest {
         assertNoNamespaceSuggestedFor(projectPath("/$controllerFolder"))
         assertNoNamespaceSuggestedFor(projectPath("/$controllerFolder/"))
 
-        assertNamespaceSuggestedFor("$controllerFolder/Foo/Bar", "Foo/Bar/");
-        assertNamespaceSuggestedFor("$controllerFolder/Foo/Bar/", "Foo/Bar/");
+        assertNamespaceSuggestedFor("$controllerFolder/Foo/Bar", "Foo/Bar/")
+        assertNamespaceSuggestedFor("$controllerFolder/Foo/Bar/", "Foo/Bar/")
     }
 
     private fun assertNamespaceSuggestedFor(path: String, suggestion: String) {
-        assertEquals(suggestion, resolver.suggestInitialInputFor(path, projectBasePath))
+        assertEquals(suggestion, resolver.suggestInitialInputFor(path, projectBasePath).name)
     }
 
     private fun assertNoNamespaceSuggestedFor(path: String) {
-        assertEquals("", resolver.suggestInitialInputFor(path, projectBasePath))
+        assertEquals("", resolver.suggestInitialInputFor(path, projectBasePath).name)
     }
 
     private fun projectPath(path: String): String {

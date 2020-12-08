@@ -54,5 +54,6 @@
         <action class="com.niclas_van_eyk.laravel_make_integration.actions.make.MakeResourceAction" id="MakeResourceAction"/>
         <action class="com.niclas_van_eyk.laravel_make_integration.actions.make.MakeRuleAction" id="MakeRuleAction"/>
         <action class="com.niclas_van_eyk.laravel_make_integration.actions.make.MakeSeederAction" id="MakeSeederAction"/>
+        <action class="com.niclas_van_eyk.laravel_make_integration.actions.make.MakeTestAction" id="MakeTestAction"/>
     </actions>
 </idea-plugin>

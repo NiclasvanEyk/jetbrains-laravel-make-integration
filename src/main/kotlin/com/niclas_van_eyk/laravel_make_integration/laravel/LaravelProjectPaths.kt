@@ -54,6 +54,10 @@ class LaravelProjectPaths(private val _base: String) {
             const val FACTORIES = "$DATABASE/factories"
             const val SEEDS = "$DATABASE/seeds"
 
+        const val TESTS = "/tests"
+            const val FEATURE_TESTS = "$TESTS/Feature"
+            const val UNIT_TESTS = "$TESTS/UNIT"
+
         const val ARTISAN = "/artisan"
     }
 

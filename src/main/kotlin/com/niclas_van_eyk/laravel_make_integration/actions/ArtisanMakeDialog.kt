@@ -19,7 +19,12 @@ import javax.swing.JPanel
  *
  * [CommandAutocompleteTextField] is probably more interesting here.
  */
-class ArtisanMakeDialog(val project: Project, val laravelProject: LaravelProject, val command: SubCommand, val initialInput: String): DialogWrapper(project) {
+class ArtisanMakeDialog(
+        val project: Project,
+        val laravelProject: LaravelProject,
+        val command: SubCommand,
+        val initialInput: InitialInputSuggestion
+): DialogWrapper(project) {
     private lateinit var editor: EditorTextField
 
     val input: String get() = editor.text
@@ -36,7 +41,7 @@ class ArtisanMakeDialog(val project: Project, val laravelProject: LaravelProject
         val matchingCommand = commands.firstOrNull { it.name == command.asArtisanCommand }
         val options = matchingCommand?.options?.toMutableList() ?: mutableListOf()
 
-        editor = CommandAutocompleteTextField(project, options, initialInput)
+        editor = CommandAutocompleteTextField(project, options, initialInput.toInputString)
         editor.setPreferredWidth(250)
         panel.add(LabeledComponent.create(editor, command.capitalized), BorderLayout.SOUTH)
         return panel
