@@ -5,6 +5,7 @@
 ### Added
 - Support for the new `artisan make:test` command. Automatically adds the `--unit` flag, if you have 
   right-clicked a folder below `tests/Unit`!
+- A [step-by-step guide](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/tree/master/docs/setup_with_sail.md) on how to use the plugin with Docker and Laravel Sail
 
 ### Fixed
 - \#21 Cyclic service initialization
