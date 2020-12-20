@@ -1,6 +1,18 @@
 # Laravel Make Integration Changelog
 
 ## [Unreleased]
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+## [2.3.2]
 
 ### Added
 - Support for the new `artisan make:test` command. Automatically adds the `--unit` flag, if you have 
