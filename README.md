@@ -22,6 +22,12 @@ name of the class to be generated. Once you hit enter, the artisan command, here
 
 <!-- Plugin description end -->
 
+## Getting Started
+
+If you develop using your local interpreter everything should just work.
+
+If you are using Laravel Sail or otherwise develop locally using Docker, go to [this page](./docs/setup_with_sail.md). It contains a step-by-step guide that describes how to setup a fresh Laravel application using Laravel Sail and how to connect PHPStorm (and in turn Laravel Make Integration) to the PHP interpreter inside our Docker container.
+
 ## [Features](./features.md)
 
 A full list of all features can be found in [here](./features.md). This also serves as the documentation at the moment.
