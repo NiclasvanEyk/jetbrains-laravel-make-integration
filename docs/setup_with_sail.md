@@ -62,7 +62,7 @@ Now open up your project in PHPStorm. Then open up your settings / preferences. 
 
 As you can see, no interpreter has been chosen yet for the project. By default, PHPStorm tries to discover local PHP interpreters available on your system (e.g. the one in `/usr/local/bin/php`). This one will also be used by the plugin if no interpreter has been set and PHPStorm discovered that it is available.
 
-To now set the PHP interpreter that resides in our docker container provided by Laravel Sail, we click on the button with the three dots next to the interpreter dropdown that up until now said "<no interpreter>".
+To now set the PHP interpreter that resides in our docker container provided by Laravel Sail, we click on the button with the three dots next to the interpreter dropdown that up until now said "\<no interpreter\>".
 
 A new window will pop up. Press the plus icon highlighted below to add a new interpreter.
 
