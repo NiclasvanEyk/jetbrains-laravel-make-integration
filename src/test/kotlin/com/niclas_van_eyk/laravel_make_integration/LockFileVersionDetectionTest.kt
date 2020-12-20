@@ -9,7 +9,10 @@ import kotlin.test.assertNotNull
 class LockFileVersionDetectionTest {
     @Test
     fun it_detects_the_version() {
-        val lockfileContents = this::class.java.classLoader.getResource("example-composer.lock").readText()
+        val lockfileContents = this::class.java.classLoader.getResource("example-composer.lock")?.readText()
+
+        assertNotNull(lockfileContents)
+
         val detectedVersion = detectLaravelVersionFromLockfileContents(lockfileContents)
 
         assertNotNull(detectedVersion)
