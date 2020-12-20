@@ -8,6 +8,7 @@
 
 ### Fixed
 - \#21 Cyclic service initialization
+- make:model now works in newer Laravel versions, where models are created in the Models/ folder. Older versions (<8.0.0) still use the default behavior
 
 ## [2.3.1]
 

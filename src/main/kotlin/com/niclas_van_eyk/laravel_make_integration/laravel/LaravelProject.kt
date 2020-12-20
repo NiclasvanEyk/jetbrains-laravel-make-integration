@@ -5,9 +5,40 @@ import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
 import java.io.File
 
+fun detectLaravelVersionFromLockfileContents(contents: String): ComposerVersion? {
+    val laravelVersionRegex =
+            """"name": "laravel/framework",\s*"version":\s*"v([0-9]+\.[0-9]+\.[0-9]+)""".toRegex(
+                    setOf(RegexOption.MULTILINE, RegexOption.DOT_MATCHES_ALL)
+            )
+    val matchResult = laravelVersionRegex.find(contents)?.groups
+    val versionString = matchResult?.get(1)?.value
+
+    if (versionString != null) {
+        return ComposerVersion(versionString)
+    }
+
+    return null
+}
+
 class LaravelProject(path: String) {
     val artisan: Artisan = Artisan(path)
     val paths: LaravelProjectPaths = LaravelProjectPaths(path)
+    val version: ComposerVersion
+
+    init {
+        val lockfile = File(paths.path(LaravelProjectPaths.COMPOSER_LOCK))
+        var detectedVersion = ComposerVersion()
+
+        if (lockfile.exists() && lockfile.isFile) {
+            val fromLockfile = detectLaravelVersionFromLockfileContents(lockfile.readText())
+
+            if (fromLockfile != null) {
+                detectedVersion = fromLockfile
+            }
+        }
+
+        version = detectedVersion
+    }
 
     constructor(base: VirtualFile) : this(base.path)
 }

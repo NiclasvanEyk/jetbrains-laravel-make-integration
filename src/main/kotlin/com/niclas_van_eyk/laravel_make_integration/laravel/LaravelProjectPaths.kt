@@ -59,6 +59,8 @@ class LaravelProjectPaths(private val _base: String) {
             const val UNIT_TESTS = "$TESTS/UNIT"
 
         const val ARTISAN = "/artisan"
+
+        const val COMPOSER_LOCK = "/composer.lock"
     }
 
     /**
