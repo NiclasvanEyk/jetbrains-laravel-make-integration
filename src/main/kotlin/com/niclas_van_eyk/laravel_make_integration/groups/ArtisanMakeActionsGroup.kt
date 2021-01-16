@@ -33,7 +33,7 @@ class ArtisanMakeActionsGroup(
         private val descriptionMode: DescriptionMode = DescriptionMode.Normal
 ): NonEmptyActionGroup() {
     companion object {
-        val AVAILABLE_ACTIONS = arrayOf(
+        val DEFAULT_ACTIONS = arrayOf(
             MakeCastAction(),
             MakeChannelAction(),
             MakeCommandAction(),
@@ -61,19 +61,21 @@ class ArtisanMakeActionsGroup(
     }
 
     private fun computeActions(): Array<ArtisanMakeSubCommandAction> {
-        val actions = AVAILABLE_ACTIONS
+        val actions = DEFAULT_ACTIONS
 
         // These are the actions for the New context menu, so we will filter
         // the actions based on the folder that gets right clicked
-        actions.forEach {
-            it.isFromContextMenu = filterBasedOnSelection
-
-            if (descriptionMode === DescriptionMode.Compact) {
-                it.templatePresentation.text = it.command.capitalized
-            }
-        }
+        actions.forEach(this@ArtisanMakeActionsGroup::setActionContext)
 
         return actions
+    }
+
+    private fun setActionContext(action: ArtisanMakeSubCommandAction) {
+        action.isFromContextMenu = filterBasedOnSelection
+
+        if (descriptionMode === DescriptionMode.Compact) {
+            action.templatePresentation.text = action.command.capitalized
+        }
     }
 
     override fun update(e: AnActionEvent) {
@@ -86,8 +88,26 @@ class ArtisanMakeActionsGroup(
         val service = project.getService(LaravelMakeIntegrationProjectService::class.java)
 
         if (service.isLaravelProject) {
+            val actions = this.computeActions().toMutableList()
+
+            if (service.hasCommands) {
+                val liveWireCommand = service.commands.commands.find {
+                    command -> command.name.equals("make:livewire")
+                }
+
+                if (liveWireCommand != null) {
+                    val liveWireAction = MakeLivewireAction()
+                    setActionContext(liveWireAction)
+
+                    actions.add(liveWireAction)
+                }
+
+                actions.sortBy { it.command.capitalized }
+            }
+
             // But if we could find an Artisan binary, we re-add all the actions
-            this.addAll(this.computeActions().toMutableList())
+            this.addAll(actions)
+
             // and set our visibility accordingly
             super.update(e)
         }

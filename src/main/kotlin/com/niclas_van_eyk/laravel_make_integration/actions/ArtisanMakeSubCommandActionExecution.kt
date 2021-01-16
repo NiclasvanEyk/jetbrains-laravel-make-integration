@@ -47,6 +47,7 @@ open class ArtisanMakeSubCommandActionExecution(
         if (!dialog.showAndGet()) return
 
         val parameters = ArtisanMakeParameters.fromInput(dialog.input)
+        parameters.parameters.add("--no-interaction")
 
         val commandLine = parameters.humanReadable(command.command)
 

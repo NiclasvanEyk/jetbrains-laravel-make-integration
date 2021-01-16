@@ -2,10 +2,10 @@ package com.niclas_van_eyk.laravel_make_integration.laravel
 
 import kotlin.collections.ArrayList
 
-data class ArtisanMakeParameters(val className: String, val parameters: List<String>) {
+data class ArtisanMakeParameters(val className: String, val parameters: MutableList<String>) {
     companion object {
         fun fromInput(input: String): ArtisanMakeParameters {
-            val parts = input.split(' ')
+            val parts = input.split(' ').toMutableList()
             val name = parts[0].trim()
             val params =
                     if (parts.size > 1) parts.subList(1, parts.size)

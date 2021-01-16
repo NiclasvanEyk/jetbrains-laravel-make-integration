@@ -1,17 +1,15 @@
 # Laravel Make Integration Changelog
 
-## [Unreleased]
+## [2.3.3]
+
 ### Added
+- Experimental support for Laravel Livewire. This is one is only available from the "File > New" menu for now and only 
+  after all artisan commands were detected. See [issue 10](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/issues/10) for more information about this.
 
 ### Changed
+- The `--no-interaction` flag is automatically appended for each command. This prevents hanging, e.g. when a command 
+  expects input from stdin, which is not possible in our context.
 
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
 ## [2.3.2]
 
 ### Added

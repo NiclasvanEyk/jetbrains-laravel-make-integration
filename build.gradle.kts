@@ -58,7 +58,7 @@ intellij {
     type = platformType
     downloadSources = platformDownloadSources.toBoolean()
     updateSinceUntilBuild = true
-    alternativeIdePath = "/Users/niclasvaneyk/Library/Application Support/JetBrains/Toolbox/apps/PhpStorm/ch-0/202.7660.42/PhpStorm.app/Contents"
+    alternativeIdePath = "/Users/niclasvaneyk/Library/Application Support/JetBrains/Toolbox/apps/PhpStorm/ch-0/203.6682.180/PhpStorm 2020.3 EAP.app/Contents"
 
 //  Plugin Dependencies:
 //  https://www.jetbrains.org/intellij/sdk/docs/basics/plugin_structure/plugin_dependencies.html

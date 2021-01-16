@@ -34,6 +34,8 @@ A full list of all features can be found in [here](./features.md). This also ser
 
 ### Supported Commands
 
+#### Laravel default commands
+
 - Cast
 - Channel
 - Command
@@ -57,6 +59,18 @@ A full list of all features can be found in [here](./features.md). This also ser
 - Rule
 - Seeder
 - Test
+
+#### Vendor Commands (experimental)
+
+The plugin runs `php artisan help` to get a list of all commands available each time you open a Laravel project. For each command that starts with `make:` it will 
+execute `php artisan make:my-command --help`, to get a list of all the parameters to provide autocompletion. If a vendor
+command like `make:livewire` is detected, it will automatically be added to the "File > New > Laravel" menu.
+
+Note that this is experimental for now and that it might take a while for all commands to be indexed. Below you can find
+a list of commands that are supported for now. If you have a request for a command of a popular library to be added here,
+please open an issue.
+
+- Livewire (`artisan make:livewire`, also supports the flags, such as `--inline`)
 
 ## Installation
 

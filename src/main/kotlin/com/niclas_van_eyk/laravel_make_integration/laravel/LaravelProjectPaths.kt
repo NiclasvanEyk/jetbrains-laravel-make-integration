@@ -25,6 +25,7 @@ class LaravelProjectPaths(private val _base: String) {
             const val HTTP = "$APP/Http"
                 const val CONTROLLERS = "$HTTP/Controllers"
                 const val MIDDLEWARE = "$HTTP/Middleware"
+                const val LIVEWIRE = "$HTTP/Livewire"
                 const val REQUESTS = "$HTTP/Requests"
                 const val RESOURCES = "$HTTP/Resources"
 

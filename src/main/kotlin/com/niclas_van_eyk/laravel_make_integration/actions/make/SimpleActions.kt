@@ -88,3 +88,8 @@ class MakeRuleAction: ArtisanMakeSubCommandAction(
 class MakeSeederAction: ArtisanMakeSubCommandAction(
         SubCommand("seeder", LaravelProjectPaths.SEEDS)
 )
+
+// VENDOR
+class MakeLivewireAction: ArtisanMakeSubCommandAction(
+        SubCommand("livewire", LaravelProjectPaths.LIVEWIRE)
+)
