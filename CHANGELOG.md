@@ -1,6 +1,6 @@
 # Laravel Make Integration Changelog
 
-## [2.3.3]
+## [Unreleased]
 
 ### Added
 - Experimental support for Laravel Livewire. This is one is only available from the "File > New" menu for now and only 
