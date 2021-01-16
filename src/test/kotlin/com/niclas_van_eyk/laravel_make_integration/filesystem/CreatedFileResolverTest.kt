@@ -14,8 +14,8 @@ internal class CreatedFileResolverTest {
 
     @Test
     fun getCreatedFilePath() {
-        assertResolvesTo("app/imaginary/tests/MyNamespace/MyClass.php", ArtisanMakeParameters("MyNamespace/MyClass", listOf("")))
-        assertResolvesTo("app/imaginary/tests/MyNamespace/MyClass.php", ArtisanMakeParameters("MyNamespace/MyClass", listOf("test 123")))
+        assertResolvesTo("app/imaginary/tests/MyNamespace/MyClass.php", ArtisanMakeParameters("MyNamespace/MyClass", mutableListOf("")))
+        assertResolvesTo("app/imaginary/tests/MyNamespace/MyClass.php", ArtisanMakeParameters("MyNamespace/MyClass", mutableListOf("test 123")))
     }
 
     private fun assertResolvesTo(expected: String, input: ArtisanMakeParameters) {
