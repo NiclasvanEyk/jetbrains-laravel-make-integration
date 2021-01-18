@@ -51,21 +51,21 @@ class CommandAutocompleteTextField(
             availableOptions: MutableCollection<Option>
     ) : TextFieldWithAutoCompletionListProvider<Option>(availableOptions) {
         override fun getLookupString(option: Option): String {
-            return if (option.type == OptionType.Flag) option.name
-                   else option.nameWithoutHint + "="
+            return if (!option.acceptValue) option.name
+                   else option.name + "="
         }
 
         override fun getTypeText(option: Option): String? {
-            return option.type.name
+            return if (option.acceptValue) "Option" else "Flag" // option.type.name
         }
 
         override fun createLookupBuilder(option: Option): LookupElementBuilder {
             val lookup = super.createLookupBuilder(option)
                     .withTailText(if (!option.description.isBlank()) "  " + option.description else null, true)
-                    .withPresentableText(option.nameWithoutHint)
+                    .withPresentableText(option.name)
 
-            if (option.shortForm != null) {
-                lookup.withLookupStrings(option.shortForm.split("|"))
+            if (option.shortcut != null) {
+                lookup.withLookupStrings(option.shortcut.split("|"))
             }
 
             return lookup

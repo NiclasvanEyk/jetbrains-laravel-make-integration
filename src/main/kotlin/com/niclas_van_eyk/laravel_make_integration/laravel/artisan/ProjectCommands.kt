@@ -1,7 +1,6 @@
 package com.niclas_van_eyk.laravel_make_integration.laravel.artisan
 
-import com.intellij.concurrency.SensitiveProgressWrapper
-import com.intellij.openapi.progress.EmptyProgressIndicator
+import com.google.gson.GsonBuilder
 import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.progress.Task.Backgroundable
@@ -31,7 +30,12 @@ class ProjectCommands(val laravelProject: LaravelProject, val project: Project) 
         progressManager.run(object: Backgroundable(project, "Scanning for Artisan commands", true, ALWAYS_BACKGROUND) {
             override fun run(indicator: ProgressIndicator) {
                 indicator.isIndeterminate = true
-                val commandScanResult = laravelProject.artisan.execute(project, "")
+                val commandScanResult = laravelProject.artisan.execute(
+                    project,
+                    "list",
+                    null,
+                    listOf("--format=json")
+                )
 
                 if (commandScanResult.wasFailure) {
                     print(commandScanResult.log) // TODO
@@ -39,28 +43,28 @@ class ProjectCommands(val laravelProject: LaravelProject, val project: Project) 
                     return
                 }
 
-                val commandNames = parseArtisanMakeCommandNames(commandScanResult.log)
+                val output = commandScanResult.log
+                val json = output.substring(output.indexOf("{\"application\":"))
+                    // For some reason an empty argument list gets serialized
+                    // to an empty array instead of an empty object. Maybe
+                    // because of associative arrays in php are kinda the
+                    // same as JSON objects.
+                    .replace(Regex("\"options\":\\[\\]]"), "\"options\":{}")
+                    .replace(Regex("\"arguments\":\\[\\]]"), "\"arguments\":{}")
+                    // These are getting added by Docker I think
+                    .replace(Regex("\n"), "")
+                    // No idea where this comes from, maybe also Docker?
+                    .removeSuffix("Done!")
 
-                indicator.isIndeterminate = false
-                indicator.fraction = 0.0
+                val application = GsonBuilder()
+                    .create()
+                    .fromJson<LaravelConsoleApplication>(
+                        json, LaravelConsoleApplication::class.java
+                    )
 
-                for ((i, commandName) in commandNames.withIndex()) {
-                    val parts = commandName.split(":")
-                    val result = laravelProject.artisan.execute(project, parts[0], parts[1], listOf("--help"))
-
-                    if (result.wasFailure) {
-                        continue
-                    }
-
-                    this@ProjectCommands.commands.add(parseArtisanCommandFromHelp(result.logWithoutNewLines.trim(), commandName))
-                    indicator.fraction = (i + 1).toDouble() / commandNames.size.toDouble()
-
-                    if (indicator.isCanceled) {
-                        return
-                    }
-                }
-
-                WellKnownCommandInformation().updateOptionTypes(commands)
+                commands.addAll(application.commands.filter {
+                    it.name.startsWith("make:")
+                })
             }
         })
     }

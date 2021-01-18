@@ -8,6 +8,8 @@ package com.niclas_van_eyk.laravel_make_integration.laravel.artisan
  * we have to pass a model here, but we can "enhance" the statically inferred info with
  * manually gathered ones to hint the user that a class needs to be passed here or an int or
  * a more precise data type.
+ *
+ * @deprecated for now, until I figure out a way how to mutate the lists properly
  */
 class WellKnownCommandInformation {
     var wellKnownOptionTypes: MutableMap<String, MutableMap<String, OptionType>> = HashMap()
@@ -30,17 +32,19 @@ class WellKnownCommandInformation {
         optionTypesForCommand[option] = type
     }
 
-    fun updateOptionTypes(commands: List<Command>) {
-        for (command in commands) {
-            val typesForCommandOptions = wellKnownOptionTypes[command.name] ?: continue
+    fun updateOptionTypes(commands: List<Command>): List<Command> {
+        return commands.map { command ->
+            val typesForCommandOptions = wellKnownOptionTypes[command.name] ?: return@map command
 
-            for (option in command.options) {
-                if (typesForCommandOptions.containsKey(option.nameWithoutHint)) {
-                    option.type = typesForCommandOptions[option.nameWithoutHint]!!
-                } else if (typesForCommandOptions.containsKey(option.shortForm)) {
-                    option.type = typesForCommandOptions[option.shortForm]!!
+            command.definition.options.values.forEach {
+                if (typesForCommandOptions.containsKey(it.name)) {
+                    it.type = typesForCommandOptions[it.name]!!
+                } else if (typesForCommandOptions.containsKey(it.shortcut)) {
+                    it.type = typesForCommandOptions[it.shortcut]!!
                 }
             }
+
+            return@map command
         }
     }
 }

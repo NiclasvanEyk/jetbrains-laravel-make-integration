@@ -1,17 +1,12 @@
 # Laravel Make Integration Changelog
 
 ## [Unreleased]
-### Added
 
 ### Changed
 
-### Deprecated
+- The scanning for the available commands now works in a single pass. This means that command autocompletion and vendor
+  command support is now available faster (especially if you are using docker containers!)
 
-### Removed
-
-### Fixed
-
-### Security
 ## [2.3.3]
 
 ### Added

@@ -39,7 +39,7 @@ class ArtisanMakeDialog(
 
         val commands = retrieveCommands()
         val matchingCommand = commands.firstOrNull { it.name == command.asArtisanCommand }
-        val options = matchingCommand?.options?.toMutableList() ?: mutableListOf()
+        val options = matchingCommand?.definition?.options?.values?.toMutableList() ?: mutableListOf()
 
         editor = CommandAutocompleteTextField(project, options, initialInput.toInputString)
         editor.setPreferredWidth(250)
