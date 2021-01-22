@@ -5,7 +5,11 @@ import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.progress.Task.Backgroundable
 import com.intellij.openapi.project.Project
+import com.intellij.remote.RemoteSdkException
+import com.jetbrains.php.run.PhpEditInterpreterExecutionException
 import com.niclas_van_eyk.laravel_make_integration.laravel.LaravelProject
+import com.niclas_van_eyk.laravel_make_integration.run.InterpreterInference
+import com.niclas_van_eyk.laravel_make_integration.run.PHPScriptRun
 import com.niclas_van_eyk.laravel_make_integration.services.LaravelMakeIntegrationProjectService
 
 /**
@@ -25,20 +29,36 @@ class ProjectCommands(val laravelProject: LaravelProject, val project: Project) 
     var commands = mutableListOf<Command>()
 
     fun inferFromHelp() {
-        val progressManager = ProgressManager.getInstance()
+        if (! InterpreterInference(project).hasInterpreter()) {
+            // We cannot execute anything here, so we need to skip it instead of throwing
+            // an exception as https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/issues/28
+            // showed
+            return
+        }
 
-        progressManager.run(object: Backgroundable(project, "Scanning for Artisan commands", true, ALWAYS_BACKGROUND) {
+        ProgressManager.getInstance().run(object: Backgroundable(project, "Scanning for Artisan commands", true, ALWAYS_BACKGROUND) {
             override fun run(indicator: ProgressIndicator) {
                 indicator.isIndeterminate = true
-                val commandScanResult = laravelProject.artisan.execute(
-                    project,
-                    "list",
-                    null,
-                    listOf("--format=json")
-                )
+                var commandScanResult: PHPScriptRun.Result
+
+                try {
+                    commandScanResult = laravelProject.artisan.execute(
+                            project,
+                            "list",
+                            null,
+                            listOf("--format=json")
+                    )
+                } catch (e: PhpEditInterpreterExecutionException) {
+                    var message = "Could not connect to the configured remote interpreter."
+
+                    if (e.message?.contains("Docker") == true) {
+                        message += " Maybe you need to start your Docker daemon?"
+                    }
+
+                    commandScanResult = PHPScriptRun.Result(false, arrayListOf(message))
+                }
 
                 if (commandScanResult.wasFailure) {
-                    print(commandScanResult.log) // TODO
                     indicator.stop()
                     return
                 }

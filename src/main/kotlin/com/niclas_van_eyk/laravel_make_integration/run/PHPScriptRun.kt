@@ -4,11 +4,9 @@ import com.intellij.execution.process.ProcessHandler
 import com.intellij.execution.process.ProcessTerminatedListener
 import com.intellij.openapi.project.Project
 import com.intellij.util.PathUtil
-import com.jetbrains.php.config.PhpProjectConfigurationFacade
 import com.jetbrains.php.config.commandLine.PhpCommandSettings
 import com.jetbrains.php.config.commandLine.PhpCommandSettingsBuilder
 import com.jetbrains.php.config.interpreters.PhpInterpreter
-import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl
 import com.jetbrains.php.run.script.PhpScriptRunConfiguration
 import com.jetbrains.php.run.script.PhpScriptRuntimeConfigurationProducer
 
@@ -31,7 +29,7 @@ class PHPScriptRun(
 
     init {
         runConfiguration = buildRunConfiguration()
-        interpreter = inferInterpreter()
+        interpreter = InterpreterInference(project).inferInterpreter()
         command = buildCommand()
         processHandler = buildProcessHandler()
         processListener = attachProcessListener(processHandler)
@@ -88,33 +86,6 @@ class PHPScriptRun(
             PhpScriptRuntimeConfigurationProducer().configurationFactory,
             "Laravel Make Integration"
         )
-    }
-
-    private fun inferInterpreter(): PhpInterpreter {
-        val configuredInterpreter = PhpProjectConfigurationFacade
-            .getInstance(project)
-            .interpreter
-
-        if (configuredInterpreter != null) {
-            return configuredInterpreter
-        }
-
-        // It could be, that the user has not specified an interpreter.
-        // If we find one locally, we will just use that and notify the
-        // user, that they should specify an interpreter for the project,
-        // so that the nasty message goes away.
-        // We choose a local interpreter, because the remote ones could
-        // be pointing to a server via ssh, so we do not be responsible
-        // for any unwanted side-effects.
-        val localInterpreter = inferLocalInterpreter()
-
-        return localInterpreter ?: throw NoInterpreterSetException()
-    }
-
-    private fun inferLocalInterpreter(): PhpInterpreter? {
-        return PhpInterpretersManagerImpl.getInstance(project)
-            .interpreters
-            .firstOrNull { !it.isRemote }
     }
 }
 

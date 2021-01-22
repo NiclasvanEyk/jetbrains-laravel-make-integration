@@ -3,6 +3,8 @@ package com.niclas_van_eyk.laravel_make_integration.actions
 import com.intellij.openapi.progress.ProgressIndicatorProvider
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.project.Project
+import com.intellij.remote.RemoteSdkException
+import com.jetbrains.php.run.PhpEditInterpreterExecutionException
 import com.niclas_van_eyk.laravel_make_integration.filesystem.CreatedFileResolver
 import com.niclas_van_eyk.laravel_make_integration.filesystem.DirectoryResolver
 import com.niclas_van_eyk.laravel_make_integration.ide.IdeAdapter
@@ -66,6 +68,14 @@ open class ArtisanMakeSubCommandActionExecution(
                 } catch (e: NoInterpreterSetException) {
                     var message = "No PHP interpreter found!"
                     message += "\nPlease set one in Settings > Languages & Frameworks > PHP"
+
+                    makeResult = PHPScriptRun.Result(false, arrayListOf(message))
+                } catch (e: PhpEditInterpreterExecutionException) {
+                    var message = "Could not connect to the configured remote interpreter."
+
+                    if (e.message?.contains("Docker") == true) {
+                        message += " Do you need to start your Docker daemon?"
+                    }
 
                     makeResult = PHPScriptRun.Result(false, arrayListOf(message))
                 }

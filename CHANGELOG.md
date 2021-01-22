@@ -12,10 +12,15 @@
 ### Added
 - Experimental support for Laravel Livewire. This is one is only available from the "File > New" menu for now and only 
   after all artisan commands were detected. See [issue 10](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/issues/10) for more information about this.
+- \#24 A hint when you try to execute an artisan command through a remote interpreter that cannot be connected to (e.g. 
+  when you forgot to start the docker daemon on macOS)
 
 ### Changed
 - The `--no-interaction` flag is automatically appended for each command. This prevents hanging, e.g. when a command 
   expects input from stdin, which is not possible in our context.
+
+### Fixed
+- \#28 Error when starting a project without a project interpreter
 
 ## [2.3.2]
 
