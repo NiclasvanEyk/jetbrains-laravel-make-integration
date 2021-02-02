@@ -47,7 +47,7 @@ class ArtisanMakeDialog(
         return panel
     }
 
-    override fun getPreferredFocusedComponent(): JComponent? {
+    override fun getPreferredFocusedComponent(): JComponent {
         return editor
     }
 

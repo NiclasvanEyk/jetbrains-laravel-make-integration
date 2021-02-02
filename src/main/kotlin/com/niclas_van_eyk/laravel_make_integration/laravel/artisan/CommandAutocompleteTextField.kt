@@ -55,13 +55,13 @@ class CommandAutocompleteTextField(
                    else option.name + "="
         }
 
-        override fun getTypeText(option: Option): String? {
+        override fun getTypeText(option: Option): String {
             return if (option.acceptValue) "Option" else "Flag" // option.type.name
         }
 
         override fun createLookupBuilder(option: Option): LookupElementBuilder {
             val lookup = super.createLookupBuilder(option)
-                    .withTailText(if (!option.description.isBlank()) "  " + option.description else null, true)
+                    .withTailText(if (option.description.isNotBlank()) "  " + option.description else null, true)
                     .withPresentableText(option.name)
 
             if (option.shortcut != null) {
