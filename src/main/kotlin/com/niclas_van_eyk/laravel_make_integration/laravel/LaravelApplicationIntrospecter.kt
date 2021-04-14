@@ -5,13 +5,14 @@ import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.progress.Task
 import com.intellij.openapi.project.Project
+import com.jetbrains.php.PhpIndex
 import com.jetbrains.php.run.PhpEditInterpreterExecutionException
-import com.niclas_van_eyk.laravel_make_integration.ide.IdeAdapter
 import com.niclas_van_eyk.laravel_make_integration.ide.jetbrains.PluginNotifications
-import com.niclas_van_eyk.laravel_make_integration.laravel.artisan.LaravelConsoleApplication
-import com.niclas_van_eyk.laravel_make_integration.laravel.artisan.RouteListEntry
+import com.niclas_van_eyk.laravel_make_integration.services.project.LaravelConsoleApplication
+import com.niclas_van_eyk.laravel_make_integration.services.project.RouteListEntry
 import com.niclas_van_eyk.laravel_make_integration.run.InterpreterInference
 import com.niclas_van_eyk.laravel_make_integration.run.PHPScriptRun
+import com.niclas_van_eyk.laravel_make_integration.services.project.EventListenerPair
 
 class CommandRunInfo(
     val namespace: String,
@@ -26,11 +27,12 @@ class LaravelApplicationIntrospecter(
     fun fetchCommandInfo(onSuccess: (app: LaravelConsoleApplication) -> Unit) {
         val jsonFormatOption = "--format=json"
 
-        receiveCommandOutputAsJson(
+        receiveCommandOutput(
             "Scanning Artisan commands",
             CommandRunInfo("list", null, listOf(jsonFormatOption))
         ) { output ->
-            val json = output
+            val rawJson = extractJson(output) ?: return@receiveCommandOutput
+            val json = rawJson
                 // For some reason an empty argument list gets serialized
                 // to an empty array instead of an empty object. Maybe
                 // because of associative arrays in php are kinda the
@@ -49,28 +51,77 @@ class LaravelApplicationIntrospecter(
     }
 
     fun fetchConfigInfo(onSuccess: (result: Any) -> Unit) {
-        receiveCommandOutputAsJson(
+        receiveCommandOutput(
             "Scanning Laravel config",
             CommandRunInfo("tinker", null, listOf("--execute", "echo json_encode(config()->all())"))
         ) { output ->
-            onSuccess(GsonBuilder().create().fromJson(output, Any::class.java))
+            val json = extractJson(output) ?: return@receiveCommandOutput
+            onSuccess(GsonBuilder().create().fromJson(json, Any::class.java))
         }
     }
 
     fun fetchRouteInfo(onSuccess: (app: List<RouteListEntry>) -> Unit) {
-        receiveCommandOutputAsJson(
+        receiveCommandOutput(
             "Scanning Laravel routes",
             CommandRunInfo("route", "list", listOf("--json"))
         ) { output ->
+            val json = extractJson(output) ?: return@receiveCommandOutput
+
             val routes = GsonBuilder()
                 .create()
-                .fromJson(output, Array<RouteListEntry>::class.java)
+                .fromJson(json, Array<RouteListEntry>::class.java)
 
             onSuccess(routes.toList())
         }
     }
 
-    private fun receiveCommandOutputAsJson(title: String, commandRunInfo: CommandRunInfo, onSuccess: (result: String) -> Unit) {
+    fun fetchEventsInfo(onSuccess: (pairs: List<EventListenerPair>) -> Unit) {
+        receiveCommandOutput(
+            "Scanning Laravel events",
+            CommandRunInfo("event", "list")
+        ) { output ->
+            val pairs = output.lines()
+                .filter { it.startsWith("| ") }
+                .flatMap { it.split("|") }
+                .map { it.trim() }
+                .filter { it.contains("\\") }
+                .chunked(2)
+                .map {
+                    val event = PhpIndex.getInstance(project).getClassesByFQN(it[0]).firstOrNull()
+                    val listener = PhpIndex.getInstance(project).getClassesByFQN(it[1]).firstOrNull()
+
+                    return@map if (event != null && listener != null) {
+                        EventListenerPair(event, listener)
+                    } else null
+                }
+                .filterNotNull()
+
+            onSuccess(pairs)
+        }
+    }
+
+    private fun extractJson(output: String): String? {
+        val beginOfJson = output.indexOfAny(listOf("{", "["))
+        val endOfJson = output.lastIndexOfAny(listOf("]", "}"))
+
+        if (beginOfJson == -1 || endOfJson == -1) {
+            // Maybe we should handle this at a higher level, but
+            // we'll often this even happens
+            PluginNotifications.error(
+                "Something went wrong while trying to parse the JSON output!",
+                "No JSON found"
+            ).notify(project)
+            return null
+        }
+
+        return output.substring(beginOfJson, endOfJson + 1).trim()
+    }
+
+    private fun receiveCommandOutput(
+        title: String,
+        commandRunInfo: CommandRunInfo,
+        onSuccess: (result: String) -> Unit,
+    ) {
         if (! InterpreterInference(project).hasInterpreter()) {
             // We cannot execute anything here, so we need to skip it instead of throwing
             // an exception as https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/issues/28
@@ -108,20 +159,8 @@ class LaravelApplicationIntrospecter(
                 // First the command line arguments are logged. If Docker is used, they contain a '[', which
                 // trips up our magnificent strategy for detecting the JSON output
                 val output = commandScanResult.log.substringAfter("\n")
-                val beginOfJson = output.indexOfAny(listOf("{", "["))
-                val endOfJson = output.lastIndexOfAny(listOf("]", "}"))
 
-                if (beginOfJson == -1 || endOfJson == -1) {
-                    PluginNotifications.error(
-                        "Something went wrong while trying to parse the JSON output of '$title'!",
-                        "No JSON found"
-                    ).notify(project)
-                    return
-                }
-
-                val json = output.substring(beginOfJson, endOfJson + 1).trim()
-
-                onSuccess(json)
+                onSuccess(output)
             }
         })
     }

@@ -60,7 +60,7 @@ intellij {
     type = platformType
     downloadSources = platformDownloadSources.toBoolean()
     updateSinceUntilBuild = true
-    alternativeIdePath = "/Users/niclasvaneyk/Library/Application Support/JetBrains/Toolbox/apps/PhpStorm/ch-0/203.7148.74/PhpStorm 2020.3 EAP.app/Contents"
+    alternativeIdePath = "/Users/niclasvaneyk/Library/Application Support/JetBrains/Toolbox/apps/PhpStorm/ch-0/211.6693.120/PhpStorm 2020.3 EAP.app/Contents"
 
 //  Plugin Dependencies:
 //  https://www.jetbrains.org/intellij/sdk/docs/basics/plugin_structure/plugin_dependencies.html
@@ -107,11 +107,11 @@ tasks {
         untilBuild(null)
 
         // Extract the <!-- Plugin description --> section from README.md and provide for the plugin's manifest
-        pluginDescription(closure {
-            File("./README.md").readText().lines().run {
-                subList(indexOf("<!-- Plugin description -->") + 1, indexOf("<!-- Plugin description end -->"))
-            }.joinToString("\n").run { markdownToHTML(this) }
-        })
+//        pluginDescription(closure {
+//            File("./README.md").readText().lines().run {
+//                subList(indexOf("<!-- Plugin description -->") + 1, indexOf("<!-- Plugin description end -->"))
+//            }.joinToString("\n").run { markdownToHTML(this) }
+//        })
 
         // Get the latest available change notes from the changelog file
         changeNotes(closure {

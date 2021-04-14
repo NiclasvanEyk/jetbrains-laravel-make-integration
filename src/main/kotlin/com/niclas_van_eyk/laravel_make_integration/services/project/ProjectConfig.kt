@@ -1,4 +1,4 @@
-package com.niclas_van_eyk.laravel_make_integration.laravel.artisan
+package com.niclas_van_eyk.laravel_make_integration.services.project
 
 import com.intellij.openapi.project.Project
 import com.niclas_van_eyk.laravel_make_integration.laravel.LaravelApplicationIntrospecter

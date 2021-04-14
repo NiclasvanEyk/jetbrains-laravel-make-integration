@@ -11,7 +11,6 @@ class ApplicationToolWindow(
     val toolwindow: ToolWindow,
     val project: Project
 ): JPanel() {
-    init {
-
-    }
+    // TODO: The ProfilerToolWindow can be used as an
+    //       inspiration for typography / layout
 }

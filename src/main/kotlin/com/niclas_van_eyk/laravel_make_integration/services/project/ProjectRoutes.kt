@@ -1,8 +1,9 @@
-package com.niclas_van_eyk.laravel_make_integration.laravel.artisan
+package com.niclas_van_eyk.laravel_make_integration.services.project
 
-import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.intellij.openapi.project.Project
+import com.jetbrains.php.lang.psi.elements.Method
+import com.jetbrains.php.lang.psi.elements.PhpClass
 import com.niclas_van_eyk.laravel_make_integration.laravel.LaravelApplicationIntrospecter
 import com.niclas_van_eyk.laravel_make_integration.laravel.LaravelProject
 
@@ -31,14 +32,20 @@ data class RouteListEntry(
     @SerializedName("action") val rawAction: String,
     @SerializedName("middleware") private val rawMiddleware: String
 ) {
+    lateinit var resolvedClass: PhpClass
+    lateinit var resolvedMethod: Method
+
     val middleware get() = rawMiddleware.split("\n")
-    val controllerAction: RouteAction get() = if (rawAction.equals("closure", ignoreCase = true)) {
+    val controllerAction: RouteAction
+        get() = if (rawAction.equals("closure", ignoreCase = true)) {
         ClosureAction(rawAction)
     } else {
         val actionParts = rawAction.split("@")
         if (actionParts.size == 1) InvocableControllerAction(actionParts[0])
         else ControllerMethodAction(actionParts[0], actionParts[1])
     }
+
+
 }
 
 class ProjectRoutes(

@@ -7,6 +7,7 @@ import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.actionSystem.impl.ActionToolbarImpl
 import com.intellij.openapi.ui.SimpleToolWindowPanel
 import com.intellij.ui.components.JBPanelWithEmptyText
+import com.niclas_van_eyk.laravel_make_integration.toolWindow.ui.RefreshButtonAction
 import com.niclas_van_eyk.laravel_make_integration.actions.make.MakeCommandAction
 import com.niclas_van_eyk.laravel_make_integration.services.LaravelMakeIntegrationProjectService
 import com.niclas_van_eyk.laravel_make_integration.toolWindow.MasterDetailToolWindow
@@ -22,9 +23,14 @@ class CommandsToolWindow(
     private val detailView = JBPanelWithEmptyText().withEmptyText("Select a command to see more information")
 
     private val toolbar = ActionToolbarImpl("LaravelToolWindowCommandsTab", DefaultActionGroup().apply {
-        add(object : AnAction("Refresh", "Refresh commands", AllIcons.Actions.Refresh) {
+        add(object : RefreshButtonAction("Refresh", "Refresh commands") {
             override fun actionPerformed(e: AnActionEvent) {
-                projectService.commands.load { commandList.refreshCommands(it) }
+                startRefreshing()
+                projectService.commands.load {
+                    // TODO: Handle error case
+                    commandList.refreshCommands(it)
+                    stopRefreshing()
+                }
             }
         })
         add(object : AnAction("View Options", "View options", AllIcons.Actions.Show) {

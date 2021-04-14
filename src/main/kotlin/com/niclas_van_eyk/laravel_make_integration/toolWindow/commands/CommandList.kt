@@ -4,7 +4,7 @@ import com.intellij.ui.ColoredListCellRenderer
 import com.intellij.ui.ListSpeedSearch
 import com.intellij.ui.SimpleTextAttributes
 import com.intellij.ui.components.JBList
-import com.niclas_van_eyk.laravel_make_integration.laravel.artisan.Command
+import com.niclas_van_eyk.laravel_make_integration.services.project.Command
 import javax.swing.DefaultListModel
 import javax.swing.JList
 import javax.swing.SwingConstants

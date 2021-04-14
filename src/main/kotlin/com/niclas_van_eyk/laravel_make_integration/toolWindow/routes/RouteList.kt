@@ -4,20 +4,84 @@ import com.intellij.icons.AllIcons
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.JBPopupMenu
 import com.intellij.ui.ColoredListCellRenderer
+import com.intellij.ui.FileColorManager
 import com.intellij.ui.ListSpeedSearch
 import com.intellij.ui.SimpleTextAttributes
 import com.intellij.ui.components.JBList
 import com.jetbrains.php.PhpIndex
-import com.niclas_van_eyk.laravel_make_integration.laravel.artisan.*
+import com.jetbrains.php.lang.psi.elements.PhpClass
+import com.niclas_van_eyk.laravel_make_integration.services.project.*
 import java.awt.event.MouseEvent
 import java.awt.event.MouseListener
 import javax.swing.*
+
+fun RouteListEntry.clazz(project: Project): PhpClass? {
+    val action = controllerAction
+
+    if (action !is ClassBasedRouteAction) return null
+
+    return PhpIndex.getInstance(project).getClassesByFQN(action.className).first()
+}
+
+fun RouteListEntry.jumpToControllerActionSource(project: Project) {
+    val clazz = clazz(project) ?: return
+    val action = controllerAction
+
+    if (action is ControllerMethodAction) {
+        clazz.findMethodByName(action.methodName)?.navigate(true)
+    } else {
+        clazz.navigate(true)
+    }
+}
+
+fun RouteListEntry.isVendorRoute(project: Project): Boolean {
+    return !isApplicationRoute(project)
+}
+
+fun RouteListEntry.isApplicationRoute(project: Project): Boolean {
+    val clazz = clazz(project) ?: return false
+
+    clazz.docComment
+
+    // very rudimentary, can surely be improved using clazz.containingFile
+    return clazz.fqn.startsWith("\\App\\")
+}
+
+fun RouteListEntry.formRequestClass(project: Project): PhpClass? {
+    val action = controllerAction
+
+    if (action !is ClassBasedRouteAction) return null
+
+    val clazz = PhpIndex.getInstance(project).getClassesByFQN(action.className).first() ?: return null
+    val methodName = if (action is ControllerMethodAction) action.methodName else "__invoke"
+
+    clazz.findMethodByName(methodName)?.parameters?.forEach { parameter ->
+        parameter.declaredType.types
+            .filter { it.contains("\\") } // quick way to filter out built-in types
+            .forEach { type ->
+                val realClazz = PhpIndex.getInstance(project).getClassesByFQN(type).firstOrNull()
+
+                realClazz?.extendsList?.referenceElements?.forEach {
+                    val fqn = it.declaredType.toString()
+                    if (fqn.contains("Illuminate\\Foundation\\Http\\FormRequest"))
+                        return realClazz
+                }
+            }
+    }
+
+    return null
+}
+
+fun RouteListEntry.canJumpToControllerActionSource() = controllerAction is ClassBasedRouteAction
 
 class RouteList(
     private val routes: List<RouteListEntry>,
     private val project: Project
 ): JBList<RouteListEntry>(routes) {
     var showMiddlewareParameters = false
+    var showApplicationRoutes = true
+    var showVendorRoutes = true
+
     set(value) {
         field = value
         triggerRender()
@@ -30,17 +94,11 @@ class RouteList(
                     selectedIndex = locationToIndex(e.point)
                     val selected = this@RouteList.selectedValue
 
-                    JBPopupMenu().apply {
-                        add(JMenuItem("Jump To Source", AllIcons.Actions.EditSource).apply {
-                            // Needs to be an invocable controller or a controller method
-                            isEnabled = canJumpToControllerActionSource(selectedValue)
-                            addActionListener { jumpToControllerActionSource(selected) }
-                        })
-                    }.show(this@RouteList, e.x, e.y)
+                    RouteListContextMenu(selected, project).show(this@RouteList, e.x, e.y)
                 }
 
                 if (e != null && e.clickCount >= 2) {
-                    jumpToControllerActionSource(selectedValue)
+                    selectedValue.jumpToControllerActionSource(project)
                 }
             }
             override fun mouseClicked(e: MouseEvent?) {}
@@ -55,6 +113,12 @@ class RouteList(
             override fun customizeCellRenderer(list: JList<out RouteListEntry>, value: RouteListEntry?, index: Int, selected: Boolean, hasFocus: Boolean) {
                 if (value != null) {
                     icon = iconFor(value.controllerAction)
+
+                    if (value.isVendorRoute(project)) {
+                        // It seems that the tree view uses this color to indicate that a file
+                        // belongs to a library, so we will do the same
+                        background = FileColorManager.getInstance(project).getColor("Yellow")
+                    }
 
                     append(
                         // I personally think its nicer if *all* routes start with a /
@@ -98,13 +162,14 @@ class RouteList(
     fun refreshRoutes(routes: List<RouteListEntry>) {
         (model as DefaultListModel).apply {
             removeAllElements()
-            addAll(routes)
+            val shownRoutes = routes
+                .filter { showApplicationRoutes || !it.isApplicationRoute(project) }
+                .filter { showVendorRoutes || !it.isVendorRoute(project) }
+            addAll(shownRoutes)
         }
     }
 
     fun triggerRender() = this.refreshRoutes(routes)
-
-    fun canJumpToControllerActionSource(route: RouteListEntry) = route.controllerAction is ClassBasedRouteAction
 
     fun iconFor(action: RouteAction): Icon = when (action) {
         is ControllerMethodAction -> AllIcons.Nodes.Method
@@ -113,18 +178,24 @@ class RouteList(
                                                       // one, we use field here, as it is also just a circled f, but in
                                                       // a different color.
     }
+}
 
-    fun jumpToControllerActionSource(route: RouteListEntry) {
-        val action = route.controllerAction
+class RouteListContextMenu(private val route: RouteListEntry, project: Project): JBPopupMenu() {
+    init {
+        add(JMenuItem("Jump To Source", AllIcons.Actions.EditSource).apply {
+            // Needs to be an invocable controller or a controller method
+            isEnabled = route.canJumpToControllerActionSource()
+            addActionListener { route.jumpToControllerActionSource(project) }
+        })
 
-        if (action !is ClassBasedRouteAction) return
+        val formRequestClass = route.formRequestClass(project)
 
-        val clazz = PhpIndex.getInstance(project).getClassesByFQN(action.className).first() ?: return
-
-        if (action is ControllerMethodAction) {
-            clazz.findMethodByName(action.methodName)?.navigate(true)
-        } else {
-            clazz.navigate(true)
+        if (formRequestClass != null) {
+            add(JMenuItem("Jump To Request", AllIcons.Actions.EditSource).apply {
+                addActionListener {
+                    formRequestClass.navigate(true)
+                }
+            })
         }
     }
 }

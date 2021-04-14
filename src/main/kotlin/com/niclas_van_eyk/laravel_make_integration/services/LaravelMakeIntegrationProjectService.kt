@@ -3,9 +3,10 @@ package com.niclas_van_eyk.laravel_make_integration.services
 import com.intellij.openapi.project.Project
 import com.niclas_van_eyk.laravel_make_integration.LaravelMakeIntegrationBundle
 import com.niclas_van_eyk.laravel_make_integration.laravel.LaravelProjectFactory
-import com.niclas_van_eyk.laravel_make_integration.laravel.artisan.ProjectCommands
-import com.niclas_van_eyk.laravel_make_integration.laravel.artisan.ProjectConfig
-import com.niclas_van_eyk.laravel_make_integration.laravel.artisan.ProjectRoutes
+import com.niclas_van_eyk.laravel_make_integration.services.project.ProjectCommands
+import com.niclas_van_eyk.laravel_make_integration.services.project.ProjectConfig
+import com.niclas_van_eyk.laravel_make_integration.services.project.ProjectEvents
+import com.niclas_van_eyk.laravel_make_integration.services.project.ProjectRoutes
 
 class LaravelMakeIntegrationProjectService(project: Project) {
     private val projectFactory = LaravelProjectFactory(project.basePath!!)
@@ -21,6 +22,9 @@ class LaravelMakeIntegrationProjectService(project: Project) {
 
     lateinit var config: ProjectConfig
     val hasConfig: Boolean get() = config.config !== null
+
+    lateinit var events: ProjectEvents
+    val hasEvents: Boolean get() = events.eventsAndListeners.isEmpty()
 
     init {
         if (!isLaravelProject) {
@@ -40,6 +44,9 @@ class LaravelMakeIntegrationProjectService(project: Project) {
 
             config = ProjectConfig(laravelProject, project)
             config.load()
+
+            events = ProjectEvents(laravelProject, project)
+            events.load()
         }
     }
 }

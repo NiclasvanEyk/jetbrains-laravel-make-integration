@@ -1,18 +1,18 @@
 package com.niclas_van_eyk.laravel_make_integration.laravel.artisan
 
 import com.intellij.codeInsight.lookup.LookupElementBuilder
-import com.intellij.openapi.editor.ex.EditorEx
 import com.intellij.openapi.project.Project
 import com.intellij.ui.TextFieldWithAutoCompletion
 import com.intellij.ui.TextFieldWithAutoCompletionListProvider
+import com.niclas_van_eyk.laravel_make_integration.services.project.Option
 
 /**
  * An input that suggests the user the passed commands for better discoverability.
  */
 class CommandAutocompleteTextField(
-        project: Project,
-        availableCommands: MutableList<Option>,
-        initialInput: String = ""
+    project: Project,
+    availableCommands: MutableList<Option>,
+    initialInput: String = ""
 ) : TextFieldWithAutoCompletion<Option>(
         project,
         CommandAutocompletionProvider(withoutUnnecessaryOptions(availableCommands)),
