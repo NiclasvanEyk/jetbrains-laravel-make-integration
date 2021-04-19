@@ -9,8 +9,10 @@ import com.intellij.ui.components.JBScrollPane
 import javax.swing.JComponent
 
 class MasterDetailToolWindow(leftChild: JComponent, rightChild: JComponent): SimpleToolWindowPanel(false) {
+    val component = OnePixelSplitter()
+
     init {
-        add(OnePixelSplitter().apply {
+        add(component.apply {
             firstComponent = JBScrollPane(leftChild).apply {
                 border = SideBorder(JBColor.border(), SideBorder.LEFT)
             }

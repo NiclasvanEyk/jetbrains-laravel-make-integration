@@ -40,6 +40,11 @@ class RoutesToolbar(
 
                 override fun setSelected(e: AnActionEvent, state: Boolean) {
                     routeList.showApplicationRoutes = state
+                    // No idea why this is needed here, but if we do not trigger a
+                    // rerender here manually, it won't be triggered by the call in
+                    // the setter and nothing gets filtered.
+                    // So we do it twice in the worst case, which is also fine.
+//                    routeList.triggerRender()
                 }
             })
 

@@ -6,7 +6,6 @@ import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.content.ContentFactory
 import com.niclas_van_eyk.laravel_make_integration.services.LaravelMakeIntegrationProjectService
 import com.niclas_van_eyk.laravel_make_integration.toolWindow.commands.CommandsToolWindow
-import com.niclas_van_eyk.laravel_make_integration.toolWindow.events.EventsToolWindow
 import com.niclas_van_eyk.laravel_make_integration.toolWindow.routes.RoutesToolWindow
 
 class LaravelToolWindowFactory: ToolWindowFactory {
@@ -15,10 +14,14 @@ class LaravelToolWindowFactory: ToolWindowFactory {
         val projectService = project.getService(LaravelMakeIntegrationProjectService::class.java)
 
         listOf(
-            Pair("Application", ApplicationToolWindow(toolWindow, project)),
-            Pair("Routes", RoutesToolWindow(projectService, project).component),
+            // Until we find a nice way of showing information here,
+            // this tab also gets disabled, as the users are likely
+            // to care about their routes the most (assumption)
+            // Pair("Application", ApplicationToolWindow(toolWindow, project)),
+            Pair("Routes", RoutesToolWindow(projectService, project).container),
             Pair("Commands", CommandsToolWindow(projectService).component),
-            Pair("Events", EventsToolWindow(projectService, project).component),
+            // Events are not a priority for now
+            // Pair("Events", EventsToolWindow(projectService, project).component),
         ).forEach { (tabLabel, content) ->
             toolWindow.contentManager.addContent(
                 contentFactory.createContent(content, tabLabel, false)

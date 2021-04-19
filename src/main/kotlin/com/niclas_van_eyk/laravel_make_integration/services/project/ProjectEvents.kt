@@ -12,9 +12,9 @@ class ProjectEvents (val laravelProject: LaravelProject, val project: Project) {
     private val introspecter = LaravelApplicationIntrospecter(laravelProject, project)
 
     fun load(onSuccess: (pairs: List<EventListenerPair>) -> Unit = {}) {
-        introspecter.fetchEventsInfo {
-            eventsAndListeners = it
-            onSuccess(eventsAndListeners)
-        }
+//        introspecter.fetchEventsInfo {
+//            eventsAndListeners = it
+//            onSuccess(eventsAndListeners)
+//        }
     }
 }

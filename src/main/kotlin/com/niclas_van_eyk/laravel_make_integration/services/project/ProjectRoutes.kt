@@ -13,9 +13,15 @@ data class ClosureAction(val name: String): RouteAction
 interface ClassBasedRouteAction: RouteAction {
     val className: String
 }
+
 data class InvocableControllerAction(
     override val className: String
-): ClassBasedRouteAction
+): ClassBasedRouteAction {
+    companion object {
+        const val INVOKE_METHOD_NAME = "__invoke"
+    }
+}
+
 data class ControllerMethodAction(
     override val className: String,
     val methodName: String
@@ -32,9 +38,6 @@ data class RouteListEntry(
     @SerializedName("action") val rawAction: String,
     @SerializedName("middleware") private val rawMiddleware: String
 ) {
-    lateinit var resolvedClass: PhpClass
-    lateinit var resolvedMethod: Method
-
     val middleware get() = rawMiddleware.split("\n")
     val controllerAction: RouteAction
         get() = if (rawAction.equals("closure", ignoreCase = true)) {
@@ -44,8 +47,6 @@ data class RouteListEntry(
         if (actionParts.size == 1) InvocableControllerAction(actionParts[0])
         else ControllerMethodAction(actionParts[0], actionParts[1])
     }
-
-
 }
 
 class ProjectRoutes(

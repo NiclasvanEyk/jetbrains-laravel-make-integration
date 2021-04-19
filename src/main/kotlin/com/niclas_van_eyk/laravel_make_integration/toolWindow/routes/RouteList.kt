@@ -26,12 +26,9 @@ fun RouteListEntry.clazz(project: Project): PhpClass? {
 fun RouteListEntry.jumpToControllerActionSource(project: Project) {
     val clazz = clazz(project) ?: return
     val action = controllerAction
-
-    if (action is ControllerMethodAction) {
-        clazz.findMethodByName(action.methodName)?.navigate(true)
-    } else {
-        clazz.navigate(true)
-    }
+    val methodName = if (action is ControllerMethodAction) action.methodName
+                     else InvocableControllerAction.INVOKE_METHOD_NAME
+    (clazz.findMethodByName(methodName) ?: clazz).navigate(true)
 }
 
 fun RouteListEntry.isVendorRoute(project: Project): Boolean {
@@ -53,7 +50,8 @@ fun RouteListEntry.formRequestClass(project: Project): PhpClass? {
     if (action !is ClassBasedRouteAction) return null
 
     val clazz = PhpIndex.getInstance(project).getClassesByFQN(action.className).first() ?: return null
-    val methodName = if (action is ControllerMethodAction) action.methodName else "__invoke"
+    val methodName = if (action is ControllerMethodAction) action.methodName
+                     else InvocableControllerAction.INVOKE_METHOD_NAME
 
     clazz.findMethodByName(methodName)?.parameters?.forEach { parameter ->
         parameter.declaredType.types
@@ -76,28 +74,44 @@ fun RouteListEntry.canJumpToControllerActionSource() = controllerAction is Class
 
 class RouteList(
     private val routes: List<RouteListEntry>,
-    private val project: Project
+    private val project: Project,
+    private val onRouteSelected: (RouteListEntry) -> Unit
 ): JBList<RouteListEntry>(routes) {
     var showMiddlewareParameters = false
+        set(value) {
+            field = value
+            triggerRender()
+        }
     var showApplicationRoutes = true
+        set(value) {
+            field = value
+            triggerRender()
+        }
     var showVendorRoutes = true
-
-    set(value) {
-        field = value
-        triggerRender()
-    }
+        set(value) {
+            field = value
+            triggerRender()
+        }
+    var previouslySelectedRoute: RouteListEntry? = null
 
     init {
         addMouseListener(object: MouseListener {
             override fun mousePressed(e: MouseEvent?) {
-                if (e != null && SwingUtilities.isRightMouseButton(e)) {
-                    selectedIndex = locationToIndex(e.point)
-                    val selected = this@RouteList.selectedValue
+                val point = e?.point ?: return
 
+                selectedIndex = locationToIndex(point)
+                val selected = this@RouteList.selectedValue
+
+                if (selected !== previouslySelectedRoute) {
+                    onRouteSelected(selected)
+                    previouslySelectedRoute = selected
+                }
+
+                if (SwingUtilities.isRightMouseButton(e)) {
                     RouteListContextMenu(selected, project).show(this@RouteList, e.x, e.y)
                 }
 
-                if (e != null && e.clickCount >= 2) {
+                if (e.clickCount >= 2) {
                     selectedValue.jumpToControllerActionSource(project)
                 }
             }
