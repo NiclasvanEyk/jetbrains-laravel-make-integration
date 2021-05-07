@@ -56,6 +56,8 @@ class ProjectCommands(val laravelProject: LaravelProject, val project: Project) 
                     }
 
                     commandScanResult = PHPScriptRun.Result(false, arrayListOf(message))
+                } catch (e: Throwable) {
+                    commandScanResult = PHPScriptRun.Result(false, arrayListOf(e.localizedMessage))
                 }
 
                 if (commandScanResult.wasFailure) {

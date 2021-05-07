@@ -1,17 +1,10 @@
 # Laravel Make Integration Changelog
 
 ## [Unreleased]
-### Added
-
-### Changed
-
-### Deprecated
-
-### Removed
 
 ### Fixed
+- \#22 Fixed a bug that occurred when working with attached projects 
 
-### Security
 ## [2.3.4]
 
 ### Added
