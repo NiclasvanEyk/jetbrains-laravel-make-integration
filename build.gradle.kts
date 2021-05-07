@@ -40,6 +40,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.4.0")
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.10.0")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
     testImplementation("org.assertj:assertj-core:3.12.2")
