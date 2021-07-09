@@ -1,6 +1,5 @@
 import io.gitlab.arturbosch.detekt.Detekt
 import org.jetbrains.changelog.closure
-import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -13,7 +12,7 @@ plugins {
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
     id("org.jetbrains.changelog") version "0.4.0"
     // detekt linter - read more: https://detekt.github.io/detekt/kotlindsl.html
-    id("io.gitlab.arturbosch.detekt") version "1.10.0"
+    id("io.gitlab.arturbosch.detekt") version "1.17.1"
     // ktlint linter - read more: https://github.com/JLLeitschuh/ktlint-gradle
     id("org.jlleitschuh.gradle.ktlint") version "9.2.1"
 }
@@ -42,10 +41,11 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.10.0")
+    implementation("io.reactivex.rxjava3:rxkotlin:3.0.1")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.17.1")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
     testImplementation("org.assertj:assertj-core:3.12.2")
-    testRuntimeOnly ("org.junit.jupiter:junit-jupiter-engine:5.4.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.4.2")
 }
 
 tasks.test {
@@ -60,15 +60,17 @@ intellij {
     type = platformType
     downloadSources = platformDownloadSources.toBoolean()
     updateSinceUntilBuild = true
-    alternativeIdePath = "/Users/niclasvaneyk/Library/Application Support/JetBrains/Toolbox/apps/PhpStorm/ch-0/211.6693.120/PhpStorm 2020.3 EAP.app/Contents"
+    alternativeIdePath = "/Users/niclasvaneyk/Library/Application Support/"
+        .plus("JetBrains/Toolbox/apps/PhpStorm/ch-0/")
+        .plus("211.7442.50/PhpStorm 2020.3 EAP.app/Contents")
 
 //  Plugin Dependencies:
 //  https://www.jetbrains.org/intellij/sdk/docs/basics/plugin_structure/plugin_dependencies.html
 
-  setPlugins(
-      "com.jetbrains.php:$phpPluginVersion",
-      "com.jetbrains.php.framework:203.5981.30"
-  )
+    setPlugins(
+        "com.jetbrains.php:$phpPluginVersion",
+        "com.jetbrains.php.framework:203.5981.30"
+    )
 }
 
 // Configure detekt plugin.
@@ -76,12 +78,17 @@ intellij {
 detekt {
     config = files("./detekt-config.yml")
     buildUponDefaultConfig = true
+    autoCorrect = true
 
     reports {
         html.enabled = false
         xml.enabled = false
         txt.enabled = false
     }
+}
+
+configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+    version.set("0.40.0")
 }
 
 tasks {
@@ -114,14 +121,22 @@ tasks {
 //        })
 
         // Get the latest available change notes from the changelog file
-        changeNotes(closure {
-            changelog.getLatest().toHTML()
-        })
+        changeNotes(
+            closure {
+                changelog.getLatest().toHTML()
+            }
+        )
     }
 
     publishPlugin {
         dependsOn("patchChangelog")
         token(System.getenv("PUBLISH_TOKEN"))
-        channels(pluginVersion.split('-').getOrElse(1) { "default" }.split('.').first())
+        channels(
+            pluginVersion
+                .split('-')
+                .getOrElse(1) { "default" }
+                .split('.')
+                .first()
+        )
     }
 }
