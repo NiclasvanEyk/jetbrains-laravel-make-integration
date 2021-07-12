@@ -7,7 +7,7 @@ import java.awt.event.MouseListener
 import javax.swing.SwingUtilities
 
 @Suppress("EmptyFunctionBlock")
-class RouteListMouseListener constructor(
+class RouteListMouseListener(
     private val list: RouteList,
     private val project: Project,
     private val onRouteSelected: (RouteListEntry?) -> Unit,
@@ -17,17 +17,9 @@ class RouteListMouseListener constructor(
     override fun mousePressed(e: MouseEvent?) {
         val point = e?.point ?: return
 
-
-        list.selectedIndex = list.locationToIndex(point)
-        val selected = list.selectedValue
-
-        if (selected !== previouslySelectedRoute) {
-            onRouteSelected(selected)
-            previouslySelectedRoute = selected
-        }
-
         if (SwingUtilities.isRightMouseButton(e)) {
-            RouteListContextMenu(selected, project).show(list, e.x, e.y)
+            val clicked = list.model.getElementAt(list.locationToIndex(point))
+            RouteListContextMenu(clicked, project).show(list, e.x, e.y)
         }
 
         if (e.clickCount >= 2) {

@@ -42,6 +42,7 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("io.reactivex.rxjava3:rxkotlin:3.0.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.2")
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.17.1")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
     testImplementation("org.assertj:assertj-core:3.12.2")

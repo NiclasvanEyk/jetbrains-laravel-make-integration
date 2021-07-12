@@ -33,6 +33,7 @@ class CommandIntrospecter(
             .create()
             .fromJson(output, LaravelConsoleApplication::class.java)
             .commands
+            .sortedBy { it.name }
     }
 
     override fun prepareCommandOutput(output: String): String? {

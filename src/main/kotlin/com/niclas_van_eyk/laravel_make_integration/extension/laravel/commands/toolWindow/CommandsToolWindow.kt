@@ -20,12 +20,16 @@ class CommandsToolWindow(
     MasterDetailToolWindow(),
     ReceivesToolWindowTabLifecycleEvents by revalidator
 {
+    private var commandList: CommandList = CommandList(
+        commandUpdates = project.introspection.commands,
+        onCommandSelected = { detail = CommandDocumentation.forCommand(it) }
+    )
+
     init {
-        master = JBScrollPane(CommandList(project.introspection.commands)).apply {
+        master = JBScrollPane(commandList).apply {
             border = SideBorder(JBColor.border(), SideBorder.LEFT)
         }
-        detail = JBPanelWithEmptyText()
-            .withEmptyText("Select a command to see more information")
+        detail = CommandDocumentation.empty()
 
         toolbar = CommandsToolbar(
             isRefreshing = project.introspection.commands.map { it.loading },

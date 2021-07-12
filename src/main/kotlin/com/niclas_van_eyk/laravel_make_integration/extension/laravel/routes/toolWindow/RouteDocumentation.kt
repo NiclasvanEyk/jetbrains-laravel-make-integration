@@ -1,9 +1,12 @@
 package com.niclas_van_eyk.laravel_make_integration.extension.laravel.routes.toolWindow
 
-import com.intellij.codeInsight.documentation.DocumentationComponent
 import com.intellij.openapi.project.Project
+import com.intellij.ui.JBColor
+import com.intellij.ui.SideBorder
 import com.intellij.ui.components.JBPanelWithEmptyText
+import com.intellij.ui.components.JBScrollPane
 import com.jetbrains.php.PhpIndex
+import com.niclas_van_eyk.laravel_make_integration.common.jetbrains.ui.HtmlPanel
 import com.niclas_van_eyk.laravel_make_integration.extension.laravel.routes.introspection.ClassBasedRouteAction
 import com.niclas_van_eyk.laravel_make_integration.extension.laravel.routes.introspection.ControllerMethodAction
 import com.niclas_van_eyk.laravel_make_integration.extension.laravel.routes.introspection.InvocableControllerAction
@@ -30,7 +33,13 @@ class RouteDocumentation {
             }
             val documentedCodePart = clazz.findMethodByName(method) ?: clazz
 
-            return DocumentationComponent.createAndFetch(project, documentedCodePart) {}
+            val panel = HtmlPanel()
+            panel.content = LaravelRouteDocumentationProvider()
+                .generateDoc(documentedCodePart)
+
+            return JBScrollPane(panel).apply {
+                border = SideBorder(JBColor.border(), SideBorder.NONE)
+            }
         }
     }
 }
