@@ -14,8 +14,8 @@ abstract class CommandBasedIntrospecter<T>(
 ) {
     val staleDataDetector = StaleDataDetector()
 
-    val introspectionStateSource = BehaviorSubject
-        .createDefault<IntrospectionState<T>?>(InitialState())
+    val introspectionStateSource: BehaviorSubject<IntrospectionState<T>> = BehaviorSubject
+        .createDefault(InitialState())
 
     val introspectionState: IntrospectionSubject<T> = introspectionStateSource
         .doAfterNext {
@@ -44,7 +44,7 @@ abstract class CommandBasedIntrospecter<T>(
      */
     protected open fun introspect(
         onData: (result: T) -> Unit,
-        onError: (message: String, cause: Throwable?) -> Unit,
+        onError: (message: String) -> Unit,
     ) {
         val result = artisan.command(
             command.namespace,
@@ -54,7 +54,7 @@ abstract class CommandBasedIntrospecter<T>(
 
         if (result.wasFailure) {
             // TODO: Better message or exception?
-            onError(result.log, null)
+            onError(result.log)
             return
         }
 
@@ -65,7 +65,7 @@ abstract class CommandBasedIntrospecter<T>(
         if (cleanOutput == null) {
             // TODO: Better message or exception and somehow detect empty
             //       responses?
-            onError("Introspection yielded no output!", null)
+            onError("Introspection yielded no output!")
             return
         }
 
@@ -104,15 +104,14 @@ abstract class CommandBasedIntrospecter<T>(
                     { result ->
                         indicator.stop()
                         lifecycle.onData(result)
-                    },
-                    { message, cause ->
-                        indicator.stop()
-                        lifecycle.onError(message, cause)
                     }
-                )
+                ) { message ->
+                    indicator.stop()
+                    lifecycle.onError(message)
+                }
             } catch (exception: Throwable) {
                 indicator.stop()
-                lifecycle.onError(exception.localizedMessage, exception)
+                lifecycle.onError(exception.localizedMessage)
             }
         }
     }

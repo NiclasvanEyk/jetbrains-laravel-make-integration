@@ -2,8 +2,7 @@ package com.niclas_van_eyk.laravel_make_integration.common.jetbrains.notificatio
 
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationType
-import com.intellij.openapi.project.Project
-import com.niclas_van_eyk.laravel_make_integration.extension.jetbrains.LaravelIcons
+import com.niclas_van_eyk.laravel_make_integration.plugin.jetbrains.LaravelIcons
 import javax.swing.Icon
 
 class NotificationFactory {

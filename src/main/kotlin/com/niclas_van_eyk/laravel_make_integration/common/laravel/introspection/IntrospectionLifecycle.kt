@@ -35,12 +35,14 @@ class LoadedState<T>(val result: T) : IntrospectionState<T>(false)
 class RevalidatingState<T>(val result: T) : IntrospectionState<T>(true)
 
 /**
+ * Now the loading has finished and we can refresh the data.
+ */
+class RevalidatedState<T>(val result: T) : IntrospectionState<T>(false)
+
+/**
  * Whenever something wrong happens, this state is emitted.
  */
-class ErrorState<T>(
-    val message: String,
-    val cause: Throwable?,
-) : IntrospectionState<T>(false)
+class ErrorState<T>(val message: String) : IntrospectionState<T>(false)
 
 typealias IntrospectionSubject<T> = Observable<IntrospectionState<T>>
 typealias IntrospectionSubjectSource<T> = BehaviorSubject<IntrospectionState<T>>
@@ -61,13 +63,18 @@ class IntrospectionLifecycle<T>(private val state: IntrospectionSubjectSource<T>
         }
     }
 
-    fun onError(message: String, cause: Throwable?) {
+    fun onError(message: String) {
         lastIntrospectionResult = null
-        state.onNext(ErrorState(message, cause))
+        state.onNext(ErrorState(message))
     }
 
     fun onData(result: T) {
+        if (lastIntrospectionResult !== null) {
+            state.onNext(RevalidatedState(result))
+        } else {
+            state.onNext(LoadedState(result))
+        }
+
         lastIntrospectionResult = result
-        state.onNext(LoadedState(result))
     }
 }
