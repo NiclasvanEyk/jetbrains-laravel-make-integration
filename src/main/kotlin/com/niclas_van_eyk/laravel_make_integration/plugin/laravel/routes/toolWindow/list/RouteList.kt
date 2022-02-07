@@ -17,9 +17,10 @@ class RouteList(
     private val project: Project,
     private val onRouteSelected: (RouteListEntry?) -> Unit,
 ) : IntrospectionList<RouteListEntry>(routeUpdates) {
-    var showMiddlewareParameters by TriggersRender(false, this)
+    var showMiddlewareParameters by TriggersRender(true, this)
     var showApplicationRoutes by TriggersRender(true, this)
     var showVendorRoutes by TriggersRender(true, this)
+    var fullyQualifyMiddlewareNames by TriggersRender(false, this)
 
     init {
         addMouseListener(RouteListMouseListener(this, project, onRouteSelected))
@@ -28,7 +29,7 @@ class RouteList(
             onRouteSelected(selectedValue)
         }
 
-        cellRenderer = RouteListCellRenderer(showMiddlewareParameters, project)
+        cellRenderer = RouteListCellRenderer(showMiddlewareParameters, fullyQualifyMiddlewareNames, project)
 
         ListSpeedSearch(this) { it.uri }
 
@@ -48,7 +49,7 @@ class RouteList(
 
         // Needs to be updated, since showMiddleWareParameters could have
         // changed
-        cellRenderer = RouteListCellRenderer(showMiddlewareParameters, project)
+        cellRenderer = RouteListCellRenderer(showMiddlewareParameters, fullyQualifyMiddlewareNames, project)
     }
 }
 

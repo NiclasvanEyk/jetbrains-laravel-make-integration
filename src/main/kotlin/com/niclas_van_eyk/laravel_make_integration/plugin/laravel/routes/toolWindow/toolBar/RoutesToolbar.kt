@@ -21,4 +21,8 @@ class RoutesToolbar(
         add(CreateControllerAction())
     },
     false
-)
+) {
+    init {
+        targetComponent = component
+    }
+}

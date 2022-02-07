@@ -12,8 +12,25 @@ import com.niclas_van_eyk.laravel_make_integration.plugin.laravel.routes.introsp
 import javax.swing.Icon
 import javax.swing.JList
 
+class MiddlewareRenderer(
+    private val showParams: Boolean,
+    private val fullyQualifyNames: Boolean,
+    middleware: String,
+) {
+    private val fullyQualifiedName = middleware.split(":")[0]
+    private val parameters = middleware.split(":", limit = 2).getOrNull(1)
+    private val displayName: String get() =
+        if (fullyQualifyNames) fullyQualifiedName
+        else fullyQualifiedName.substringAfterLast("\\")
+
+    override fun toString() =
+        if (showParams && parameters != null) "$displayName:$parameters"
+        else displayName
+}
+
 class RouteListCellRenderer(
     private val showMiddlewareParameters: Boolean,
+    private val fullyQualifyMiddlewareNames: Boolean,
     private val project: Project,
 ) : ColoredListCellRenderer<RouteListEntry>() {
     override fun customizeCellRenderer(
@@ -49,22 +66,12 @@ class RouteListCellRenderer(
         )
 
         append(" ")
-        var middleware = value.middleware
-
-        // Sometimes the middleware params are only noise, so we hide them
-        // by default. Especially since they are displayed like
-        // `web, guest, throttle:1,2,3`, so the added commas are a bit
-        // confusing (they make it harder to differentiate if a new
-        // middleware starts or a new parameter).
-        if (!showMiddlewareParameters) {
-            middleware = middleware.map {
-                if (it.contains(":")) it.substring(0, it.indexOf(":"))
-                else it
-            }
+        val middleware = value.middleware.map {
+            MiddlewareRenderer(showMiddlewareParameters, fullyQualifyMiddlewareNames, it).toString()
         }
 
         append(
-            middleware.joinToString(", "),
+            middleware.joinToString(" "),
             SimpleTextAttributes.GRAYED_ATTRIBUTES
         )
     }

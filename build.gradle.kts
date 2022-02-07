@@ -53,7 +53,7 @@ tasks.test {
     useJUnitPlatform()
 }
 
-val ideVersion = "213.5281.20"
+val ideVersion = "213.6777.58"
 // Configure gradle-intellij-plugin plugin.
 // Read more: https://github.com/JetBrains/gradle-intellij-plugin
 intellij {
@@ -64,15 +64,12 @@ intellij {
     updateSinceUntilBuild = true
     alternativeIdePath = "/Users/niclasvaneyk/Library/Application Support/"
         .plus("JetBrains/Toolbox/apps/PhpStorm/ch-0/")
-        .plus("$ideVersion/PhpStorm.app/Contents")
+        .plus("$ideVersion/PhpStorm/Contents")
 
 //  Plugin Dependencies:
 //  https://www.jetbrains.org/intellij/sdk/docs/basics/plugin_structure/plugin_dependencies.html
 
-    setPlugins(
-        "com.jetbrains.php:$phpPluginVersion",
-        "com.jetbrains.php.framework:203.5981.30"
-    )
+    setPlugins("com.jetbrains.php:$phpPluginVersion")
 }
 
 // Configure detekt plugin.

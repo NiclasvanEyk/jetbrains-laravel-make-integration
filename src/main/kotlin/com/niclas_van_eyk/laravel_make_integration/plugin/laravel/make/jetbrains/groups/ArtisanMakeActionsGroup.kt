@@ -1,9 +1,9 @@
-package com.niclas_van_eyk.laravel_make_integration.extension.laravel.make.jetbrains.groups
+package com.niclas_van_eyk.laravel_make_integration.plugin.laravel.make.jetbrains.groups
 
 import com.intellij.ide.actions.NonEmptyActionGroup
 import com.intellij.openapi.actionSystem.*
-import com.niclas_van_eyk.laravel_make_integration.extension.jetbrains.services.LaravelMakeIntegrationProjectService
-import com.niclas_van_eyk.laravel_make_integration.extension.laravel.make.jetbrains.actions.*
+import com.niclas_van_eyk.laravel_make_integration.plugin.jetbrains.services.LaravelMakeIntegrationProjectService
+import com.niclas_van_eyk.laravel_make_integration.plugin.laravel.make.jetbrains.actions.*
 
 enum class DescriptionMode {
     /**

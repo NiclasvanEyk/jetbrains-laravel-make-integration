@@ -1,6 +1,5 @@
 package com.niclas_van_eyk.laravel_make_integration.plugin.laravel.routes.toolWindow
 
-import com.intellij.diagnostic.LoadingState
 import com.intellij.ui.JBColor
 import com.intellij.ui.SideBorder
 import com.intellij.ui.components.JBPanelWithEmptyText
@@ -9,6 +8,7 @@ import com.niclas_van_eyk.laravel_make_integration.plugin.laravel.LaravelProject
 import com.niclas_van_eyk.laravel_make_integration.common.jetbrains.ui.toolWindow.MasterDetailToolWindow
 import com.niclas_van_eyk.laravel_make_integration.common.laravel.introspection.*
 import com.niclas_van_eyk.laravel_make_integration.plugin.jetbrains.toolWindow.ReceivesToolWindowTabLifecycleEvents
+import com.niclas_van_eyk.laravel_make_integration.plugin.jetbrains.toolWindow.errorPanel
 import com.niclas_van_eyk.laravel_make_integration.plugin.laravel.routes.introspection.RouteIntrospecter
 import com.niclas_van_eyk.laravel_make_integration.plugin.laravel.introspection.toolWindow.IntrospectionBasedToolWindowRevalidator as Revalidator
 import com.niclas_van_eyk.laravel_make_integration.plugin.laravel.routes.introspection.RouteListEntry
@@ -89,12 +89,12 @@ class RoutesToolWindow(
                 }
             }
 
-            is ErrorState -> onError()
+            is ErrorState -> onError(it.message)
         }
     }
 
-    private fun onError(message: String = "An error occurred while loading routes") {
-        master = JBPanelWithEmptyText().withEmptyText(message)
-        documentation.showMessage(message)
+    private fun onError(details: String = "") {
+        master = errorPanel("An error occurred while loading routes", details)
+        documentation.showMessage("")
     }
 }

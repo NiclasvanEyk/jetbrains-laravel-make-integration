@@ -42,7 +42,7 @@ class RevalidatedState<T>(val result: T) : IntrospectionState<T>(false)
 /**
  * Whenever something wrong happens, this state is emitted.
  */
-class ErrorState<T>(val message: String) : IntrospectionState<T>(false)
+class ErrorState<T>(val message: String, val exception: Throwable?) : IntrospectionState<T>(false)
 
 typealias IntrospectionSubject<T> = Observable<IntrospectionState<T>>
 typealias IntrospectionSubjectSource<T> = BehaviorSubject<IntrospectionState<T>>
@@ -63,9 +63,9 @@ class IntrospectionLifecycle<T>(private val state: IntrospectionSubjectSource<T>
         }
     }
 
-    fun onError(message: String) {
+    fun onError(message: String, exception: Throwable? = null) {
         lastIntrospectionResult = null
-        state.onNext(ErrorState(message))
+        state.onNext(ErrorState(message, exception))
     }
 
     fun onData(result: T) {

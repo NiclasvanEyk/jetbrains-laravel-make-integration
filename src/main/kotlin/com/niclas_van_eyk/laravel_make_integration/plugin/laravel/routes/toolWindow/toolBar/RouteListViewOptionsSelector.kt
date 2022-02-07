@@ -18,5 +18,14 @@ class RouteListViewOptionsSelector(
                 routeList.showMiddlewareParameters = state
             }
         })
+        add(object : ToggleAction("Show Middleware FQN") {
+            override fun isSelected(e: AnActionEvent): Boolean {
+                return routeList.fullyQualifyMiddlewareNames
+            }
+
+            override fun setSelected(e: AnActionEvent, state: Boolean) {
+                routeList.fullyQualifyMiddlewareNames = state
+            }
+        })
     }
 }

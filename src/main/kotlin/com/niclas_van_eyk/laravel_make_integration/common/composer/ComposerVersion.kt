@@ -11,8 +11,6 @@ data class ComposerVersion(
         value.split(".").getOrNull(2)?.toInt() ?: 0
     )
 
-    constructor() : this(0, 0, 0)
-
     operator fun compareTo(other: ComposerVersion): Int {
         if (major != other.major) return major - other.major
         if (minor != other.minor) return minor - other.minor

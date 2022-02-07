@@ -1,6 +1,6 @@
 <idea-plugin>
     <id>com.niclas-van-eyk.laravel-make-integration</id>
-    <name>Laravel Make Integration</name>
+    <name>Laravel M.A.K.E</name>
     <vendor email="niclas.eyk@gmail.com" url="https://github.com/NiclasvanEyk">
         Niclas van Eyk
     </vendor>
@@ -23,6 +23,12 @@
                 anchor="bottom"
                 doNotActivateOnStart="true"
         />
+<!--        <moduleType-->
+<!--                id="LARAVEL"-->
+<!--                implementationClass="com.niclas_van_eyk.laravel_make_integration.plugin.laravel.projectCreation.LaravelModuleType"-->
+<!--        />-->
+<!--        <framework.type implementation="com.niclas_van_eyk.laravel_make_integration.plugin.laravel.projectCreation.LaravelDotBuildFramework" />-->
+<!--        <frameworkSupport implementation="com.niclas_van_eyk.laravel_make_integration.plugin.laravel.projectCreation.LaravelDotBuildFrameworkProvider" />-->
     </extensions>
 
     <actions>

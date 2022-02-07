@@ -30,9 +30,19 @@ data class RouteListEntry(
     @SerializedName("uri") val uri: String,
     @SerializedName("name") val name: String?,
     @SerializedName("action") val rawAction: String,
-    @SerializedName("middleware") private val rawMiddleware: String,
+    @SerializedName("middleware") private val rawMiddleware: Any,
 ) {
-    val middleware get() = rawMiddleware.split("\n")
+    val middleware get(): List<String> {
+        if (rawMiddleware is ArrayList<*>) {
+            return rawMiddleware.toList() as List<String>
+        }
+
+        if (rawMiddleware is String) {
+            return rawMiddleware.split("\n")
+        }
+
+        return emptyList()
+    }
     val controllerAction: RouteAction
         get() = if (rawAction.equals("closure", ignoreCase = true)) {
             ClosureAction(rawAction)

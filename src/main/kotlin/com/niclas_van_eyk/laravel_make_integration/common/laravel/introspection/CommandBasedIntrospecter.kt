@@ -111,7 +111,7 @@ abstract class CommandBasedIntrospecter<T>(
                 }
             } catch (exception: Throwable) {
                 indicator.stop()
-                lifecycle.onError(exception.localizedMessage)
+                lifecycle.onError(exception.localizedMessage, exception)
             }
         }
     }
