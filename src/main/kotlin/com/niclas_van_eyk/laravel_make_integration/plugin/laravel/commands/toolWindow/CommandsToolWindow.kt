@@ -13,7 +13,7 @@ import com.niclas_van_eyk.laravel_make_integration.plugin.laravel.introspection.
 
 class CommandsToolWindow(
     project: LaravelProject,
-    private val introspecter: CommandIntrospecter,
+    private val introspecter: CommandIntrospecter = project.introspection.commandIntrospecter,
     private val revalidator: Revalidator<List<Command>> = Revalidator(introspecter),
 ) :
     MasterDetailToolWindow(),

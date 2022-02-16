@@ -21,6 +21,7 @@ class LaravelProject(path: String, val jetbrainsProject: Project) {
     val introspection = LaravelIntrospectionFacade(
         artisan,
         ProgressBarBuilder(jetbrainsProject),
+        jetbrainsProject,
     )
 
     constructor(base: VirtualFile, jetbrainsProject: Project) :

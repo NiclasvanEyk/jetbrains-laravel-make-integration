@@ -33,12 +33,14 @@ class CommandIntrospecter(
             )
     }
 
-    override fun marshalResult(output: String): List<Command> {
-        return GsonBuilder()
+    override fun onCommandOutput(output: String, publish: (result: List<Command>) -> Unit) {
+        val commands = GsonBuilder()
             .create()
             .fromJson(output, LaravelConsoleApplication::class.java)
             .commands
             .sortedBy { it.name }
+
+        publish(commands)
     }
 
     override fun prepareCommandOutput(output: String): String? {

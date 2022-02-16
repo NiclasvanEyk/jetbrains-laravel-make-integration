@@ -18,9 +18,7 @@ abstract class CommandBasedIntrospecter<T>(
         .createDefault(InitialState())
 
     val introspectionState: IntrospectionSubject<T> = introspectionStateSource
-        .doAfterNext {
-            staleDataDetector.markAsRefreshed()
-        }
+        .doAfterNext { staleDataDetector.markAsRefreshed() }
 
     private val lifecycle = IntrospectionLifecycle(introspectionStateSource)
 
@@ -37,7 +35,7 @@ abstract class CommandBasedIntrospecter<T>(
     /**
      * Creates the structured data from the cleaned command output.
      */
-    protected abstract fun marshalResult(output: String): T
+    protected abstract fun onCommandOutput(output: String, publish: (result: T) -> Unit)
 
     /**
      * Logic which actually runs the introspection.
@@ -69,13 +67,11 @@ abstract class CommandBasedIntrospecter<T>(
             return
         }
 
-        val marshalledObjects = marshalResult(cleanOutput)
-
-        onData(marshalledObjects)
+        onCommandOutput(cleanOutput, onData)
     }
 
     /**
-     * Clean command output, so it can be passed to [marshalResult].
+     * Clean command output, so it can be passed to [onCommandOutput].
      *
      * Parses JSON by default, but can be overridden when the command uses
      * another output format, e.g. a table.
@@ -100,17 +96,15 @@ abstract class CommandBasedIntrospecter<T>(
             indicator.isIndeterminate = true
 
             try {
-                introspect(
-                    { result ->
-                        indicator.stop()
-                        lifecycle.onData(result)
-                    }
-                ) { message ->
-                    indicator.stop()
+                introspect({ result ->
+                    if (indicator.isRunning) indicator.stop()
+                    lifecycle.onData(result)
+                }) { message ->
+                    if (indicator.isRunning) indicator.stop()
                     lifecycle.onError(message)
                 }
             } catch (exception: Throwable) {
-                indicator.stop()
+                if (indicator.isRunning) indicator.stop()
                 lifecycle.onError(exception.localizedMessage, exception)
             }
         }

@@ -1,6 +1,8 @@
 package com.niclas_van_eyk.laravel_make_integration.plugin.laravel.routes.introspection
 
 import com.google.gson.annotations.SerializedName
+import com.jetbrains.php.lang.psi.elements.Method
+import com.jetbrains.php.lang.psi.elements.PhpClass
 
 interface RouteAction
 data class ClosureAction(val name: String) : RouteAction
@@ -51,4 +53,61 @@ data class RouteListEntry(
             if (actionParts.size == 1) InvocableControllerAction(actionParts[0])
             else ControllerMethodAction(actionParts[0], actionParts[1])
         }
+}
+
+enum class RouteOrigin {
+    VENDOR,
+    PROJECT,
+    UNKNOWN,
+}
+
+data class IntrospectedMiddleware(
+    val name: String,
+    val parameters: List<String>,
+) {
+    companion object {
+        fun fromString(middleware: String): IntrospectedMiddleware {
+            val parts = middleware.split(":")
+            val name = parts[0]
+
+            if (parts.size <= 1) {
+                return IntrospectedMiddleware(name, emptyList())
+            }
+
+            val parameters = parts[1].split(",")
+            return IntrospectedMiddleware(name, parameters)
+        }
+    }
+}
+
+data class BasicRouteInformation (
+    val path: String,
+    val httpMethod: String,
+    val name: String?,
+    val middleware: List<IntrospectedMiddleware>,
+)
+
+sealed class IntrospectedRoute (
+    basicRouteInformation: BasicRouteInformation,
+    val origin: RouteOrigin,
+) {
+    val path: String = basicRouteInformation.path
+    val httpMethod: String = basicRouteInformation.httpMethod
+    val name: String? = basicRouteInformation.name
+    val middleware: List<IntrospectedMiddleware> = basicRouteInformation.middleware
+}
+
+class ClosureRoute(
+    basicRouteInformation: BasicRouteInformation,
+): IntrospectedRoute(basicRouteInformation, RouteOrigin.UNKNOWN) {
+}
+
+class ControllerRoute(
+    basicRouteInformation: BasicRouteInformation,
+    origin: RouteOrigin,
+    val `class`: PhpClass,
+    val method: Method,
+    val formRequest: PhpClass?,
+): IntrospectedRoute(basicRouteInformation, origin) {
+    val isInvokableControllerRoute get() = method.name === PhpClass.INVOKE
 }

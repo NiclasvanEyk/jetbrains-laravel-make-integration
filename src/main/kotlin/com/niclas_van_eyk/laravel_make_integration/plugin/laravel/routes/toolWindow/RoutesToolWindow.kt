@@ -1,5 +1,6 @@
 package com.niclas_van_eyk.laravel_make_integration.plugin.laravel.routes.toolWindow
 
+import com.intellij.openapi.ui.SimpleToolWindowPanel
 import com.intellij.ui.JBColor
 import com.intellij.ui.SideBorder
 import com.intellij.ui.components.JBPanelWithEmptyText
@@ -9,6 +10,7 @@ import com.niclas_van_eyk.laravel_make_integration.common.jetbrains.ui.toolWindo
 import com.niclas_van_eyk.laravel_make_integration.common.laravel.introspection.*
 import com.niclas_van_eyk.laravel_make_integration.plugin.jetbrains.toolWindow.ReceivesToolWindowTabLifecycleEvents
 import com.niclas_van_eyk.laravel_make_integration.plugin.jetbrains.toolWindow.errorPanel
+import com.niclas_van_eyk.laravel_make_integration.plugin.laravel.routes.introspection.IntrospectedRoute
 import com.niclas_van_eyk.laravel_make_integration.plugin.laravel.routes.introspection.RouteIntrospecter
 import com.niclas_van_eyk.laravel_make_integration.plugin.laravel.introspection.toolWindow.IntrospectionBasedToolWindowRevalidator as Revalidator
 import com.niclas_van_eyk.laravel_make_integration.plugin.laravel.routes.introspection.RouteListEntry
@@ -17,26 +19,32 @@ import com.niclas_van_eyk.laravel_make_integration.plugin.laravel.routes.toolWin
 
 
 class RoutesToolWindow(
-    private val project: LaravelProject,
-    private val introspecter: RouteIntrospecter,
-    private val revalidator: Revalidator<List<RouteListEntry>> = Revalidator(
+    project: LaravelProject,
+    private val introspecter: RouteIntrospecter = project.introspection.routeIntrospecter,
+    private val revalidator: Revalidator<List<IntrospectedRoute>> = Revalidator(
         introspecter
     )
 ):
-    MasterDetailToolWindow(),
+    SimpleToolWindowPanel(false),
     ReceivesToolWindowTabLifecycleEvents by revalidator
 {
+    override fun setVisible(aFlag: Boolean) {
+        if (aFlag) {
+            revalidator.onTabFocused()
+        }
+        super.setVisible(aFlag)
+    }
+
     private val documentation = RouteDocumentation(project.jetbrainsProject)
 
-    private var selectedRoute: RouteListEntry? = null
+    private var selectedRoute: IntrospectedRoute? = null
         set(value) {
             field = value
-            val route = value?.controllerAction
-            if (route != null) {
-                documentation.showPreview(route)
-            } else {
-                documentation.showMessage()
-            }
+//            if (value != null) {
+//                documentation.showPreview(value)
+//            } else {
+//                documentation.showMessage()
+//            }
         }
 
     private val routeList: RouteList = RouteList(
@@ -46,7 +54,7 @@ class RoutesToolWindow(
     )
 
     private val masterListPanel = JBScrollPane(routeList).apply {
-        border = SideBorder(JBColor.border(), SideBorder.LEFT)
+        border = null // SideBorder(JBColor.border(), SideBorder.LEFT)
     }
 
     init {
@@ -55,38 +63,34 @@ class RoutesToolWindow(
             introspecter = project.introspection.routeIntrospecter,
         )
 
-        master = masterListPanel
-        detail = documentation
+        setContent(masterListPanel)
+//        detail = documentation
 
         project.introspection.routes.subscribe(
             { onStateUpdate(it) },
-            { onError() }
+            { onError(it.toString() + "\n" + it.stackTraceToString()) }
         )
     }
 
-    private fun onStateUpdate(it: IntrospectionState<List<RouteListEntry>>) {
+    private fun onStateUpdate(it: IntrospectionState<List<IntrospectedRoute>>) {
         when (it) {
             is InitialState -> { /* Not really important to us here */ }
 
             is InitialLoadingState -> {
-                master = JBPanelWithEmptyText().withEmptyText("Loading...")
+                setContent(JBPanelWithEmptyText().withEmptyText("Loading..."))
                 documentation.showMessage("Loading...")
             }
 
             is LoadedState -> {
-                if (master !is RouteList) {
-                    master = masterListPanel
-                    documentation.showMessage()
-                }
+                setContent(masterListPanel)
+                documentation.showMessage()
             }
 
             is RevalidatingState -> { /* Not really important to us here */ }
 
             is RevalidatedState -> {
-                if (master !is RouteList) {
-                    master = masterListPanel
-                    documentation.showMessage()
-                }
+                setContent(masterListPanel)
+                documentation.showMessage()
             }
 
             is ErrorState -> onError(it.message)
@@ -94,7 +98,7 @@ class RoutesToolWindow(
     }
 
     private fun onError(details: String = "") {
-        master = errorPanel("An error occurred while loading routes", details)
+        setContent(errorPanel("An error occurred while loading routes", details))
         documentation.showMessage("")
     }
 }

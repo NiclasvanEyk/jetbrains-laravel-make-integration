@@ -5,37 +5,43 @@ import com.intellij.openapi.project.Project
 import com.intellij.ui.ColoredListCellRenderer
 import com.intellij.ui.SimpleTextAttributes
 import com.niclas_van_eyk.laravel_make_integration.common.jetbrains.Colors
-import com.niclas_van_eyk.laravel_make_integration.plugin.laravel.routes.introspection.ControllerMethodAction
-import com.niclas_van_eyk.laravel_make_integration.plugin.laravel.routes.introspection.InvocableControllerAction
-import com.niclas_van_eyk.laravel_make_integration.plugin.laravel.routes.introspection.RouteAction
-import com.niclas_van_eyk.laravel_make_integration.plugin.laravel.routes.introspection.RouteListEntry
+import com.niclas_van_eyk.laravel_make_integration.plugin.laravel.routes.introspection.*
 import javax.swing.Icon
 import javax.swing.JList
 
-class MiddlewareRenderer(
+private class MiddlewareRenderer(
     private val showParams: Boolean,
     private val fullyQualifyNames: Boolean,
-    middleware: String,
+    private val middleware: IntrospectedMiddleware,
 ) {
-    private val fullyQualifiedName = middleware.split(":")[0]
-    private val parameters = middleware.split(":", limit = 2).getOrNull(1)
+    private val parameters = middleware.parameters.joinToString(",")
     private val displayName: String get() =
-        if (fullyQualifyNames) fullyQualifiedName
-        else fullyQualifiedName.substringAfterLast("\\")
+        if (fullyQualifyNames) middleware.name
+        else middleware.name.substringAfterLast("\\")
 
     override fun toString() =
-        if (showParams && parameters != null) "$displayName:$parameters"
+        if (showParams && middleware.parameters.isNotEmpty()) "$displayName:$parameters"
         else displayName
+}
+
+private fun routeListIcon(action: IntrospectedRoute): Icon = when (action) {
+    // As the function icon has the same background color as the class
+    // one, we use field here, as it is also just a circled f, but in
+    // a different color.
+    is ClosureRoute -> AllIcons.Nodes.Field
+    is ControllerRoute -> if (action.isInvokableControllerRoute)
+        AllIcons.Nodes.Class else
+        AllIcons.Nodes.Method
 }
 
 class RouteListCellRenderer(
     private val showMiddlewareParameters: Boolean,
     private val fullyQualifyMiddlewareNames: Boolean,
     private val project: Project,
-) : ColoredListCellRenderer<RouteListEntry>() {
+) : ColoredListCellRenderer<IntrospectedRoute>() {
     override fun customizeCellRenderer(
-        list: JList<out RouteListEntry>,
-        value: RouteListEntry?,
+        list: JList<out IntrospectedRoute>,
+        value: IntrospectedRoute?,
         index: Int,
         selected: Boolean,
         hasFocus: Boolean
@@ -44,15 +50,14 @@ class RouteListCellRenderer(
             return
         }
 
-        icon = iconFor(value.controllerAction)
+        icon = routeListIcon(value)
 
-        if (value.isVendorRoute(project) && value !== list.selectedValue ) {
+        if (value.origin === RouteOrigin.VENDOR && value !== list.selectedValue ) {
             background = Colors.vendor(project)
         }
 
         append(
-            // I personally think it's nicer if *all* routes start with a /
-            if (value.uri.startsWith("/")) value.uri else "/${value.uri}",
+            value.path,
             SimpleTextAttributes.REGULAR_ATTRIBUTES,
             true
         )
@@ -60,7 +65,7 @@ class RouteListCellRenderer(
         append(" ")
         append(
             // I do not see the value of HEAD, as it is most likely of no use
-            value.method.replace("GET|HEAD", "GET"),
+            value.httpMethod.replace("GET|HEAD", "GET"),
             SimpleTextAttributes.GRAYED_ATTRIBUTES,
             false
         )
@@ -74,14 +79,5 @@ class RouteListCellRenderer(
             middleware.joinToString(" "),
             SimpleTextAttributes.GRAYED_ATTRIBUTES
         )
-    }
-
-    private fun iconFor(action: RouteAction): Icon = when (action) {
-        is ControllerMethodAction -> AllIcons.Nodes.Method
-        is InvocableControllerAction -> AllIcons.Nodes.Class
-        else /* is Closure */ -> AllIcons.Nodes.Field
-        // As the function icon has the same background color as the class
-        // one, we use field here, as it is also just a circled f, but in
-        // a different color.
     }
 }

@@ -7,6 +7,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.ui.components.JBPanelWithEmptyText
 import com.intellij.util.DocumentUtil
 import com.jetbrains.php.PhpIndex
+import com.jetbrains.php.lang.psi.elements.Method
 import com.jetbrains.php.lang.psi.elements.PhpAttributesOwner
 import com.niclas_van_eyk.laravel_make_integration.plugin.laravel.routes.introspection.*
 import javax.swing.BorderFactory
@@ -34,18 +35,13 @@ class RouteDocumentation(private val project: Project): JPanel() {
         add(message)
     }
 
-    fun showPreview(route: RouteAction) {
-        if (route is ClosureAction) {
+    fun showPreview(route: IntrospectedRoute) {
+        if (!(route is ControllerRoute)) {
             showMessage("Preview not available for closure based routes")
             return
         }
 
-        val descriptor = getOpenFileDescriptor(route)
-
-        if (descriptor == null) {
-            showMessage()
-            return
-        }
+        val descriptor = getOpenFileDescriptor(route.method)
 
         this.message.isVisible = false
         this.preview.component.isVisible = true
@@ -53,7 +49,7 @@ class RouteDocumentation(private val project: Project): JPanel() {
         val document = FileDocumentManager.getInstance().getDocument(descriptor.file)
 
         if (document === null) {
-            showMessage("Something went wront while building the preview!")
+            showMessage("Something went wrong while building the preview!")
             return
         }
 
@@ -96,28 +92,14 @@ class RouteDocumentation(private val project: Project): JPanel() {
         this.preview.component.isVisible = false
     }
 
-    private fun getOpenFileDescriptor(route: RouteAction): OpenFileDescriptor? {
-        if (route !is ClassBasedRouteAction) return null
-
-        val clazz = PhpIndex
-            .getInstance(project)
-            .getClassesByFQN(route.className)
-            .firstOrNull() ?: return null
-
-        val method = if (route is ControllerMethodAction) {
-            route.methodName
-        } else {
-            InvocableControllerAction.INVOKE_METHOD_NAME
-        }
-
-        val centralCodePart = clazz.findMethodByName(method) ?: clazz
+    private fun getOpenFileDescriptor(method: Method): OpenFileDescriptor {
         val centralCodePartLineNumber = preview.offsetToLogicalPosition(
-            (centralCodePart as PhpAttributesOwner).textOffset
+            (method as PhpAttributesOwner).textOffset
         ).line
 
         return OpenFileDescriptor(
             project,
-            clazz.containingFile.virtualFile,
+            method.containingClass!!.containingFile.virtualFile,
             centralCodePartLineNumber,
             0
         )

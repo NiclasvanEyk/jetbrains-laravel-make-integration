@@ -3,6 +3,7 @@ package com.niclas_van_eyk.laravel_make_integration.plugin.jetbrains.toolWindow
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
+import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.ui.content.ContentFactory
 import com.niclas_van_eyk.laravel_make_integration.plugin.jetbrains.services.LaravelMakeIntegrationProjectService
 import com.niclas_van_eyk.laravel_make_integration.plugin.laravel.commands.toolWindow.CommandsToolWindow
@@ -27,21 +28,8 @@ class LaravelToolWindowFactory : ToolWindowFactory {
             // this tab also gets disabled, as the users are likely
             // to care about their routes the most (assumption)
             // Pair("Application", ApplicationToolWindow(toolWindow, project)),
-
-            Pair(
-                "Routes",
-                RoutesToolWindow(
-                    laravelProject,
-                    laravelProject.introspection.routeIntrospecter,
-                ),
-            ),
-            Pair(
-                "Commands",
-                CommandsToolWindow(
-                    laravelProject,
-                    laravelProject.introspection.commandIntrospecter,
-                ),
-            ),
+            Pair("Routes", RoutesToolWindow(laravelProject)),
+            Pair("Commands", CommandsToolWindow(laravelProject)),
 
             // Events are not a priority for now
             // Pair("Events", EventsToolWindow(projectService, project).component),
