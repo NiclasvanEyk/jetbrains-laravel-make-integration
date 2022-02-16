@@ -1,22 +1,19 @@
 package com.niclas_van_eyk.laravel_make_integration.plugin.laravel.routes.introspection
 
 import com.google.gson.GsonBuilder
-import com.intellij.openapi.application.invokeLater
-import com.intellij.openapi.application.runInEdt
-import com.intellij.openapi.application.runReadAction
-import com.intellij.openapi.application.runWriteAction
+import com.intellij.openapi.application.*
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.rd.util.startUnderBackgroundProgressAsync
-import com.intellij.openapi.rd.util.withBackgroundProgressContext
-import com.intellij.util.ui.EDT
+import com.intellij.util.concurrency.NonUrgentExecutor
 import com.jetbrains.php.PhpIndex
 import com.jetbrains.php.lang.psi.elements.Method
 import com.jetbrains.php.lang.psi.elements.PhpClass
-import com.jetbrains.rd.util.lifetime.Lifetime
 import com.niclas_van_eyk.laravel_make_integration.common.jetbrains.progress.ProgressBarBuilder
+import com.niclas_van_eyk.laravel_make_integration.common.jetbrains.ui.IntrospectionList
 import com.niclas_van_eyk.laravel_make_integration.common.laravel.Artisan
 import com.niclas_van_eyk.laravel_make_integration.common.laravel.introspection.CommandRunInfo
 import com.niclas_van_eyk.laravel_make_integration.common.laravel.introspection.CommandBasedIntrospecter
+import java.util.concurrent.Callable
 
 class RouteIntrospecter(
     artisan: Artisan,
@@ -25,6 +22,10 @@ class RouteIntrospecter(
 ) : CommandBasedIntrospecter<List<IntrospectedRoute>>(artisan, progressBar) {
     override val description = "Scanning Laravel routes"
     override val command = CommandRunInfo("route", "list", listOf("--json"))
+
+    companion object {
+        protected val log = Logger.getInstance(IntrospectionList::class.java)
+    }
 
     override fun onCommandOutput(output: String, publish: (result: List<IntrospectedRoute>) -> Unit) {
         // Sometimes the json contains newlines, which mess with the
@@ -38,16 +39,15 @@ class RouteIntrospecter(
             .fromJson(sanitizedOutput, Array<RouteListEntry>::class.java)
             .toList()
 
-        Lifetime.Eternal.startUnderBackgroundProgressAsync("Processing routes", action = {
-            runReadAction {
-                val enhancer = RouteListEntryEnhancer(PhpIndex.getInstance(project))
-                val introspectedRoutes = enhancer.enhance(routes)
-
-                runInEdt {
-                    publish(introspectedRoutes)
-                }
+        ReadAction
+            .nonBlocking(Callable {
+                RouteListEntryEnhancer(PhpIndex.getInstance(project)).enhance(routes)
+            })
+            .inSmartMode(project)
+            .finishOnUiThread(ModalityState.NON_MODAL) { introspectedRoutes ->
+                publish(introspectedRoutes)
             }
-        })
+            .submit(NonUrgentExecutor.getInstance())
     }
 }
 
@@ -73,7 +73,7 @@ private class RouteListEntryEnhancer(private val index: PhpIndex) {
         val actionParts = route.rawAction.split("@")
         val fqn = actionParts[0]
         val methodName = actionParts.getOrNull(1) ?: PhpClass.INVOKE
-        val `class` = index.getClassesByFQN(fqn).first() ?: return null
+        val `class` = index.getClassesByFQN(fqn).firstOrNull() ?: return null
         val method = `class`.findMethodByName(methodName) ?: return null
         val hasAppNamespace = `class`.fqn.startsWith("\\App\\")
 

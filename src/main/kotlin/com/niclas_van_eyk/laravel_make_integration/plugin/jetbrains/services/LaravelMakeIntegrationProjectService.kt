@@ -3,6 +3,7 @@ package com.niclas_van_eyk.laravel_make_integration.plugin.jetbrains.services
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.Project
 import com.niclas_van_eyk.laravel_make_integration.common.jetbrains.progress.ProgressBarBuilder
+import com.niclas_van_eyk.laravel_make_integration.common.php.run.NoInterpreterSetException
 import com.niclas_van_eyk.laravel_make_integration.plugin.jetbrains.LaravelMakeIntegrationBundle
 import com.niclas_van_eyk.laravel_make_integration.plugin.laravel.LaravelProjectFactory
 import com.niclas_van_eyk.laravel_make_integration.plugin.jetbrains.php.PHPInterpreterValidator

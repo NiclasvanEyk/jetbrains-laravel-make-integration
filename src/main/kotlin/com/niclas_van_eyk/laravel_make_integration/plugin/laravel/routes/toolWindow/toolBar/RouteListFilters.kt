@@ -26,5 +26,15 @@ class RouteListFilters(private val routeList: RouteList) : FilterActionGroup() {
                 routeList.showVendorRoutes = state
             }
         })
+
+        add(object : ToggleAction("Closure Routes") {
+            override fun isSelected(e: AnActionEvent): Boolean {
+                return routeList.showClosureRoutes
+            }
+
+            override fun setSelected(e: AnActionEvent, state: Boolean) {
+                routeList.showClosureRoutes = state
+            }
+        })
     }
 }

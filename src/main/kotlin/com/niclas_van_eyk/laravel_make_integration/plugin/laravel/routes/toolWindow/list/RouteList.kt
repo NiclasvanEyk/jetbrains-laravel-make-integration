@@ -17,7 +17,15 @@ class RouteList(
     var showMiddlewareParameters by TriggersRender(true, this)
     var showApplicationRoutes by TriggersRender(true, this)
     var showVendorRoutes by TriggersRender(true, this)
+    var showClosureRoutes by TriggersRender(true, this)
     var fullyQualifyMiddlewareNames by TriggersRender(false, this)
+
+    val shownRouteOrigins: Set<RouteOrigin>
+        get() = mutableSetOf<RouteOrigin>().apply {
+            if (showVendorRoutes) add(RouteOrigin.VENDOR)
+            if (showApplicationRoutes) add(RouteOrigin.PROJECT)
+            if (showClosureRoutes) add(RouteOrigin.UNKNOWN)
+        }
 
     init {
         addMouseListener(RouteListMouseListener(this))
@@ -36,10 +44,7 @@ class RouteList(
     override fun listKey(element: IntrospectedRoute) = listOf(element.path, element.httpMethod).joinToString("...")
 
     override fun deriveVisibleModel(newModel: List<IntrospectedRoute>): List<IntrospectedRoute> {
-        return newModel
-            // TODO: Change to Visible Array and filter based on that
-            .filter { showApplicationRoutes || it.origin !== RouteOrigin.PROJECT }
-            .filter { showVendorRoutes || it.origin !== RouteOrigin.VENDOR }
+        return newModel .filter { shownRouteOrigins.contains(it.origin) }
     }
 
     override fun triggerRender() {

@@ -24,15 +24,15 @@ class CommandsToolbar(
                     refresh
                 )
             )
-            add(object : AnAction(
-                "View Options",
-                "View options",
-                AllIcons.Actions.Show
-            ) {
-                    override fun actionPerformed(e: AnActionEvent) {
-//                routeList.showMiddlewareParameters = !routeList.showMiddlewareParameters
-                    }
-                })
+//            add(object : AnAction(
+//                "View Options",
+//                "View options",
+//                AllIcons.Actions.Show
+//            ) {
+//                    override fun actionPerformed(e: AnActionEvent) {
+////                routeList.showMiddlewareParameters = !routeList.showMiddlewareParameters
+//                    }
+//                })
             addSeparator()
             add(object : AnAction(
                 "Create Command",

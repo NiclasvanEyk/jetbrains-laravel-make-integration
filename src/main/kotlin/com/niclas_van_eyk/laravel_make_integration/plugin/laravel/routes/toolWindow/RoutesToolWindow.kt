@@ -1,22 +1,20 @@
 package com.niclas_van_eyk.laravel_make_integration.plugin.laravel.routes.toolWindow
 
+import com.intellij.openapi.diagnostic.logger
 import com.intellij.openapi.ui.SimpleToolWindowPanel
-import com.intellij.ui.JBColor
-import com.intellij.ui.SideBorder
 import com.intellij.ui.components.JBPanelWithEmptyText
 import com.intellij.ui.components.JBScrollPane
-import com.niclas_van_eyk.laravel_make_integration.plugin.laravel.LaravelProject
-import com.niclas_van_eyk.laravel_make_integration.common.jetbrains.ui.toolWindow.MasterDetailToolWindow
 import com.niclas_van_eyk.laravel_make_integration.common.laravel.introspection.*
 import com.niclas_van_eyk.laravel_make_integration.plugin.jetbrains.toolWindow.ReceivesToolWindowTabLifecycleEvents
 import com.niclas_van_eyk.laravel_make_integration.plugin.jetbrains.toolWindow.errorPanel
+import com.niclas_van_eyk.laravel_make_integration.plugin.laravel.LaravelProject
 import com.niclas_van_eyk.laravel_make_integration.plugin.laravel.routes.introspection.IntrospectedRoute
 import com.niclas_van_eyk.laravel_make_integration.plugin.laravel.routes.introspection.RouteIntrospecter
-import com.niclas_van_eyk.laravel_make_integration.plugin.laravel.introspection.toolWindow.IntrospectionBasedToolWindowRevalidator as Revalidator
-import com.niclas_van_eyk.laravel_make_integration.plugin.laravel.routes.introspection.RouteListEntry
 import com.niclas_van_eyk.laravel_make_integration.plugin.laravel.routes.toolWindow.list.RouteList
 import com.niclas_van_eyk.laravel_make_integration.plugin.laravel.routes.toolWindow.toolBar.RoutesToolbar
-
+import java.awt.Graphics
+import java.awt.event.ComponentListener
+import com.niclas_van_eyk.laravel_make_integration.plugin.laravel.introspection.toolWindow.IntrospectionBasedToolWindowRevalidator as Revalidator
 
 class RoutesToolWindow(
     project: LaravelProject,
@@ -28,13 +26,6 @@ class RoutesToolWindow(
     SimpleToolWindowPanel(false),
     ReceivesToolWindowTabLifecycleEvents by revalidator
 {
-    override fun setVisible(aFlag: Boolean) {
-        if (aFlag) {
-            revalidator.onTabFocused()
-        }
-        super.setVisible(aFlag)
-    }
-
     private val documentation = RouteDocumentation(project.jetbrainsProject)
 
     private var selectedRoute: IntrospectedRoute? = null

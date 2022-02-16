@@ -20,15 +20,17 @@ import com.niclas_van_eyk.laravel_make_integration.common.php.InterpreterInferen
  * configured project interpreter, which enables the use of docker containers, etc.
  */
 class PHPRunner(private val project: Project) {
-    private val runConfiguration: PhpScriptRunConfiguration
-    private val interpreter: PhpInterpreter
-
-    init {
-        runConfiguration = buildRunConfiguration()
-        interpreter = InterpreterInference(project).inferInterpreter()
-    }
+    private lateinit var runConfiguration: PhpScriptRunConfiguration
+    private lateinit var interpreter: PhpInterpreter
+    private var initialized = false
 
     fun executeScript(path: String, arguments: Iterable<String>): Result {
+        if (!initialized) {
+            runConfiguration = buildRunConfiguration()
+            interpreter = InterpreterInference(project).inferInterpreter()
+            initialized = true
+        }
+
         val command: PhpCommandSettings
         try {
             command = buildCommand(path, arguments)

@@ -1,4 +1,4 @@
-import io.gitlab.arturbosch.detekt.Detekt
+//import io.gitlab.arturbosch.detekt.Detekt
 import org.jetbrains.changelog.closure
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -12,7 +12,7 @@ plugins {
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
     id("org.jetbrains.changelog") version "0.4.0"
     // detekt linter - read more: https://detekt.github.io/detekt/kotlindsl.html
-    id("io.gitlab.arturbosch.detekt") version "1.17.1"
+    // id("io.gitlab.arturbosch.detekt") version "1.17.1"
     // ktlint linter - read more: https://github.com/JLLeitschuh/ktlint-gradle
     id("org.jlleitschuh.gradle.ktlint") version "9.2.1"
 }
@@ -43,7 +43,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("io.reactivex.rxjava3:rxkotlin:3.0.1")
     implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.2")
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.17.1")
+//    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.17.1")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
     testImplementation("org.assertj:assertj-core:3.12.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.4.2")
@@ -74,17 +74,17 @@ intellij {
 
 // Configure detekt plugin.
 // Read more: https://detekt.github.io/detekt/kotlindsl.html
-detekt {
-    config = files("./detekt-config.yml")
-    buildUponDefaultConfig = true
-    autoCorrect = true
-
-    reports {
-        html.enabled = false
-        xml.enabled = false
-        txt.enabled = false
-    }
-}
+//detekt {
+//    config = files("./detekt-config.yml")
+//    buildUponDefaultConfig = true
+//    autoCorrect = true
+//
+//    reports {
+//        html.enabled = false
+//        xml.enabled = false
+//        txt.enabled = false
+//    }
+//}
 
 configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
     version.set("0.40.0")
