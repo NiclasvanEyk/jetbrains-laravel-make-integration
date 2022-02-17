@@ -103,9 +103,9 @@ tasks {
         }
     }
 
-    withType<Detekt> {
-        jvmTarget = "1.8"
-    }
+//    withType<Detekt> {
+//        jvmTarget = "1.8"
+//    }
 
     patchPluginXml {
         version(pluginVersion)
