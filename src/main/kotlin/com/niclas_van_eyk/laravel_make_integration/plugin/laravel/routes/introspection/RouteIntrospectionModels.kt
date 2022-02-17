@@ -4,25 +4,6 @@ import com.google.gson.annotations.SerializedName
 import com.jetbrains.php.lang.psi.elements.Method
 import com.jetbrains.php.lang.psi.elements.PhpClass
 
-interface RouteAction
-data class ClosureAction(val name: String) : RouteAction
-interface ClassBasedRouteAction : RouteAction {
-    val className: String
-}
-
-data class InvocableControllerAction(
-    override val className: String
-) : ClassBasedRouteAction {
-    companion object {
-        const val INVOKE_METHOD_NAME = "__invoke"
-    }
-}
-
-data class ControllerMethodAction(
-    override val className: String,
-    val methodName: String
-) : ClassBasedRouteAction
-
 /**
  * As returned by `artisan route:list --json`.
  */
@@ -45,14 +26,6 @@ data class RouteListEntry(
 
         return emptyList()
     }
-    val controllerAction: RouteAction
-        get() = if (rawAction.equals("closure", ignoreCase = true)) {
-            ClosureAction(rawAction)
-        } else {
-            val actionParts = rawAction.split("@")
-            if (actionParts.size == 1) InvocableControllerAction(actionParts[0])
-            else ControllerMethodAction(actionParts[0], actionParts[1])
-        }
 }
 
 enum class RouteOrigin {
@@ -109,5 +82,5 @@ class ControllerRoute(
     val method: Method,
     val formRequest: PhpClass?,
 ): IntrospectedRoute(basicRouteInformation, origin) {
-    val isInvokableControllerRoute get() = method.name === PhpClass.INVOKE
+    val isInvokableControllerRoute get() = method.name == PhpClass.INVOKE
 }
