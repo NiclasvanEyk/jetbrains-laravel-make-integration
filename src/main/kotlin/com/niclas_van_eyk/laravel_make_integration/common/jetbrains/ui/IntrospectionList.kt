@@ -71,11 +71,11 @@ abstract class IntrospectionList<T>(
             val previouslySelected = selectedValue
             val previousKey = if (previouslySelected == null) null else listKey(previouslySelected)
 
-            (model as DefaultListModel).apply {
+            (model as DefaultListModel<T>).apply {
                 removeAllElements()
                 val visibleModel = deriveVisibleModel(newModel)
 
-                addAll(visibleModel.iterator())
+                addAll(visibleModel)
             }
 
             if (previousKey != null) {
