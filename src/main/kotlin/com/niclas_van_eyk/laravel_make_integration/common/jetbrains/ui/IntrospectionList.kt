@@ -3,6 +3,7 @@ package com.niclas_van_eyk.laravel_make_integration.common.jetbrains.ui
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.ui.components.JBList
+import com.intellij.util.containers.toArray
 import com.niclas_van_eyk.laravel_make_integration.common.laravel.introspection.*
 import javax.swing.DefaultListModel
 
@@ -11,7 +12,7 @@ abstract class IntrospectionList<T>(
 ) : JBList<T>(emptyList()), CanBeReRendered {
     var updatingModel: List<T> = emptyList()
     val listElements: Sequence<T>
-        get() = (model as DefaultListModel).elements().asIterator().asSequence()
+        get() = (model as DefaultListModel).elements().iterator().asSequence()
 
     companion object {
         protected val log = Logger.getInstance(IntrospectionList::class.java)
@@ -74,7 +75,7 @@ abstract class IntrospectionList<T>(
                 removeAllElements()
                 val visibleModel = deriveVisibleModel(newModel)
 
-                addAll(visibleModel)
+                addAll(visibleModel.iterator())
             }
 
             if (previousKey != null) {
