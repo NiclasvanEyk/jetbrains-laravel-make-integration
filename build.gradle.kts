@@ -14,7 +14,7 @@ plugins {
     // detekt linter - read more: https://detekt.github.io/detekt/kotlindsl.html
     // id("io.gitlab.arturbosch.detekt") version "1.17.1"
     // ktlint linter - read more: https://github.com/JLLeitschuh/ktlint-gradle
-    id("org.jlleitschuh.gradle.ktlint") version "9.2.1"
+//    id("org.jlleitschuh.gradle.ktlint") version "9.2.1"
 }
 
 // Import variables from gradle.properties file
@@ -86,9 +86,9 @@ intellij {
 //    }
 //}
 
-configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
-    version.set("0.40.0")
-}
+//configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+//    version.set("0.40.0")
+//}
 
 tasks {
     // Set the compatibility versions to 1.8
