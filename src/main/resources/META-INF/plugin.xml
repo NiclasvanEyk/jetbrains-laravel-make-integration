@@ -1,59 +1,69 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.niclas-van-eyk.laravel-make-integration</id>
-    <name>Laravel Make Integration</name>
-    <vendor email="niclas.eyk@gmail.com" url="https://github.com/NiclasvanEyk">Niclas van Eyk</vendor>
+    <id>com.github.niclasvaneyk.laravelmake</id>
+    <name>Laravel MAKE</name>
+    <vendor>Niclas van Eyk</vendor>
 
-    <!-- Product and plugin compatibility requirements -->
-    <!-- https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
     <depends>com.jetbrains.php</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.niclas_van_eyk.laravel_make_integration.services.LaravelMakeIntegration"/>
-        <projectService preload="true" serviceImplementation="com.niclas_van_eyk.laravel_make_integration.services.LaravelMakeIntegrationProjectService"/>
+        <notificationGroup
+                id="Laravel MAKE"
+                displayType="BALLOON"
+                icon="/icons/laravel-logo.svg"
+        />
+        <toolWindow
+                id="Laravel"
+                factoryClass="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.toolWindow.LaravelToolWindowFactory"
+                icon="/icons/laravel-logo-for-tool-window.svg"
+                anchor="bottom"
+                doNotActivateOnStart="true"
+        />
+        <!--        <moduleType-->
+        <!--                id="LARAVEL"-->
+        <!--                implementationClass="com.github.niclasvaneyk.laravelmake.plugin.laravel.projectCreation.LaravelModuleType"-->
+        <!--        />-->
+        <!--        <framework.type implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.projectCreation.LaravelDotBuildFramework" />-->
+        <!--        <frameworkSupport implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.projectCreation.LaravelDotBuildFrameworkProvider" />-->
     </extensions>
-
-    <projectListeners>
-        <listener class="com.niclas_van_eyk.laravel_make_integration.listeners.MyProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </projectListeners>
 
     <actions>
         <group id="LaravelMakeGroup"
                text="Laravel"
                icon="/icons/laravel-logo.svg"
                popup="true"
-               class="com.niclas_van_eyk.laravel_make_integration.groups.ArtisanMakeActionsGroup"
+               class="com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.groups.ArtisanMakeActionsGroup"
         >
             <add-to-group group-id="NewGroup" anchor="after" relative-to-action="NewDir" />
         </group>
 
-        <action class="com.niclas_van_eyk.laravel_make_integration.actions.make.RunArtisanMakeDialogAction" id="ArtisanMakeDialogAction"/>
+        <action class="com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.RunArtisanMakeDialogAction" id="ArtisanMakeDialogAction"/>
 
         <!-- We add the list of available Actions here, so they are available through the double shift menu
              and do not get filtered, when you hover over a specific folder -->
-        <action class="com.niclas_van_eyk.laravel_make_integration.actions.make.MakeCastAction" id="MakeCastAction"/>
-        <action class="com.niclas_van_eyk.laravel_make_integration.actions.make.MakeChannelAction" id="MakeChannelAction"/>
-        <action class="com.niclas_van_eyk.laravel_make_integration.actions.make.MakeCommandAction" id="MakeCommandAction"/>
-        <action class="com.niclas_van_eyk.laravel_make_integration.actions.make.MakeComponentAction" id="MakeComponentAction"/>
-        <action class="com.niclas_van_eyk.laravel_make_integration.actions.make.MakeControllerAction" id="MakeControllerAction"/>
-        <action class="com.niclas_van_eyk.laravel_make_integration.actions.make.MakeEventAction" id="MakeEventAction"/>
-        <action class="com.niclas_van_eyk.laravel_make_integration.actions.make.MakeExceptionAction" id="MakeExceptionAction"/>
-        <action class="com.niclas_van_eyk.laravel_make_integration.actions.make.MakeFactoryAction" id="MakeFactoryAction"/>
-        <action class="com.niclas_van_eyk.laravel_make_integration.actions.make.MakeJobAction" id="MakeJobAction"/>
-        <action class="com.niclas_van_eyk.laravel_make_integration.actions.make.MakeListenerAction" id="MakeListenerAction"/>
-        <action class="com.niclas_van_eyk.laravel_make_integration.actions.make.MakeMailAction" id="MakeMailAction"/>
-        <action class="com.niclas_van_eyk.laravel_make_integration.actions.make.MakeMiddlewareAction" id="MakeMiddlewareAction"/>
-        <action class="com.niclas_van_eyk.laravel_make_integration.actions.make.MakeMigrationAction" id="MakeMigrationAction"/>
-        <action class="com.niclas_van_eyk.laravel_make_integration.actions.make.MakeModelAction" id="MakeModelAction"/>
-        <action class="com.niclas_van_eyk.laravel_make_integration.actions.make.MakeNotificationAction" id="MakeNotificationAction"/>
-        <action class="com.niclas_van_eyk.laravel_make_integration.actions.make.MakeObserverAction" id="MakeObserverAction"/>
-        <action class="com.niclas_van_eyk.laravel_make_integration.actions.make.MakePolicyAction" id="MakePolicyAction"/>
-        <action class="com.niclas_van_eyk.laravel_make_integration.actions.make.MakeProviderAction" id="MakeProviderAction"/>
-        <action class="com.niclas_van_eyk.laravel_make_integration.actions.make.MakeRequestAction" id="MakeRequestAction"/>
-        <action class="com.niclas_van_eyk.laravel_make_integration.actions.make.MakeResourceAction" id="MakeResourceAction"/>
-        <action class="com.niclas_van_eyk.laravel_make_integration.actions.make.MakeRuleAction" id="MakeRuleAction"/>
-        <action class="com.niclas_van_eyk.laravel_make_integration.actions.make.MakeSeederAction" id="MakeSeederAction"/>
-        <action class="com.niclas_van_eyk.laravel_make_integration.actions.make.MakeTestAction" id="MakeTestAction"/>
+        <action class="com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.MakeCastAction" id="MakeCastAction"/>
+        <action class="com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.MakeChannelAction" id="MakeChannelAction"/>
+        <action class="com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.MakeCommandAction" id="MakeCommandAction"/>
+        <action class="com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.MakeComponentAction" id="MakeComponentAction"/>
+        <action class="com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.MakeControllerAction" id="MakeControllerAction"/>
+        <action class="com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.MakeEventAction" id="MakeEventAction"/>
+        <action class="com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.MakeExceptionAction" id="MakeExceptionAction"/>
+        <action class="com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.MakeFactoryAction" id="MakeFactoryAction"/>
+        <action class="com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.MakeJobAction" id="MakeJobAction"/>
+        <action class="com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.MakeListenerAction" id="MakeListenerAction"/>
+        <action class="com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.MakeMailAction" id="MakeMailAction"/>
+        <action class="com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.MakeMiddlewareAction" id="MakeMiddlewareAction"/>
+        <action class="com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.MakeMigrationAction" id="MakeMigrationAction"/>
+        <action class="com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.MakeModelAction" id="MakeModelAction"/>
+        <action class="com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.MakeNotificationAction" id="MakeNotificationAction"/>
+        <action class="com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.MakeObserverAction" id="MakeObserverAction"/>
+        <action class="com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.MakePolicyAction" id="MakePolicyAction"/>
+        <action class="com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.MakeProviderAction" id="MakeProviderAction"/>
+        <action class="com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.MakeRequestAction" id="MakeRequestAction"/>
+        <action class="com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.MakeResourceAction" id="MakeResourceAction"/>
+        <action class="com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.MakeRuleAction" id="MakeRuleAction"/>
+        <action class="com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.MakeSeederAction" id="MakeSeederAction"/>
+        <action class="com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.MakeTestAction" id="MakeTestAction"/>
     </actions>
 </idea-plugin>

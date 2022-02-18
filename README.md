@@ -1,9 +1,11 @@
-# Laravel Make Integration for the Jetbrains Platform 
+# Laravel MAKE
+
+> Formerly _Laravel Make Integration_
 
 <!-- Plugin description -->
 
 <p align="center">
-    This package integrates the <code>php artisan make:*</code> commands to the "File > New" menu. 
+  Makes Laravel feel like a first-class citizen in PhpStorm!
 </p>
 <p align="center">
     <img alt="Newfile menu with Laravel group provided by this plugin" src="https://plugins.jetbrains.com/files/14612/screenshot_22560.png" />
