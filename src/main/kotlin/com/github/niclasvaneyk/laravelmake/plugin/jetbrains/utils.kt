@@ -27,6 +27,9 @@ fun findArtisanBinaryDirectory(start: VirtualFile, stop: String): VirtualFile? {
 
     while (!node.canonicalPath.equals(stop) || !node.exists()) {
         if (node.findFileByRelativePath("artisan") === null) {
+            // Otherwise this could lead to
+            if (node.path == "/") break
+
             node = node.parent
             continue
         }
