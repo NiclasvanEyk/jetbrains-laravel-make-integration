@@ -1,1 +1,1 @@
-rootProject.name = "jetbrains-laravel-make-integration"
+rootProject.name = "laravel-make"

@@ -1,4 +1,4 @@
-# Laravel **M**agnificent **A**rtisan **K**otlin-based **Extension**  (M.A.K.E)
+# Laravel MAKE
 
 > Formerly _Laravel Make Integration_
 
