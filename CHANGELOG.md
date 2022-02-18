@@ -1,17 +1,22 @@
 # Laravel Make Integration Changelog
 
 ## [Unreleased]
+
+Rebranded to **Laravel MAKE**. This is to reflect the fact, that this extensions does not noly contribute the "File > New" window, but also utilizies other Extension Points of the IDE. In the future I want to expand the scope of this extension even more, so I thought it would be reasonable to rename the extension.
+
 ### Added
+
+- New "Larave" tool window. See all your routes and commands at a glance. No need to run `artisan route:list` and search through the output. The automatic reloading of the contents can still be improved, but I still think it provides enough value to release it.
 
 ### Changed
 
-### Deprecated
-
-### Removed
+- Internal changes to how commands and options are parsed and general huge refactorings of the whole codebase
+- Updated the codebase to the most recent plugin development workflow
+- Plugin Icon is now a combination of two Laravel L's to reflect the new name
 
 ### Fixed
 
-### Security
+- Several errors related to JSON parsing
 
 ## [2.3.4]
 
