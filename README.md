@@ -1,15 +1,5 @@
-# Laravel MAKE
+# Laravel MAKE (Formerly _Laravel Make Integration_)
 
-> Formerly _Laravel Make Integration_
-
-<!-- Plugin description -->
-
-<p align="center">
-  Makes Laravel feel like a first-class citizen in PhpStorm!
-</p>
-<p align="center">
-    <img alt="Newfile menu with Laravel group provided by this plugin" src="https://plugins.jetbrains.com/files/14612/screenshot_22560.png" />
-</p>
 <p align="center">
     <a href="https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/actions"><img alt="Build" src="https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/workflows/Build/badge.svg"/></a>
     <a href="https://plugins.jetbrains.com/plugin/14612-laravel-make-integration"><img alt="Version" src="https://img.shields.io/jetbrains/plugin/v/14612-laravel-make-integration.svg"/></a>
@@ -17,63 +7,26 @@
     <a href="https://github.com/sponsors/NiclasvanEyk"><img alt="Sponsors" src="https://img.shields.io/github/sponsors/NiclasvanEyk"/></a>
 </p>
 
-Once an action, say <kbd>File</kbd> > <kbd>New</kbd> > <kbd>Laravel</kbd> > <kbd>Controller</kbd> is triggered, a dialog pops up, where you can enter the
-name of the class to be generated. Once you hit enter, the artisan command, here
-<code>php artisan make:controller</code>, will be executed by your configured `php` interpreter.
+<!-- Plugin description -->
+![Newfile menu with Laravel group provided by this plugin](https://plugins.jetbrains.com/files/14612/screenshot_b321b1b4-2b8d-45d4-92a0-8d24af629349)
 
-> A more detailed description can be is located in the [project readme on GitHub](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration)
+Laravel MAKE provides a set of integration points that connect your Laravel application to PhpStorm.
 
+- `artisan make:*` commands are integrated into the "File > New" context menu, including autocomplete for flags and pre-filled namespaces
+- Laravel tool window, providing native, auto-refreshing views for `artisan route:list` supporting search-as-you-type other kinds of filters 
+- Works, even if your PHP runs inside Docker, e.g. when using Laravel Sail (see [setup instructions](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/blob/main/docs/setup_with_sail.md))
+
+> A more detailed description is located in the [project readme on GitHub](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration)
 <!-- Plugin description end -->
 
 ## Getting Started
 
-If you develop using your local interpreter everything should just work.
+In order to the plugin to know how to interact with your application and PHP, you need to [configure your PHP interpreter](https://www.jetbrains.com/help/phpstorm/configuring-local-interpreter.html).
+If you plan to develop using Laravel Sail, you can [follow our guide](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/blob/main/docs/setup_with_sail.md) or [the on from Jetbrains](https://www.jetbrains.com/help/phpstorm/configuring-remote-interpreters.html).
 
-If you are using Laravel Sail or otherwise develop locally using Docker, go to [this page](./docs/setup_with_sail.md). It contains a step-by-step guide that describes how to setup a fresh Laravel application using Laravel Sail and how to connect PHPStorm (and in turn Laravel Make Integration) to the PHP interpreter inside our Docker container.
-
-## [Features](./features.md)
-
-A full list of all features can be found in [here](./features.md). This also serves as the documentation at the moment.
-
-### Supported Commands
-
-#### Laravel default commands
-
-- Cast
-- Channel
-- Command
-- Component
-- Controller
-- Event
-- Exception
-- Factory
-- Job
-- Listener
-- Mail
-- Middleware
-- Migration
-- Model
-- Notification
-- Observer
-- Policy
-- Provider
-- Request
-- Resource
-- Rule
-- Seeder
-- Test
-
-#### Vendor Commands (experimental)
-
-The plugin runs `php artisan help` to get a list of all commands available each time you open a Laravel project. For each command that starts with `make:` it will 
-execute `php artisan make:my-command --help`, to get a list of all the parameters to provide autocompletion. If a vendor
-command like `make:livewire` is detected, it will automatically be added to the "File > New > Laravel" menu.
-
-Note that this is experimental for now and that it might take a while for all commands to be indexed. Below you can find
-a list of commands that are supported for now. If you have a request for a command of a popular library to be added here,
-please open an issue.
-
-- Livewire (`artisan make:livewire`, also supports the flags, such as `--inline`)
+The features are described in more detail on their own documentation pages:
+- [`artisan make:*` commands](./docs/make-context-menu.md)
+- [tool windows](./docs/tool-windows.md)
 
 ## Installation
 
@@ -85,14 +38,14 @@ please open an issue.
 - Manually:
 
   Download the [latest release](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/releases/latest) and install it manually using
-  <kbd>Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>. After you de-compress the zip-file from the releases page you need to select the file `lib/jetbrains-laravel-make-integration-VERSION.jar` when installing from disk.
-  
+  <kbd>Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>. Select the downloaded zip-file and hit "apply".
+
   > Note: When a new version of the plugin is available, your IDE will notify you about it regardless of how you did install it. So even when you install an update from disk once, you will still receive future updates through automated updates.
 
 ## Usage notes
 
 This does only work if you have the Laravel project open, the root of your project is the root of your Laravel
-folder and contains the artisan binary!
+folder and contains the artisan binary! Subfolder support may be added in a future version.
 
 ## Feature requests
 
