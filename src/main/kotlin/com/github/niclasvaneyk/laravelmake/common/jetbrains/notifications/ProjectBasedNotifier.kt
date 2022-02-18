@@ -15,28 +15,26 @@ class ProjectBasedNotifier(private val project: Project) {
     private fun simpleNotificationOfType(
         type: NotificationType,
         title: String?,
-        subTitle: String?,
         content: String?,
     ): Notification {
         return notification {
             it.type = type
             it.title = title
-            it.subTitle = subTitle
             it.content = content
             it
         }
     }
 
-    fun info(title: String? = null, subTitle: String? = null, content: String? = null) {
-        display(simpleNotificationOfType(NotificationType.INFORMATION, title, subTitle, content))
+    fun info(title: String? = null, content: String? = null) {
+        display(simpleNotificationOfType(NotificationType.INFORMATION, title, content))
     }
 
-    fun warning(title: String? = null, subTitle: String? = null, content: String? = null) {
-        display(simpleNotificationOfType(NotificationType.WARNING, title, subTitle, content))
+    fun warning(title: String? = null, content: String? = null) {
+        display(simpleNotificationOfType(NotificationType.WARNING, title, content))
     }
 
-    fun error(title: String? = null, subTitle: String? = null, content: String? = null) {
-        display(simpleNotificationOfType(NotificationType.ERROR, title, subTitle, content))
+    fun error(title: String? = null, content: String? = null) {
+        display(simpleNotificationOfType(NotificationType.ERROR, title, content))
     }
 
     fun display(notification: Notification) {

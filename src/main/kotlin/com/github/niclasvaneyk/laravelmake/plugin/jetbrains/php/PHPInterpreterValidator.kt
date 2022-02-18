@@ -39,7 +39,6 @@ class PHPInterpreterValidator(private val project: LaravelProject) {
         fun showNotification() {
             val notification = notifier.notification {
                 it.title = "Could not use artisan binary"
-                it.subTitle = exception?.javaClass?.simpleName
                 it.content = "${exception?.localizedMessage}\n\n"
                     .plus("Usually this means that you need to fix or")
                     .plus(" specify your PHP project interpreter ")

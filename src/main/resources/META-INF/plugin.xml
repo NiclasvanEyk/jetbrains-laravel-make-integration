@@ -9,7 +9,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <notificationGroup
-                id="laravel_make_integration_notification"
+                id="Laravel MAKE"
                 displayType="BALLOON"
                 icon="/icons/laravel-logo.svg"
         />

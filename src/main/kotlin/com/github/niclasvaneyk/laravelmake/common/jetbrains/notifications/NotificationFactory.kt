@@ -7,21 +7,19 @@ import javax.swing.Icon
 
 class NotificationFactory {
     var title: String? = null
-    var subTitle: String? = null
     var content: String? = null
     var type = NotificationType.INFORMATION
     var icon: Icon? = null
 
     fun build(): Notification {
-        val notification = Notification(
-            "laravel_make_integration_notification",
-            icon,
-            title,
-            subTitle,
-            content,
-            type,
-            null,
-        )
+        val notification =  Notification(
+            "Laravel MAKE",
+            title ?: "",
+            content ?: "",
+            type
+        ).apply {
+            icon = icon
+        }
 
         reset()
 
@@ -34,7 +32,6 @@ class NotificationFactory {
 
     private fun reset() {
         this.title = null
-        this.subTitle = null
         this.content = null
         this.type = NotificationType.INFORMATION
     }

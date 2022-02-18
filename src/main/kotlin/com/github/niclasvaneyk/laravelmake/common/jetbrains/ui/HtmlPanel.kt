@@ -61,7 +61,7 @@ class HtmlPanel: JEditorPane(UIUtil.HTML_MIME, ""), HyperlinkListener {
 
     private val bodyFont get() = FontUtil.getCommitMessageFont()
     private val linkColor get() = "#" + ColorUtil.toHex(
-        JBUI.CurrentTheme.Link.linkColor()
+        JBUI.CurrentTheme.Link.Foreground.ENABLED
     )
 
     override fun hyperlinkUpdate(e: HyperlinkEvent?) {
