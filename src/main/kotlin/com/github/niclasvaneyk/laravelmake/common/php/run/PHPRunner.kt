@@ -13,6 +13,10 @@ import com.jetbrains.php.run.script.PhpScriptRunConfiguration
 import com.jetbrains.php.run.script.PhpScriptRuntimeConfigurationProducer
 import com.github.niclasvaneyk.laravelmake.common.php.InterpreterInference
 
+class PHPRunnerFactory(private val project: Project) {
+    fun runner(): PHPRunner = PHPRunner(project)
+}
+
 /**
  * Represents an execution of a php script, like the artisan script.
  *

@@ -9,11 +9,12 @@ import com.github.niclasvaneyk.laravelmake.common.laravel.Artisan
 import com.github.niclasvaneyk.laravelmake.common.laravel.LaravelProjectPaths
 import com.github.niclasvaneyk.laravelmake.common.laravel.DetectLaravelVersion
 import com.github.niclasvaneyk.laravelmake.common.php.run.PHPRunner
+import com.github.niclasvaneyk.laravelmake.common.php.run.PHPRunnerFactory
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.introspection.LaravelIntrospectionFacade
 import java.io.File
 
 class LaravelProject(path: String, val jetbrainsProject: Project) {
-    val artisan: Artisan = Artisan(path, PHPRunner(jetbrainsProject))
+    val artisan: Artisan = Artisan(path, PHPRunnerFactory(jetbrainsProject))
     val paths: LaravelProjectPaths = LaravelProjectPaths(path)
     val version = DetectLaravelVersion.fromLockfile(
         File(paths.path(LaravelProjectPaths.COMPOSER_LOCK))

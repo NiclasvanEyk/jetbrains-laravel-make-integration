@@ -13,6 +13,7 @@ import com.github.niclasvaneyk.laravelmake.common.jetbrains.ui.IntrospectionList
 import com.github.niclasvaneyk.laravelmake.common.laravel.Artisan
 import com.github.niclasvaneyk.laravelmake.common.laravel.introspection.CommandRunInfo
 import com.github.niclasvaneyk.laravelmake.common.laravel.introspection.CommandBasedIntrospecter
+import com.intellij.openapi.module.ModuleManager
 import java.util.concurrent.Callable
 
 class RouteIntrospecter(
@@ -41,7 +42,10 @@ class RouteIntrospecter(
 
         ReadAction
             .nonBlocking(Callable {
-                RouteListEntryEnhancer(PhpIndex.getInstance(project)).enhance(routes)
+                RouteListEntryEnhancer(
+                    PhpIndex.getInstance(project),
+                    ModuleManager.getInstance(project),
+                ).enhance(routes)
             })
             .inSmartMode(project)
             .finishOnUiThread(ModalityState.NON_MODAL) { introspectedRoutes ->
@@ -54,7 +58,10 @@ class RouteIntrospecter(
 /**
  * Enhances the data returned from `artisan route:list` with some PhpStorm goodies.
  */
-private class RouteListEntryEnhancer(private val index: PhpIndex) {
+private class RouteListEntryEnhancer(
+    private val index: PhpIndex,
+    private val moduleManager: ModuleManager,
+) {
     fun enhance(routes: List<RouteListEntry>) = routes.mapNotNull { route -> enhance(route) }
 
     private fun enhance(route: RouteListEntry): IntrospectedRoute? {
@@ -75,15 +82,34 @@ private class RouteListEntryEnhancer(private val index: PhpIndex) {
         val methodName = actionParts.getOrNull(1) ?: PhpClass.INVOKE
         val `class` = index.getClassesByFQN(fqn).firstOrNull() ?: return null
         val method = `class`.findMethodByName(methodName) ?: return null
-        val hasAppNamespace = `class`.fqn.startsWith("\\App\\")
+
 
         return ControllerRoute(
             basicRouteInformation,
-            origin = if (hasAppNamespace) RouteOrigin.PROJECT else RouteOrigin.VENDOR,
+            origin = findRouteOrigin(`class`),
             `class`,
             method,
             formRequest = findFormRequestFor(method)
         )
+    }
+
+    private fun findRouteOrigin(`class`: PhpClass): RouteOrigin {
+        if (`class`.fqn.startsWith("\\App\\")) {
+            return RouteOrigin.PROJECT
+        }
+
+        val classFile = `class`.containingFile.virtualFile
+
+        for (module in moduleManager.modules) {
+            if (module.moduleContentScope.contains(classFile)) {
+                return RouteOrigin.PROJECT
+            }
+        }
+
+        // If it is not contained in any of the modules content, we can safely
+        // assume it is a vendor route. Closure-based routes are handled before
+        // this is called, so no need to use RouteOrigin.UNKNOWN here.
+        return RouteOrigin.VENDOR
     }
 
     private fun findFormRequestFor(method: Method): PhpClass? {

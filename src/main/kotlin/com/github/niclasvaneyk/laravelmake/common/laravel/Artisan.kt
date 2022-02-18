@@ -1,6 +1,7 @@
 package com.github.niclasvaneyk.laravelmake.common.laravel
 
 import com.github.niclasvaneyk.laravelmake.common.php.run.PHPRunner
+import com.github.niclasvaneyk.laravelmake.common.php.run.PHPRunnerFactory
 import java.io.File
 
 /**
@@ -11,12 +12,14 @@ import java.io.File
  */
 class Artisan(
     private val basePath: String,
-    private val runner: PHPRunner,
+    private val runnerFactory: PHPRunnerFactory,
 ) {
     companion object {
         fun existsAt(path: String) = File(path).exists()
         fun binaryPath(path: String) ="${path}${LaravelProjectPaths.ARTISAN}"
     }
+
+    private val runner: PHPRunner get() = runnerFactory.runner()
 
     fun make(
         subCommand: String,
