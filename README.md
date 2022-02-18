@@ -1,4 +1,4 @@
-# Laravel MAKE (Formerly _Laravel Make Integration_)
+# Laravel MAKE (formerly _Laravel Make Integration_)
 
 <p align="center">
     <a href="https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/actions"><img alt="Build" src="https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/workflows/Build/badge.svg"/></a>
