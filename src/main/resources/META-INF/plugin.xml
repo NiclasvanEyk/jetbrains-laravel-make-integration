@@ -1,6 +1,6 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.github.niclasvaneyk.laravelmake</id>
+    <id>com.niclas-van-eyk.laravel-make-integration</id>
     <name>Laravel MAKE</name>
     <vendor>Niclas van Eyk</vendor>
 
