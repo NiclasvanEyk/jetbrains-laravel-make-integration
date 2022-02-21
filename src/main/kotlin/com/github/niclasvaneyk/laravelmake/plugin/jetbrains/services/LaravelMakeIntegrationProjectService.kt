@@ -5,14 +5,14 @@ import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.Project
 import com.github.niclasvaneyk.laravelmake.common.jetbrains.progress.ProgressBarBuilder
 import com.github.niclasvaneyk.laravelmake.common.php.InterpreterInference
-import com.github.niclasvaneyk.laravelmake.common.php.run.NoInterpreterSetException
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.LaravelMakeIntegrationBundle
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelProjectFactory
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.php.PHPInterpreterValidator
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.php.actions.OpenPHPInterpreterSettingsAction
 import com.intellij.notification.NotificationType
+import com.intellij.openapi.components.Service.Level
 
-@Service
+@Service(Level.PROJECT)
 class LaravelMakeIntegrationProjectService(project: Project) {
     private val projectFactory = LaravelProjectFactory(project)
     val laravelProject = projectFactory.build()

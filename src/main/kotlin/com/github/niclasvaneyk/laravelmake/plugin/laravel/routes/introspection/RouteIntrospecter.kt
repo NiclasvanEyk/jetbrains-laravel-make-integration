@@ -15,6 +15,7 @@ import com.github.niclasvaneyk.laravelmake.common.laravel.introspection.CommandR
 import com.github.niclasvaneyk.laravelmake.common.laravel.introspection.CommandBasedIntrospecter
 import com.github.niclasvaneyk.laravelmake.common.laravel.introspection.CouldNotExtractJsonException
 import com.intellij.openapi.module.ModuleManager
+import com.intellij.openapi.vfs.VirtualFileManager
 import java.util.concurrent.Callable
 
 class RouteIntrospecter(
@@ -24,6 +25,13 @@ class RouteIntrospecter(
 ) : CommandBasedIntrospecter<List<IntrospectedRoute>>(artisan, progressBar) {
     override val description = "Scanning Laravel routes"
     override val command = CommandRunInfo("route", "list", listOf("--json"))
+
+    init {
+        VirtualFileManager.getInstance().addAsyncFileListener(
+            RoutesFileChangeListener(this),
+            project
+        )
+    }
 
     companion object {
         protected val log = Logger.getInstance(IntrospectionList::class.java)

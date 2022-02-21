@@ -18,7 +18,7 @@ class LaravelProject(path: String, val jetbrainsProject: Project) {
     val paths: LaravelProjectPaths = LaravelProjectPaths(path)
     val version = DetectLaravelVersion.fromLockfile(
         File(paths.path(LaravelProjectPaths.COMPOSER_LOCK))
-    ) ?: com.github.niclasvaneyk.laravelmake.common.composer.ComposerVersion(0, 0, 0)
+    ) ?: ComposerVersion(0, 0, 0)
     val introspection = LaravelIntrospectionFacade(
         artisan,
         ProgressBarBuilder(jetbrainsProject),
