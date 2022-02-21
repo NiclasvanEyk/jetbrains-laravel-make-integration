@@ -36,5 +36,15 @@ class RouteListFilters(private val routeList: RouteList) : FilterActionGroup() {
                 routeList.showClosureRoutes = state
             }
         })
+
+        add(object : ToggleAction("Pseudo-Private Routes") {
+            override fun isSelected(e: AnActionEvent): Boolean {
+                return routeList.showPseudoPrivateRoutes
+            }
+
+            override fun setSelected(e: AnActionEvent, state: Boolean) {
+                routeList.showPseudoPrivateRoutes = state
+            }
+        })
     }
 }

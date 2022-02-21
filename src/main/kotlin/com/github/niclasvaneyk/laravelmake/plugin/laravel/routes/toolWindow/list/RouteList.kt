@@ -18,6 +18,7 @@ class RouteList(
     var showApplicationRoutes by TriggersRender(true, this)
     var showVendorRoutes by TriggersRender(true, this)
     var showClosureRoutes by TriggersRender(true, this)
+    var showPseudoPrivateRoutes by TriggersRender(false, this)
     var fullyQualifyMiddlewareNames by TriggersRender(false, this)
 
     val shownRouteOrigins: Set<RouteOrigin>
@@ -44,7 +45,9 @@ class RouteList(
     override fun listKey(element: IntrospectedRoute) = listOf(element.path, element.httpMethod).joinToString("...")
 
     override fun deriveVisibleModel(newModel: List<IntrospectedRoute>): List<IntrospectedRoute> {
-        return newModel .filter { shownRouteOrigins.contains(it.origin) }
+        return newModel
+            .filter { shownRouteOrigins.contains(it.origin) }
+            .filter { showPseudoPrivateRoutes || !it.path.startsWith("/_") }
     }
 
     override fun triggerRender() {
