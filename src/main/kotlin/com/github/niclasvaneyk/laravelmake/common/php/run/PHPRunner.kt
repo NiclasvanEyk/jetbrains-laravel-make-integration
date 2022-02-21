@@ -31,7 +31,7 @@ class PHPRunner(private val project: Project) {
     fun executeScript(path: String, arguments: Iterable<String>): Result {
         if (!initialized) {
             runConfiguration = buildRunConfiguration()
-            interpreter = InterpreterInference(project).inferInterpreter()
+            interpreter = InterpreterInference(project).inferInterpreter() ?: throw NoInterpreterSetException()
             initialized = true
         }
 

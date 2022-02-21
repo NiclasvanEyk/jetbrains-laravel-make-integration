@@ -1,5 +1,6 @@
 package com.github.niclasvaneyk.laravelmake.plugin.jetbrains.toolWindow
 
+import com.github.niclasvaneyk.laravelmake.common.php.InterpreterInference
 import com.intellij.openapi.diagnostic.logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.IdeFocusManager
@@ -10,8 +11,21 @@ import com.intellij.ui.content.ContentFactory
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.services.LaravelMakeIntegrationProjectService
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.commands.toolWindow.CommandsToolWindow
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.toolWindow.RoutesToolWindow
+import com.intellij.openapi.wm.ex.ToolWindowManagerListener
+import com.jetbrains.php.config.interpreters.PhpInterpretersBaseManager
+import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl
+import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl.PhpProjectInterpretersManager
 import java.awt.event.FocusEvent
 import java.awt.event.FocusListener
+
+class MyListener: ToolWindowManagerListener {
+    override fun toolWindowShown(toolWindow: ToolWindow) {
+        super.toolWindowShown(toolWindow)
+
+
+        logger<MyListener>().warn("Shown: ${toolWindow.id}");
+    }
+}
 
 class LaravelToolWindowFactory : ToolWindowFactory {
     override fun createToolWindowContent(

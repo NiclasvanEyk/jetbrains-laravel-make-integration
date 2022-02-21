@@ -18,7 +18,9 @@ class NotificationFactory {
             content ?: "",
             type
         ).apply {
-            icon = icon
+            if (this@NotificationFactory.icon !== null) {
+                icon = this@NotificationFactory.icon
+            }
         }
 
         reset()
