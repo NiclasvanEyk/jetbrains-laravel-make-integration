@@ -1,12 +1,12 @@
 package com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.toolWindow.list
 
-import com.intellij.openapi.project.Project
-import com.intellij.ui.ListSpeedSearch
 import com.github.niclasvaneyk.laravelmake.common.jetbrains.ui.IntrospectionList
 import com.github.niclasvaneyk.laravelmake.common.jetbrains.ui.TriggersRender
 import com.github.niclasvaneyk.laravelmake.common.laravel.introspection.IntrospectionSubject
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.introspection.IntrospectedRoute
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.introspection.RouteOrigin
+import com.intellij.openapi.project.Project
+import com.intellij.ui.ListSpeedSearch
 import javax.swing.ListSelectionModel
 
 class RouteList(
@@ -30,6 +30,7 @@ class RouteList(
 
     init {
         addMouseListener(RouteListMouseListener(this))
+        addKeyListener(RouteListKeyListener(this))
         selectionMode = ListSelectionModel.SINGLE_SELECTION
         selectionModel.addListSelectionListener {
             onRouteSelected(selectedValue)
