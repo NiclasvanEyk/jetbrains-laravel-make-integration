@@ -6,6 +6,7 @@ import com.github.niclasvaneyk.laravelmake.common.jetbrains.progress.ProgressBar
 import com.github.niclasvaneyk.laravelmake.common.laravel.Artisan
 import com.github.niclasvaneyk.laravelmake.common.laravel.introspection.CommandBasedIntrospecter
 import com.github.niclasvaneyk.laravelmake.common.laravel.introspection.CommandRunInfo
+import com.github.niclasvaneyk.laravelmake.common.laravel.introspection.CouldNotExtractJsonException
 import com.github.niclasvaneyk.laravelmake.common.laravel.introspection.LoadedState
 
 class CommandIntrospecter(
@@ -34,11 +35,17 @@ class CommandIntrospecter(
     }
 
     override fun onCommandOutput(output: String, publish: (result: List<Command>) -> Unit) {
-        val commands = GsonBuilder()
-            .create()
-            .fromJson(output, LaravelConsoleApplication::class.java)
-            .commands
-            .sortedBy { it.name }
+        val commands: List<Command>
+
+        try {
+            commands = GsonBuilder()
+                .create()
+                .fromJson(output, LaravelConsoleApplication::class.java)
+                .commands
+                .sortedBy { it.name }
+        } catch (exception: Throwable) {
+            throw CouldNotExtractJsonException(output, exception)
+        }
 
         publish(commands)
     }

@@ -1,13 +1,13 @@
 package com.github.niclasvaneyk.laravelmake.plugin.jetbrains
 
-import com.intellij.AbstractBundle
+import com.intellij.DynamicBundle
 import org.jetbrains.annotations.NonNls
 import org.jetbrains.annotations.PropertyKey
 
 @NonNls
-private const val BUNDLE = "messages.LaravelMakeIntegrationBundle"
+private const val BUNDLE = "messages.LaravelMakeBundle"
 
-object LaravelMakeIntegrationBundle : AbstractBundle(BUNDLE) {
+object LaravelMakeIntegrationBundle : DynamicBundle(BUNDLE) {
 
     @Suppress("SpreadOperator")
     @JvmStatic

@@ -13,6 +13,7 @@ import com.github.niclasvaneyk.laravelmake.common.jetbrains.ui.IntrospectionList
 import com.github.niclasvaneyk.laravelmake.common.laravel.Artisan
 import com.github.niclasvaneyk.laravelmake.common.laravel.introspection.CommandRunInfo
 import com.github.niclasvaneyk.laravelmake.common.laravel.introspection.CommandBasedIntrospecter
+import com.github.niclasvaneyk.laravelmake.common.laravel.introspection.CouldNotExtractJsonException
 import com.intellij.openapi.module.ModuleManager
 import java.util.concurrent.Callable
 
@@ -35,10 +36,16 @@ class RouteIntrospecter(
         // This is kinda hacky, but works for routes.
         val sanitizedOutput = output.replace("\n", "")
 
-        val routes = GsonBuilder()
-            .create()
-            .fromJson(sanitizedOutput, Array<RouteListEntry>::class.java)
-            .toList()
+        val routes: List<RouteListEntry>
+        try {
+            routes = GsonBuilder()
+                .create()
+                .fromJson(sanitizedOutput, Array<RouteListEntry>::class.java)
+                .toList()
+
+        } catch (exception: Throwable) {
+            throw CouldNotExtractJsonException(output, exception)
+        }
 
         ReadAction
             .nonBlocking(Callable {
