@@ -5,7 +5,7 @@ import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.openapi.ui.LabeledComponent
 import com.intellij.ui.EditorTextField
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.commands.autoCompletion.CommandAutocompleteTextField
-import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.services.LaravelMakeIntegrationProjectService
+import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.services.LaravelMakeProjectService
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.commands.introspection.Command
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.make.SubCommand
 import java.awt.BorderLayout
@@ -49,8 +49,8 @@ class ArtisanMakeDialog(
     }
 
     private fun retrieveCommands(): MutableList<Command> {
-        val service = project.getService(LaravelMakeIntegrationProjectService::class.java)
-        val laravelProject = service.laravelProject ?: return mutableListOf()
+        val service = project.getService(LaravelMakeProjectService::class.java)
+        val laravelProject = service.application ?: return mutableListOf()
         val introspecter = laravelProject.introspection.commandIntrospecter
 
         return introspecter.snapshot.toMutableList()

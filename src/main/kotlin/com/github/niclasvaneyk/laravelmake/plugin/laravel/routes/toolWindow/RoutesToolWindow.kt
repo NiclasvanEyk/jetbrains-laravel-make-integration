@@ -1,23 +1,20 @@
 package com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.toolWindow
 
-import com.intellij.openapi.diagnostic.logger
 import com.intellij.openapi.ui.SimpleToolWindowPanel
 import com.intellij.ui.components.JBPanelWithEmptyText
 import com.intellij.ui.components.JBScrollPane
 import com.github.niclasvaneyk.laravelmake.common.laravel.introspection.*
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.toolWindow.ReceivesToolWindowTabLifecycleEvents
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.toolWindow.errorPanel
-import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelProject
+import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelApplication
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.introspection.IntrospectedRoute
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.introspection.RouteIntrospecter
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.toolWindow.list.RouteList
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.toolWindow.toolBar.RoutesToolbar
-import java.awt.Graphics
-import java.awt.event.ComponentListener
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.introspection.toolWindow.IntrospectionBasedToolWindowRevalidator as Revalidator
 
 class RoutesToolWindow(
-    project: LaravelProject,
+    project: LaravelApplication,
     private val introspecter: RouteIntrospecter = project.introspection.routeIntrospecter,
     private val revalidator: Revalidator<List<IntrospectedRoute>> = Revalidator(
         introspecter
@@ -26,7 +23,7 @@ class RoutesToolWindow(
     SimpleToolWindowPanel(false),
     ReceivesToolWindowTabLifecycleEvents by revalidator
 {
-    private val documentation = RouteDocumentation(project.jetbrainsProject)
+    private val documentation = RouteDocumentation(project.project)
 
     private var selectedRoute: IntrospectedRoute? = null
         set(value) {
@@ -40,7 +37,7 @@ class RoutesToolWindow(
 
     private val routeList: RouteList = RouteList(
         routeUpdates = introspecter.introspectionState,
-        project = project.jetbrainsProject,
+        project = project.project,
         onRouteSelected = { selectedRoute = it }
     )
 

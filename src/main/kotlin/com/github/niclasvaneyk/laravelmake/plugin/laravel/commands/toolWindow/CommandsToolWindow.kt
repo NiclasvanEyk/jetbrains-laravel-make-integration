@@ -3,7 +3,7 @@ package com.github.niclasvaneyk.laravelmake.plugin.laravel.commands.toolWindow
 import com.intellij.ui.JBColor
 import com.intellij.ui.SideBorder
 import com.intellij.ui.components.JBScrollPane
-import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelProject
+import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelApplication
 import com.github.niclasvaneyk.laravelmake.common.jetbrains.ui.toolWindow.MasterDetailToolWindow
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.toolWindow.ReceivesToolWindowTabLifecycleEvents
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.commands.introspection.Command
@@ -12,7 +12,7 @@ import com.github.niclasvaneyk.laravelmake.plugin.laravel.commands.toolWindow.li
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.introspection.toolWindow.IntrospectionBasedToolWindowRevalidator as Revalidator
 
 class CommandsToolWindow(
-    project: LaravelProject,
+    project: LaravelApplication,
     private val introspecter: CommandIntrospecter = project.introspection.commandIntrospecter,
     private val revalidator: Revalidator<List<Command>> = Revalidator(introspecter),
 ) :

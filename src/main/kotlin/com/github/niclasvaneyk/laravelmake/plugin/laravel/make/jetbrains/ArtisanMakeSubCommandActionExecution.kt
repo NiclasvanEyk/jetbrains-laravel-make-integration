@@ -9,7 +9,7 @@ import com.intellij.openapi.vfs.LocalFileSystem
 import com.jetbrains.php.run.PhpEditInterpreterExecutionException
 import com.github.niclasvaneyk.laravelmake.common.jetbrains.notifications.ProjectBasedNotifier
 import com.github.niclasvaneyk.laravelmake.common.laravel.ArtisanMakeParameters
-import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelProject
+import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelApplication
 import com.github.niclasvaneyk.laravelmake.common.php.run.NoInterpreterSetException
 import com.github.niclasvaneyk.laravelmake.common.php.run.PHPRunner
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.make.CreatedFileResolver
@@ -24,7 +24,7 @@ import com.github.niclasvaneyk.laravelmake.plugin.laravel.make.SubCommand
 open class ArtisanMakeSubCommandActionExecution(
     protected open val command: SubCommand,
     protected open val project: Project,
-    protected open val laravelProject: LaravelProject,
+    protected open val laravelApplication: LaravelApplication,
     protected open val target: String?,
 ) {
     protected open val directoryResolver: DirectoryResolver
@@ -34,7 +34,7 @@ open class ArtisanMakeSubCommandActionExecution(
         get() = TargetResolver(directoryResolver)
 
     protected open val createdFileResolver: CreatedFileResolver
-        get() = CreatedFileResolver(laravelProject.paths.base)
+        get() = CreatedFileResolver(laravelApplication.paths.base)
 
     private val notifications = ProjectBasedNotifier(project)
 
@@ -42,7 +42,7 @@ open class ArtisanMakeSubCommandActionExecution(
     fun execute() {
         val initialInput = targetResolver.suggestInitialInputFor(
             target,
-            laravelProject.paths.base
+            laravelApplication.paths.base
         )
         // We don't need to provide any feedback here, since the user either
         // hit cancel or provided no input
@@ -67,7 +67,7 @@ open class ArtisanMakeSubCommandActionExecution(
                     }
 
                     try {
-                        makeResult = laravelProject.artisan.make(command.command, parameters)
+                        makeResult = laravelApplication.artisan.make(command.command, parameters)
                     } catch (e: NoInterpreterSetException) {
                         var message = "No PHP interpreter found!"
                         message += "\nPlease set one in Settings > Languages & Frameworks > PHP"

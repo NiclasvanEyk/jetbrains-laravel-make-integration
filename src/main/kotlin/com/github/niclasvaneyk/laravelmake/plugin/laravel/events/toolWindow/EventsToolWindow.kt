@@ -1,10 +1,10 @@
 package com.github.niclasvaneyk.laravelmake.plugin.laravel.events.toolWindow
 
 import com.intellij.openapi.project.Project
-import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.services.LaravelMakeIntegrationProjectService
+import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.services.LaravelMakeProjectService
 
 class EventsToolWindow(
-    projectService: LaravelMakeIntegrationProjectService,
+    projectService: LaravelMakeProjectService,
     project: Project,
 ) {
 //    private val eventList = EventList(

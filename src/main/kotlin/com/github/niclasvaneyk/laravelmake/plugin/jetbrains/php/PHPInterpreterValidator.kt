@@ -7,11 +7,11 @@ import com.github.niclasvaneyk.laravelmake.common.php.run.DockerNotStartedExcept
 import com.github.niclasvaneyk.laravelmake.common.php.run.InterpreterScriptRunException
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.php.actions.OpenPHPInterpreterSettingsAction
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.php.actions.StartDockerOnMacAction
-import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelProject
+import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelApplication
 
-class PHPInterpreterValidator(private val project: LaravelProject) {
+class PHPInterpreterValidator(private val project: LaravelApplication) {
     fun validate(): ValidationResult {
-        val notifier = ProjectBasedNotifier(project.jetbrainsProject)
+        val notifier = ProjectBasedNotifier(project.project)
 
         try {
             val result = project.artisan.command(

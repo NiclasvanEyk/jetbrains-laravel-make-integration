@@ -5,7 +5,7 @@ import java.io.File
 
 class DetectLaravelVersion {
     companion object {
-        fun fromLockfile(lockFile: File): com.github.niclasvaneyk.laravelmake.common.composer.ComposerVersion? {
+        fun fromLockfile(lockFile: File): ComposerVersion? {
             if (!lockFile.exists() || !lockFile.isFile) {
                 return null
             }
@@ -13,7 +13,7 @@ class DetectLaravelVersion {
             return fromLockfileContents(lockFile.readText())
         }
 
-        fun fromLockfileContents(contents: String): com.github.niclasvaneyk.laravelmake.common.composer.ComposerVersion? {
+        fun fromLockfileContents(contents: String): ComposerVersion? {
             val laravelVersionRegex =
                 """"name": "laravel/framework",\s*"version":\s*"v([0-9]+\.[0-9]+\.[0-9]+)""".toRegex(
                     setOf(RegexOption.MULTILINE, RegexOption.DOT_MATCHES_ALL)
@@ -22,7 +22,7 @@ class DetectLaravelVersion {
             val versionString = matchResult?.get(1)?.value
 
             if (versionString != null) {
-                return com.github.niclasvaneyk.laravelmake.common.composer.ComposerVersion(versionString)
+                return ComposerVersion(versionString)
             }
 
             return null

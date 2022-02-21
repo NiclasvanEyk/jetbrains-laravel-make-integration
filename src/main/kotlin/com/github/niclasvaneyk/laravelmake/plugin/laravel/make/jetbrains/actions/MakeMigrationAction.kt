@@ -4,7 +4,7 @@ import com.intellij.openapi.project.Project
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.ArtisanMakeSubCommandActionExecution
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.make.CreatedFileResolver
 import com.github.niclasvaneyk.laravelmake.common.laravel.ArtisanMakeParameters
-import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelProject
+import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelApplication
 import com.github.niclasvaneyk.laravelmake.common.laravel.LaravelProjectPaths
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.make.SubCommand
 import java.io.File
@@ -34,16 +34,16 @@ class MigrationCreatedFileResolver(
 class MakeMigrationActionExecution(
     override val command: SubCommand,
     override val project: Project,
-    override val laravelProject: LaravelProject,
+    override val laravelApplication: LaravelApplication,
     override val target: String?
 ) : ArtisanMakeSubCommandActionExecution(
     command,
     project,
-    laravelProject,
+    laravelApplication,
     target
 ) {
     override val createdFileResolver: CreatedFileResolver
-        get() = MigrationCreatedFileResolver(laravelProject.paths.base)
+        get() = MigrationCreatedFileResolver(laravelApplication.paths.base)
 }
 
 class MakeMigrationAction : ArtisanMakeSubCommandAction(
@@ -52,9 +52,9 @@ class MakeMigrationAction : ArtisanMakeSubCommandAction(
     override fun buildExecution(
         meta: SubCommand,
         project: Project,
-        laravelProject: LaravelProject,
+        laravelApplication: LaravelApplication,
         targetFilePath: String?
     ): ArtisanMakeSubCommandActionExecution {
-        return MakeMigrationActionExecution(meta, project, laravelProject, targetFilePath)
+        return MakeMigrationActionExecution(meta, project, laravelApplication, targetFilePath)
     }
 }

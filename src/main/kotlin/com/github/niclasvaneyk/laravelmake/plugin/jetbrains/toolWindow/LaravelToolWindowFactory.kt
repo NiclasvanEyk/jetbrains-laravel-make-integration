@@ -1,22 +1,15 @@
 package com.github.niclasvaneyk.laravelmake.plugin.jetbrains.toolWindow
 
-import com.github.niclasvaneyk.laravelmake.common.php.InterpreterInference
 import com.intellij.openapi.diagnostic.logger
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.wm.IdeFocusManager
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
-import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.ui.content.ContentFactory
-import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.services.LaravelMakeIntegrationProjectService
+import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.services.LaravelMakeProjectService
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.commands.toolWindow.CommandsToolWindow
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.toolWindow.RoutesToolWindow
+import com.intellij.openapi.components.service
 import com.intellij.openapi.wm.ex.ToolWindowManagerListener
-import com.jetbrains.php.config.interpreters.PhpInterpretersBaseManager
-import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl
-import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl.PhpProjectInterpretersManager
-import java.awt.event.FocusEvent
-import java.awt.event.FocusListener
 
 class MyListener: ToolWindowManagerListener {
     override fun toolWindowShown(toolWindow: ToolWindow) {
@@ -34,9 +27,9 @@ class LaravelToolWindowFactory : ToolWindowFactory {
     ) {
         val contentFactory = ContentFactory.SERVICE.getInstance()
         val projectService = project.getService(
-            LaravelMakeIntegrationProjectService::class.java
+            LaravelMakeProjectService::class.java
         )
-        val laravelProject = projectService.laravelProject ?: return
+        val laravelProject = projectService.application ?: return
 
         listOf(
             // Until we find a nice way of showing information here,
@@ -71,8 +64,6 @@ class LaravelToolWindowFactory : ToolWindowFactory {
     }
 
     override fun isApplicable(project: Project): Boolean {
-        return project
-            .getService(LaravelMakeIntegrationProjectService::class.java)
-            .isLaravelProject
+        return project.service<LaravelMakeProjectService>() .application != null
     }
 }

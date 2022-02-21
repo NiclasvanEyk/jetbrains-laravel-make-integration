@@ -1,9 +1,8 @@
 package com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions
 
 import com.intellij.openapi.project.Project
-import com.github.niclasvaneyk.laravelmake.common.composer.ComposerVersion
 import com.github.niclasvaneyk.laravelmake.common.laravel.ArtisanMakeParameters
-import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelProject
+import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelApplication
 import com.github.niclasvaneyk.laravelmake.common.laravel.LaravelProjectPaths
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.make.CreatedFileResolver
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.make.DirectoryResolver
@@ -61,24 +60,24 @@ class MakeModelTargetResolver(
 class MakeModelActionExecution(
     override val command: SubCommand,
     override val project: Project,
-    override val laravelProject: LaravelProject,
+    override val laravelApplication: LaravelApplication,
     override val target: String?
 ) : ArtisanMakeSubCommandActionExecution(
     command,
     project,
-    laravelProject,
+    laravelApplication,
     target,
 ) {
     override val targetResolver: TargetResolver
         get() = MakeModelTargetResolver(
             directoryResolver,
-            laravelProject.version,
+            laravelApplication.version,
         )
 
     override val createdFileResolver: CreatedFileResolver
         get() = MakeModelCreatedFileResolver(
-            laravelProject.paths.base,
-            laravelProject.version,
+            laravelApplication.paths.base,
+            laravelApplication.version,
         )
 }
 
@@ -88,10 +87,10 @@ class MakeModelAction : ArtisanMakeSubCommandAction(
     override fun buildExecution(
         meta: SubCommand,
         project: Project,
-        laravelProject: LaravelProject,
+        laravelApplication: LaravelApplication,
         targetFilePath: String?
     ): ArtisanMakeSubCommandActionExecution {
-        return MakeModelActionExecution(meta, project, laravelProject, targetFilePath)
+        return MakeModelActionExecution(meta, project, laravelApplication, targetFilePath)
     }
 
     // As the models are stored in /app by default, we should not just activate this action

@@ -2,7 +2,7 @@ package com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.groups
 
 import com.intellij.ide.actions.NonEmptyActionGroup
 import com.intellij.openapi.actionSystem.*
-import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.services.LaravelMakeIntegrationProjectService
+import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.services.LaravelMakeProjectService
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.*
 
 enum class DescriptionMode {
@@ -84,8 +84,8 @@ class ArtisanMakeActionsGroup(
         super.update(e)
 
         val project = e.project ?: return
-        val service = project.getService(LaravelMakeIntegrationProjectService::class.java)
-        val laravelProject = service.laravelProject ?: return
+        val service = project.getService(LaravelMakeProjectService::class.java)
+        val laravelProject = service.application ?: return
         val introspecter = laravelProject.introspection.commandIntrospecter
         val commands = introspecter.snapshot
         val actions = this.computeActions().toMutableList()

@@ -2,7 +2,7 @@ package com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.action
 
 import com.intellij.openapi.project.Project
 import com.github.niclasvaneyk.laravelmake.common.laravel.ArtisanMakeParameters
-import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelProject
+import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelApplication
 import com.github.niclasvaneyk.laravelmake.common.laravel.LaravelProjectPaths
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.make.CreatedFileResolver
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.make.DirectoryResolver
@@ -49,16 +49,16 @@ class TestTargetResolver(
 class MakeTestActionExecution(
     override val command: SubCommand,
     override val project: Project,
-    override val laravelProject: LaravelProject,
+    override val laravelApplication: LaravelApplication,
     override val target: String?
 ) : ArtisanMakeSubCommandActionExecution(
     command,
     project,
-    laravelProject,
+    laravelApplication,
     target
 ) {
     override val createdFileResolver: CreatedFileResolver
-        get() = TestFileResolver(laravelProject.paths.base)
+        get() = TestFileResolver(laravelApplication.paths.base)
 
     override val targetResolver: TargetResolver
         get() = TestTargetResolver(directoryResolver)
@@ -70,9 +70,9 @@ class MakeTestAction : ArtisanMakeSubCommandAction(
     override fun buildExecution(
         meta: SubCommand,
         project: Project,
-        laravelProject: LaravelProject,
+        laravelApplication: LaravelApplication,
         targetFilePath: String?
     ): ArtisanMakeSubCommandActionExecution {
-        return MakeTestActionExecution(meta, project, laravelProject, targetFilePath)
+        return MakeTestActionExecution(meta, project, laravelApplication, targetFilePath)
     }
 }

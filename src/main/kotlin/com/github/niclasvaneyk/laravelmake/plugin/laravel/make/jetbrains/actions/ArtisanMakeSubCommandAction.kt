@@ -5,12 +5,13 @@ import com.intellij.openapi.project.DumbAwareAction
 import com.intellij.openapi.project.Project
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.LaravelIcons
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.make.DirectoryResolver
-import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelProject
+import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelApplication
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.ArtisanMakeSubCommandActionExecution
-import com.github.niclasvaneyk.laravelmake.resolveLaravelProject
-import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.services.LaravelMakeIntegrationProjectService
+import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.services.LaravelMakeProjectService
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.make.SubCommand
-import com.github.niclasvaneyk.laravelmake.targetFileFromEvent
+import com.intellij.openapi.actionSystem.LangDataKeys
+import com.intellij.openapi.components.service
+import com.intellij.openapi.vfs.VirtualFile
 
 /**
  * Class for handling the event from the IDE.
@@ -42,14 +43,14 @@ abstract class ArtisanMakeSubCommandAction(
 
     override fun actionPerformed(event: AnActionEvent) {
         val project = event.project ?: return
-        val service = project.getService(LaravelMakeIntegrationProjectService::class.java)
+        val service = project.getService(LaravelMakeProjectService::class.java)
 
         if (!service.isLaravelProject) {
             return
         }
 
         val targetFilePath = targetFileFromEvent(event)?.canonicalPath
-        val laravelProject = service.laravelProject!!
+        val laravelProject = service.application!!
 
         val execution = buildExecution(
             command, project, laravelProject, targetFilePath
@@ -61,13 +62,13 @@ abstract class ArtisanMakeSubCommandAction(
     open fun buildExecution(
         meta: SubCommand,
         project: Project,
-        laravelProject: LaravelProject,
+        laravelApplication: LaravelApplication,
         targetFilePath: String?
     ): ArtisanMakeSubCommandActionExecution {
         return ArtisanMakeSubCommandActionExecution(
             meta,
             project,
-            laravelProject,
+            laravelApplication,
             targetFilePath
         )
     }
@@ -83,10 +84,12 @@ abstract class ArtisanMakeSubCommandAction(
         // We do not want to filter anything from the double shift thingy
         if (event.isFromActionToolbar) return
 
-        val project = resolveLaravelProject(event) ?: return
+        val app = event.project
+            ?.service<LaravelMakeProjectService>()
+            ?.application ?: return
 
         val targetFilePath = targetFileFromEvent(event)?.canonicalPath ?: return
-        val relativeTargetPath = project.paths.fromProjectRoot(targetFilePath)
+        val relativeTargetPath = app.paths.fromProjectRoot(targetFilePath)
 
         event.presentation.isEnabled = shouldBeActivatedWhenRightClickedOn(relativeTargetPath)
         event.presentation.description = command.description
@@ -95,5 +98,12 @@ abstract class ArtisanMakeSubCommandAction(
 
     open fun shouldBeActivatedWhenRightClickedOn(relativePathFromProjectRoot: String): Boolean {
         return DirectoryResolver(command.location).couldPointToDefaultFolder(relativePathFromProjectRoot)
+    }
+
+    private fun targetFileFromEvent(event: AnActionEvent): VirtualFile? {
+        val view = LangDataKeys.IDE_VIEW.getData(event.dataContext) ?: return null
+        val directories = view.directories
+
+        return if (directories.isNotEmpty()) directories[0].virtualFile else null
     }
 }
