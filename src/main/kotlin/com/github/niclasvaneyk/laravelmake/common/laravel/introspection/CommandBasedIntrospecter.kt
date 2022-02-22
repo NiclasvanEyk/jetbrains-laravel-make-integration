@@ -81,8 +81,11 @@ abstract class CommandBasedIntrospecter<T>(
     }
 
     private fun parseJsonFromOutput(output: String): String? {
-        val beginOfJson = output.indexOfAny(listOf("{", "["))
-        val endOfJson = output.lastIndexOfAny(listOf("]", "}"))
+        // "[{" needs to be first, otherwise Xdebug messages like 
+        // [22-Feb-2022 11:33:24 UTC] Xdebug: [Step Debug] Could not connect to debugging client. Tried: host.docker.internal:9003 (fallback through xdebug.client_host/xdebug.client_port) :-(
+        // are treated like JSON
+        val beginOfJson = output.indexOfAny(listOf("[{", "{", "["))
+        val endOfJson = output.lastIndexOfAny(listOf("}]", "]", "}"))
 
         if (beginOfJson == -1 || endOfJson == -1) return null
 
