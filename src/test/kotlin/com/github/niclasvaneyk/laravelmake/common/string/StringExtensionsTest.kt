@@ -1,8 +1,10 @@
 package com.github.niclasvaneyk.laravelmake.common.string
 
+import com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.introspection.RouteListEntry
+import com.google.gson.GsonBuilder
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 internal class StringExtensionsTest {
     @Test
@@ -35,5 +37,32 @@ internal class StringExtensionsTest {
         """.trimIndent()
 
         assertEquals(3, article.paragraphs().count())
+    }
+
+    @Test
+    fun `json can be extracted from command outputs`() {
+        val withXdebugMessages = """
+        [22-Feb-2022 15:20:26 UTC] Xdebug: [Step Debug] Could not connect to debugging client. Tried: host.docker.internal:9003 (fallback through xdebug.client_host/xdebug.client_port) :-(
+
+        [{"domain":null,"method":"GET|HEAD","uri":"api","name":null,"action":"Closure","middleware":["web"]},{"domain":null,"method":"GET|HEAD","uri":"api\/current","name":null,"action":"ApiController@current","middleware":["api","App\\Http\\Middleware\\Authenticate:sanctum"]}]
+
+        [22-Feb-2022 15:20:26 UTC] Xdebug: [Step Debug] Could not connect to debugging client. Tried: host.docker.internal:9003 (fallback through xdebug.client_host/xdebug.client_port) :-(
+        """.trimIndent()
+        val withoutXdebugMessagesButWithRandomNewLines = """
+        [{"domain":null,"method":"GET|HEAD","uri":"api","name":null,"action":"Closure","middleware":["web"]},{"dom
+        ain":null,"method":"GET|HEAD","uri":"api\/current","name":null,"action":"ApiController@current","middleware":["api","App\\Http\\
+        Middleware\\Authenticate:sanctum"]}]
+        
+        """.trimIndent()
+
+        for (output in listOf(withXdebugMessages, withoutXdebugMessagesButWithRandomNewLines)) {
+            val json = output.containedJson()
+            val routes = GsonBuilder()
+                .create()
+                .fromJson(json, Array<RouteListEntry>::class.java)
+                .toList()
+
+            assertTrue(routes.isNotEmpty())
+        }
     }
 }

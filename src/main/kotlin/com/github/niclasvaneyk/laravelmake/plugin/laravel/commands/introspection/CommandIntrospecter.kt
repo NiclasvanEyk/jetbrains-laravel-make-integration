@@ -8,6 +8,7 @@ import com.github.niclasvaneyk.laravelmake.common.laravel.introspection.CommandB
 import com.github.niclasvaneyk.laravelmake.common.laravel.introspection.CommandRunInfo
 import com.github.niclasvaneyk.laravelmake.common.laravel.introspection.CouldNotExtractJsonException
 import com.github.niclasvaneyk.laravelmake.common.laravel.introspection.LoadedState
+import com.github.niclasvaneyk.laravelmake.common.string.containedJson
 
 class CommandIntrospecter(
     artisan: Artisan,
@@ -36,11 +37,12 @@ class CommandIntrospecter(
 
     override fun onCommandOutput(output: String, publish: (result: List<Command>) -> Unit) {
         val commands: List<Command>
+        val json = prepareCommandOutput(output).containedJson()
 
         try {
             commands = GsonBuilder()
                 .create()
-                .fromJson(output, LaravelConsoleApplication::class.java)
+                .fromJson(json, LaravelConsoleApplication::class.java)
                 .commands
                 .sortedBy { it.name }
         } catch (exception: Throwable) {
@@ -50,15 +52,15 @@ class CommandIntrospecter(
         publish(commands)
     }
 
-    override fun prepareCommandOutput(output: String): String? {
-        return super.prepareCommandOutput(output)
+    fun prepareCommandOutput(output: String): String {
+        return output
             // For some reason an empty argument list gets serialized
             // to an empty array instead of an empty object. Maybe
             // because of associative arrays in php are kinda the
             // same as JSON objects.
-            ?.replace(Regex("\"options\":\\[]]"), "\"options\":{}")
-            ?.replace(Regex("\"arguments\":\\[]]"), "\"arguments\":{}")
+            .replace(Regex("\"options\":\\[]]"), "\"options\":{}")
+            .replace(Regex("\"arguments\":\\[]]"), "\"arguments\":{}")
             // These are getting added by Docker I think
-            ?.replace(Regex("\n"), "")
+            .replace(Regex("\n"), "")
     }
 }

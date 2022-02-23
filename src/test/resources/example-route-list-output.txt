@@ -1,0 +1,5 @@
+[22-Feb-2022 15:20:26 UTC] Xdebug: [Step Debug] Could not connect to debugging client. Tried: host.docker.internal:9003 (fallback through xdebug.client_host/xdebug.client_port) :-(
+
+[{"domain":null,"method":"GET|HEAD","uri":"api","name":null,"action":"Closure","middleware":["web"]},{"domain":null,"method":"GET|HEAD","uri":"api\/current","name":null,"action":"ApiController@current","middleware":["api","App\\Http\\Middleware\\Authenticate:sanctum"]}]
+
+[22-Feb-2022 15:20:26 UTC] Xdebug: [Step Debug] Could not connect to debugging client. Tried: host.docker.internal:9003 (fallback through xdebug.client_host/xdebug.client_port) :-(

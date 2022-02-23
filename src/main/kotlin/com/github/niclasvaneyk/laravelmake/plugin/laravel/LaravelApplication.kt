@@ -8,6 +8,8 @@ import com.github.niclasvaneyk.laravelmake.common.laravel.LaravelProjectPaths
 import com.github.niclasvaneyk.laravelmake.common.php.run.PHPRunnerFactory
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.introspection.LaravelIntrospectionFacade
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.rd.util.launchUnderModalProgress
+import com.jetbrains.rd.util.lifetime.Lifetime
 import java.io.File
 
 class LaravelApplication(path: String, val project: Project) {
@@ -23,6 +25,8 @@ class LaravelApplication(path: String, val project: Project) {
     )
 
     fun initialize() {
-        validateProjectInterpreter(this)
+        validateProjectInterpreter(this@LaravelApplication).then {
+            introspection.commandIntrospecter.refresh()
+        }
     }
 }

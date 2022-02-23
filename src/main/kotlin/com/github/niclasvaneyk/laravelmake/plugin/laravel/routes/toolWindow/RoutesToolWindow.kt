@@ -56,7 +56,7 @@ class RoutesToolWindow(
 
         project.introspection.routes.subscribe(
             { onStateUpdate(it) },
-            { onError(it.toString() + "\n" + it.stackTraceToString()) }
+            { onError(it.toString() + "\n" + it.stackTraceToString(), it) }
         )
     }
 
@@ -81,12 +81,14 @@ class RoutesToolWindow(
                 documentation.showMessage()
             }
 
-            is ErrorState -> onError(it.message)
+            is ErrorState -> onError(it.message, it.exception)
         }
     }
 
-    private fun onError(details: String = "") {
-        setContent(errorPanel("An error occurred while loading routes", details))
+    private fun onError(details: String = "", exception: Throwable?) {
+        val message = details.ifEmpty { exception?.message ?: "" }
+
+        setContent(errorPanel("An error occurred while loading routes", message))
         documentation.showMessage("")
     }
 }

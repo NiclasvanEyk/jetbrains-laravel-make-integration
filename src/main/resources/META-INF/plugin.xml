@@ -27,6 +27,13 @@
         <!--        <framework.type implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.projectCreation.LaravelDotBuildFramework" />-->
         <!--        <frameworkSupport implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.projectCreation.LaravelDotBuildFrameworkProvider" />-->
     </extensions>
+    
+    <projectListeners>
+        <listener
+            class="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.listener.ProjectOpenedListener"
+            topic="com.intellij.openapi.project.ProjectManagerListener"
+        />
+    </projectListeners>
 
     <actions>
         <group id="LaravelMakeGroup"

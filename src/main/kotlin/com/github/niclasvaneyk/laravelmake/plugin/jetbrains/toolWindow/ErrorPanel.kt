@@ -4,7 +4,7 @@ import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.ui.SimpleTextAttributes
 import com.intellij.ui.components.JBPanelWithEmptyText
 import com.intellij.ui.components.JBScrollPane
-import javax.swing.JLabel
+import javax.swing.JTextArea
 
 class ErrorPanelDetailDialogWrapper(title: String, private val detail: String) : DialogWrapper(true) {
     init {
@@ -12,7 +12,11 @@ class ErrorPanelDetailDialogWrapper(title: String, private val detail: String) :
         init()
     }
 
-    override fun createCenterPanel() = JBScrollPane(JLabel("<html>${detail.replace("\n", "<br/>")}</html>"))
+    override fun createCenterPanel(): JBScrollPane {
+        return JBScrollPane(JTextArea(detail).apply {
+            isEditable = false
+        })
+    }
 }
 
 fun errorPanel(message: String, detail: String): JBPanelWithEmptyText {

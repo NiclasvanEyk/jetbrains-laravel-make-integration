@@ -12,6 +12,7 @@ import com.jetbrains.php.run.PhpEditInterpreterExecutionException
 import com.jetbrains.php.run.script.PhpScriptRunConfiguration
 import com.jetbrains.php.run.script.PhpScriptRuntimeConfigurationProducer
 import com.github.niclasvaneyk.laravelmake.common.php.InterpreterInference
+import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.LaravelMakeIntegrationBundle
 
 class PHPRunnerFactory(private val project: Project) {
     fun runner(): PHPRunner = PHPRunner(project)
@@ -143,4 +144,8 @@ class PHPRunner(private val project: Project) {
     }
 }
 
-class NoInterpreterSetException : Exception()
+class NoInterpreterSetException: Exception(
+    LaravelMakeIntegrationBundle.message("noProjectInterpreterError.modal.title") +
+    "\n" +
+    LaravelMakeIntegrationBundle.message("noProjectInterpreterError.modal.body")
+)

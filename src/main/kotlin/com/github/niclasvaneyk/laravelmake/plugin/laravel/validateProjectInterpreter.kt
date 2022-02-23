@@ -1,21 +1,24 @@
 package com.github.niclasvaneyk.laravelmake.plugin.laravel
 
 import com.github.niclasvaneyk.laravelmake.common.jetbrains.notifications.ProjectBasedNotifier
-import com.github.niclasvaneyk.laravelmake.common.jetbrains.progress.ProgressBarBuilder
 import com.github.niclasvaneyk.laravelmake.common.php.InterpreterInference
+import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.LaravelMakeIntegrationBundle
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.php.PHPInterpreterValidator
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.php.actions.OpenPHPInterpreterSettingsAction
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.project.Project
+import org.jetbrains.concurrency.Promise
+import org.jetbrains.concurrency.runAsync
 
-fun validateProjectInterpreter(app: LaravelApplication) {
+fun validateProjectInterpreter(app: LaravelApplication): Promise<Boolean> {
     val project = app.project
-    ProgressBarBuilder(project).indeterminate("Validate Project Interpreter") {
+
+    return runAsync {
         val interpreter = InterpreterInference(project).inferInterpreter()
         if (interpreter == null) {
             displayInterpreterSetupRequiredNotification(project)
 
-            return@indeterminate
+            return@runAsync false
         }
 
         val validator = PHPInterpreterValidator(app)
@@ -26,16 +29,16 @@ fun validateProjectInterpreter(app: LaravelApplication) {
         if (!result.isValid) {
             result.showNotification()
         }
+
+        return@runAsync result.isValid
     }
 }
 
 private fun displayInterpreterSetupRequiredNotification(project: Project) {
     val notifier = ProjectBasedNotifier(project)
     val notification = notifier.notification {
-        it.title = "Project Interpreter Setup Required"
-        it.content = "It appears that you did not configure any PHP interpreter.\n" +
-                "Specify one in the settings dialog in order to use" +
-                " all features of the Laravel Make extension."
+        it.title = LaravelMakeIntegrationBundle.message("noProjectInterpreterError.modal.title")
+        it.content = LaravelMakeIntegrationBundle.message("noProjectInterpreterError.modal.body")
         it.type = NotificationType.WARNING
         it.usePluginIcon()
 
@@ -43,5 +46,6 @@ private fun displayInterpreterSetupRequiredNotification(project: Project) {
     }
 
     notification.addAction(OpenPHPInterpreterSettingsAction())
+    notification.isImportant = true
     notifier.display(notification)
 }

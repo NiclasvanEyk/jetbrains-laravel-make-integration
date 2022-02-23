@@ -14,6 +14,7 @@ import com.github.niclasvaneyk.laravelmake.common.laravel.Artisan
 import com.github.niclasvaneyk.laravelmake.common.laravel.introspection.CommandRunInfo
 import com.github.niclasvaneyk.laravelmake.common.laravel.introspection.CommandBasedIntrospecter
 import com.github.niclasvaneyk.laravelmake.common.laravel.introspection.CouldNotExtractJsonException
+import com.github.niclasvaneyk.laravelmake.common.string.containedJson
 import com.intellij.openapi.module.ModuleManager
 import com.intellij.openapi.vfs.VirtualFileManager
 import java.util.concurrent.Callable
@@ -38,17 +39,11 @@ class RouteIntrospecter(
     }
 
     override fun onCommandOutput(output: String, publish: (result: List<IntrospectedRoute>) -> Unit) {
-        // Sometimes the json contains newlines, which mess with the
-        // serialization, that e.g. the action of a route is suddenly null, even
-        // though if we remove the newlines everything works fine.
-        // This is kinda hacky, but works for routes.
-        val sanitizedOutput = output.replace("\n", "")
-
         val routes: List<RouteListEntry>
         try {
             routes = GsonBuilder()
                 .create()
-                .fromJson(sanitizedOutput, Array<RouteListEntry>::class.java)
+                .fromJson(output.containedJson(), Array<RouteListEntry>::class.java)
                 .toList()
 
         } catch (exception: Throwable) {
