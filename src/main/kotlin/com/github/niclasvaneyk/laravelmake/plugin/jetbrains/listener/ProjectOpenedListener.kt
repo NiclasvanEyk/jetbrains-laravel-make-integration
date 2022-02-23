@@ -5,7 +5,6 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectManagerListener
-import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl
 
 class ProjectOpenedListener: ProjectManagerListener {
     override fun projectOpened(project: Project) {
@@ -17,8 +16,6 @@ class ProjectOpenedListener: ProjectManagerListener {
             return
         }
 
-        val phpInterpreters = PhpInterpretersManagerImpl.getInstance(project)
-        phpInterpreters.addListener(project, PhpInterpreterListener(project))
         application.initialize()
     }
 }
