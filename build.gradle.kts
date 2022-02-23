@@ -29,6 +29,7 @@ dependencies {
     implementation("org.junit.jupiter:junit-jupiter:5.8.2")
     implementation("org.assertj:assertj-core:3.22.0")
     implementation("org.jetbrains.kotlinx:kotlinx-html:0.7.3")
+    implementation("org.jetbrains.kotlin:kotlin-test:1.6.0")
 }
 
 // Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin

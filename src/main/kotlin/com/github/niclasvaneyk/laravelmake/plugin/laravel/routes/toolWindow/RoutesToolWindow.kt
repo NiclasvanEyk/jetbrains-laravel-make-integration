@@ -23,7 +23,7 @@ class RoutesToolWindow(
     SimpleToolWindowPanel(false),
     ReceivesToolWindowTabLifecycleEvents by revalidator
 {
-    private val documentation = RouteDocumentation(project.project)
+//    private val documentation = RouteDocumentation(project.project)
 
     private var selectedRoute: IntrospectedRoute? = null
         set(value) {
@@ -66,19 +66,19 @@ class RoutesToolWindow(
 
             is InitialLoadingState -> {
                 setContent(JBPanelWithEmptyText().withEmptyText("Loading..."))
-                documentation.showMessage("Loading...")
+//                documentation.showMessage("Loading...")
             }
 
             is LoadedState -> {
                 setContent(masterListPanel)
-                documentation.showMessage()
+//                documentation.showMessage()
             }
 
             is RevalidatingState -> { /* Not really important to us here */ }
 
             is RevalidatedState -> {
                 setContent(masterListPanel)
-                documentation.showMessage()
+//                documentation.showMessage()
             }
 
             is ErrorState -> onError(it.message, it.exception)
@@ -89,6 +89,6 @@ class RoutesToolWindow(
         val message = details.ifEmpty { exception?.message ?: "" }
 
         setContent(errorPanel("An error occurred while loading routes", message))
-        documentation.showMessage("")
+//        documentation.showMessage("")
     }
 }
