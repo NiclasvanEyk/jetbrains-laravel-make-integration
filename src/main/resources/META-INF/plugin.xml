@@ -33,6 +33,10 @@
             class="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.listener.ProjectOpenedListener"
             topic="com.intellij.openapi.project.ProjectManagerListener"
         />
+        <listener
+                class="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.listener.PhpInterpreterListener"
+                topic="com.jetbrains.php.config.PhpProjectWorkspaceConfigurationListener"
+        />
     </projectListeners>
 
     <actions>
