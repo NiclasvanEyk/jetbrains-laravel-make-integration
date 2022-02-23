@@ -22,7 +22,7 @@ Because this plugin internally executes `php artisan make`, a few features just 
 You can pass every flag that is supported by the artisan sub-command of your choice. Just write all flags
 *after* the name of the class you want to generate, and they will be passed along. 
 
-![](./docs/images/autocompletion.png)
+![](./images/autocompletion.png)
 
 The plugin also provides autocompletion for the options of a command where it makes sense. It also assigns one of the 
 following labels to them:
@@ -37,13 +37,13 @@ following labels to them:
 
 ### 📝 Stub file support
 
-As Laravel Make Integration is basically only a GUI for `php artisan make`, if you [customized the stub files](https://laravel.com/docs/artisan#stub-customization) or prefer [spaties defaults](https://github.com/spatie/laravel-stubs#opinionated-laravel-stubs) the code generation will just work as expected. No more fiddling with PHPStorm file templates needed and everyone one the team is using the same templates for file creation!
+As Laravel Make Integration is basically only a GUI for `php artisan make`, if you [customized the stub files](https://laravel.com/docs/artisan#stub-customization) or prefer [Spaties defaults](https://github.com/spatie/laravel-stubs#opinionated-laravel-stubs) the code generation will just work as expected. No more fiddling with PHPStorm file templates needed and everyone one the team is using the same templates for file creation!
 
 <!---------------------------------------------------------------------------->
 
 ## Improvements over the CLI
 
-As we now do not work in the command line anymore, we can take advantage of several things that are not avaiable to
+As we now do not work in the command line anymore, we can take advantage of several things that are not available to
 a terminal.
 
 ### 🎯 Command Filtering
@@ -59,13 +59,13 @@ dropdown to reduce the clutter.
 
 If you are a keyboard ninja you can also assign a shortcut to the `Run artisan:make`-action in the settings:
 
-![](./docs/images/run_artisan_make_shortcut.png)
+![](./images/run_artisan_make_shortcut.png)
  
 This opens up a small modal with all available `make`-commands, that can be filtered by typing:
 
-| All commands | Filtered |
-|--------------|----------|
-|![](./docs/images/run_artisan_make_popup.png)|![](./docs/images/run_artisan_make_popup_filtered.png)| 
+| All commands                             | Filtered                                          |
+|------------------------------------------|---------------------------------------------------|
+| ![](./images/run_artisan_make_popup.png) | ![](./images/run_artisan_make_popup_filtered.png) | 
 
 ### 🤖 Auto filled namespaces
 

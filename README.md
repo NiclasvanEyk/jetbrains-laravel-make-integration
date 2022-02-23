@@ -8,7 +8,7 @@
 </p>
 
 <!-- Plugin description -->
-![Newfile menu with Laravel group provided by this plugin](https://plugins.jetbrains.com/files/14612/screenshot_b321b1b4-2b8d-45d4-92a0-8d24af629349)
+!["New File" menu with Laravel group provided by this plugin](https://plugins.jetbrains.com/files/14612/screenshot_b321b1b4-2b8d-45d4-92a0-8d24af629349)
 
 Laravel MAKE provides a set of integration points that connect your Laravel application to PhpStorm.
 
@@ -22,7 +22,7 @@ Laravel MAKE provides a set of integration points that connect your Laravel appl
 ## Getting Started
 
 In order to the plugin to know how to interact with your application and PHP, you need to [configure your PHP interpreter](https://www.jetbrains.com/help/phpstorm/configuring-local-interpreter.html).
-If you plan to develop using Laravel Sail, you can [follow our guide](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/blob/main/docs/setup_with_sail.md) or [the on from Jetbrains](https://www.jetbrains.com/help/phpstorm/configuring-remote-interpreters.html).
+If you plan to develop using Laravel Sail, you can [follow our guide](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/blob/main/docs/setup_with_sail.md) or [the one from Jetbrains](https://www.jetbrains.com/help/phpstorm/configuring-remote-interpreters.html).
 
 The features are described in more detail on their own documentation pages:
 - [`artisan make:*` commands](./docs/make-context-menu.md)
