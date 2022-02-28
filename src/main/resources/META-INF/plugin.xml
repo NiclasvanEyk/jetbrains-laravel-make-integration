@@ -8,11 +8,9 @@
     <depends>com.jetbrains.php</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <notificationGroup
-                id="Laravel MAKE"
-                displayType="BALLOON"
-                icon="/icons/laravel-logo.svg"
-        />
+        <notificationGroup id="Laravel MAKE" displayType="BALLOON" icon="/icons/laravel-logo.svg" />
+        <directoryProjectGenerator implementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.projectGeneration.LaravelProjectGenerator" />
+        <projectTemplatesFactory implementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.projectGeneration.LaravelProjectGeneratorFactory" />
         <toolWindow
                 id="Laravel"
                 factoryClass="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.toolWindow.LaravelToolWindowFactory"
@@ -20,12 +18,6 @@
                 anchor="bottom"
                 doNotActivateOnStart="true"
         />
-        <!--        <moduleType-->
-        <!--                id="LARAVEL"-->
-        <!--                implementationClass="com.github.niclasvaneyk.laravelmake.plugin.laravel.projectCreation.LaravelModuleType"-->
-        <!--        />-->
-        <!--        <framework.type implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.projectCreation.LaravelDotBuildFramework" />-->
-        <!--        <frameworkSupport implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.projectCreation.LaravelDotBuildFrameworkProvider" />-->
     </extensions>
     
     <projectListeners>

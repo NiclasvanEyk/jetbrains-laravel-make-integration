@@ -7,7 +7,7 @@ import java.awt.Color
 
 class Colors {
     companion object {
-        fun vendor(project: Project): @Nullable Color? {
+        fun vendor(project: Project): Color? {
             // It seems that the tree view uses this color to indicate that
             // a file belongs to a library, so we will do the same
             return FileColorManager.getInstance(project).getColor("Yellow")

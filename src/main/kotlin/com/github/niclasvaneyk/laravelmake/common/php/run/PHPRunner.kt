@@ -13,6 +13,7 @@ import com.jetbrains.php.run.script.PhpScriptRunConfiguration
 import com.jetbrains.php.run.script.PhpScriptRuntimeConfigurationProducer
 import com.github.niclasvaneyk.laravelmake.common.php.InterpreterInference
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.LaravelMakeIntegrationBundle
+import java.util.*
 
 class PHPRunnerFactory(private val project: Project) {
     fun runner(): PHPRunner = PHPRunner(project)
@@ -96,7 +97,7 @@ class PHPRunner(private val project: Project) {
         try {
             processHandler = runConfiguration.createProcessHandler(project, command)
         } catch (exception: PhpEditInterpreterExecutionException) {
-            if (exception.localizedMessage.toLowerCase().contains("docker")) {
+            if (exception.localizedMessage.lowercase(Locale.getDefault()).contains("docker")) {
                 throw DockerNotStartedException(exception)
             } else {
                 throw exception

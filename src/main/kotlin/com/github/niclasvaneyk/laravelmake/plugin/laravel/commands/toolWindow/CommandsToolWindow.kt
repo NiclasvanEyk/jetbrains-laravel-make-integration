@@ -5,7 +5,9 @@ import com.intellij.ui.SideBorder
 import com.intellij.ui.components.JBScrollPane
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelApplication
 import com.github.niclasvaneyk.laravelmake.common.jetbrains.ui.toolWindow.MasterDetailToolWindow
+import com.github.niclasvaneyk.laravelmake.common.laravel.introspection.ErrorState
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.toolWindow.ReceivesToolWindowTabLifecycleEvents
+import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.toolWindow.errorPanel
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.commands.introspection.Command
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.commands.introspection.CommandIntrospecter
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.commands.toolWindow.list.CommandList
@@ -34,5 +36,17 @@ class CommandsToolWindow(
             isRefreshing = project.introspection.commands.map { it.loading },
             refresh = { project.introspection.commandIntrospecter.refresh() },
         ).component
+
+        project.introspection.commands.subscribe {
+            if (it is ErrorState) {
+                master = errorPanel("An error occurred while loading commands", it.exception?.toString() ?: it.message)
+            } else {
+                if (master !is JBScrollPane) {
+                    master = JBScrollPane(commandList).apply {
+                        border = SideBorder(JBColor.border(), SideBorder.LEFT)
+                    }
+                }
+            }
+        }
     }
 }

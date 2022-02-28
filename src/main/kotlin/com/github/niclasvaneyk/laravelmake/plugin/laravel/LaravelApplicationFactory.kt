@@ -33,6 +33,8 @@ class LaravelApplicationFactory(private val jetbrainsProject: Project) {
             return null
         }
 
+        log.info("Found artisan binary in '$path', building Laravel application...")
+
         return LaravelApplication(path, jetbrainsProject)
     }
 }
