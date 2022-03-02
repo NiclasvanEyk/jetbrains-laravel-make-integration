@@ -24,16 +24,6 @@ class CommandIntrospecter(
         null,
         listOf("--format=json"),
     )
-    var snapshot: List<Command> = emptyList()
-
-    init {
-        introspectionState
-            .filter { it is LoadedState }
-            .subscribe(
-                { snapshot = (it as LoadedState).result },
-                { log.error(it) }
-            )
-    }
 
     override fun onCommandOutput(output: String, publish: (result: List<Command>) -> Unit) {
         val commands: List<Command>

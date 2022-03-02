@@ -2,7 +2,7 @@ package com.github.niclasvaneyk.laravelmake.common.jetbrains.ui.toolBar
 
 import com.github.niclasvaneyk.laravelmake.common.laravel.introspection.CommandBasedIntrospecter
 
-class IntrospecterRefreshButtonAction<T>(
+class IntrospecterRefreshButtonAction<T: List<*>>(
     introspecter: CommandBasedIntrospecter<T>,
     description: String,
     text: String = "Refresh",

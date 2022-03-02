@@ -38,6 +38,8 @@ data class IntrospectedMiddleware(
     val name: String,
     val parameters: List<String>,
 ) {
+    val basename = name.substringAfterLast("\\")
+
     companion object {
         fun fromString(middleware: String): IntrospectedMiddleware {
             val parts = middleware.split(":")
@@ -66,6 +68,7 @@ sealed class IntrospectedRoute (
 ) {
     val path: String = basicRouteInformation.path
     val httpMethod: String = basicRouteInformation.httpMethod
+    val normalizedHttpMethod = httpMethod.replace("|head", "", ignoreCase = true)
     val name: String? = basicRouteInformation.name
     val middleware: List<IntrospectedMiddleware> = basicRouteInformation.middleware
 }

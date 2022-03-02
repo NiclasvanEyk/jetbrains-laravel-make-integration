@@ -4,7 +4,7 @@ import com.github.niclasvaneyk.laravelmake.common.laravel.introspection.CommandB
 import com.github.niclasvaneyk.laravelmake.common.laravel.introspection.InitialState
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.toolWindow.ReceivesToolWindowTabLifecycleEvents
 
-class IntrospectionBasedToolWindowRevalidator<T>(
+class IntrospectionBasedToolWindowRevalidator<T: List<*>>(
     private val introspecter: CommandBasedIntrospecter<T>
 ) : ReceivesToolWindowTabLifecycleEvents {
     override fun onTabFocused() {

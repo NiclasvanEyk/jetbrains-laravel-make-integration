@@ -11,6 +11,8 @@ import com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.introspection.I
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.introspection.RouteIntrospecter
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.toolWindow.list.RouteList
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.toolWindow.toolBar.RoutesToolbar
+import com.intellij.ui.JBColor
+import com.intellij.ui.SideBorder
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.introspection.toolWindow.IntrospectionBasedToolWindowRevalidator as Revalidator
 
 class RoutesToolWindow(
@@ -42,7 +44,7 @@ class RoutesToolWindow(
     )
 
     private val masterListPanel = JBScrollPane(routeList).apply {
-        border = null // SideBorder(JBColor.border(), SideBorder.LEFT)
+        border = SideBorder(JBColor.border(), SideBorder.NONE)
     }
 
     init {

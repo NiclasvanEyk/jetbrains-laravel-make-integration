@@ -17,7 +17,7 @@ private class MiddlewareRenderer(
     private val parameters = middleware.parameters.joinToString(",")
     private val displayName: String get() =
         if (fullyQualifyNames) middleware.name
-        else middleware.name.substringAfterLast("\\")
+        else middleware.basename
 
     override fun toString() =
         if (showParams && middleware.parameters.isNotEmpty()) "$displayName:$parameters"
@@ -65,7 +65,7 @@ class RouteListCellRenderer(
         append(" ")
         append(
             // I do not see the value of HEAD, as it is most likely of no use
-            value.httpMethod.replace("GET|HEAD", "GET"),
+            value.normalizedHttpMethod,
             SimpleTextAttributes.GRAYED_ATTRIBUTES,
             false
         )

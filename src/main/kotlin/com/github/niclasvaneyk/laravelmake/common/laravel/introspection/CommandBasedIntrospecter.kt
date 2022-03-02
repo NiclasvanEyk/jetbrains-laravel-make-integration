@@ -6,13 +6,15 @@ import com.github.niclasvaneyk.laravelmake.common.php.run.PHPRunner
 import com.intellij.openapi.diagnostic.logger
 import com.intellij.openapi.progress.runBackgroundableTask
 import com.intellij.openapi.rd.util.withBackgroundProgressContext
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
+import java.util.Optional
 
 /**
  * Maps the results of an introspection command (e.g. artisan route:list) to an
  * observable, so it can be easily refreshed and read.
  */
-abstract class CommandBasedIntrospecter<T>(
+abstract class CommandBasedIntrospecter<T: List<*>>(
     private val artisan: Artisan,
     private val progressBar: ProgressBarBuilder,
 ) {
@@ -22,7 +24,16 @@ abstract class CommandBasedIntrospecter<T>(
         .createDefault(InitialState())
 
     val introspectionState: IntrospectionSubject<T> = introspectionStateSource
-        .doAfterNext { staleDataDetector.markAsRefreshed() }
+        .doAfterNext {
+            staleDataDetector.markAsRefreshed()
+            if (it is LoadedState) {
+                snapshot = it.result
+            } else if (it is RevalidatedState) {
+                snapshot = it.result
+            }
+        }
+
+    var snapshot: T? = null
 
     private val lifecycle = IntrospectionLifecycle(introspectionStateSource)
     private var isRefreshing = false

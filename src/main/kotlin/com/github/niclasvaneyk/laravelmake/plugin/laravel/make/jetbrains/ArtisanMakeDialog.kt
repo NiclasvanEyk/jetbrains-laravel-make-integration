@@ -53,6 +53,6 @@ class ArtisanMakeDialog(
         val laravelProject = service.application ?: return mutableListOf()
         val introspecter = laravelProject.introspection.commandIntrospecter
 
-        return introspecter.snapshot.toMutableList()
+        return introspecter.snapshot?.toMutableList() ?: mutableListOf()
     }
 }
