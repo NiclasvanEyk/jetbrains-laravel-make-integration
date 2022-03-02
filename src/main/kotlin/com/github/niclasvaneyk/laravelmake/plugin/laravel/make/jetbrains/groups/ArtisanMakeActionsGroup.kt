@@ -87,7 +87,7 @@ class ArtisanMakeActionsGroup(
         val service = project.getService(LaravelMakeProjectService::class.java)
         val laravelProject = service.application ?: return
         val introspecter = laravelProject.introspection.commandIntrospecter
-        val commands = introspecter.snapshot
+        val commands = introspecter.snapshot ?: emptyList()
         val actions = this.computeActions().toMutableList()
 
         if (commands.isNotEmpty()) {

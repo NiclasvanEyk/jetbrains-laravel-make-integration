@@ -6,7 +6,8 @@ Rebranded to **Laravel MAKE**. This is to reflect the fact, that this extensions
 
 ### Added
 
-- New "Larave" tool window. See all your routes and commands at a glance. No need to run `artisan route:list` and search through the output. The automatic reloading of the contents can still be improved, but I still think it provides enough value to release it.
+- **Laravel tool window.** See all your routes and commands at a glance. No need to run `artisan route:list` and search through the output. The automatic reloading of the contents can still be improved, but I still think it provides enough value to release it.
+- **Gutter icons for controller actions.** Highlights controller methods that handle requests, to make them more distinguishable from normal class methods. You can also hover over the icon to see more information, such as the HTTP verb, the path and registered middleware: `POST /api/blog/{article_id}/comments [api, Authenticate, AnotherMiddleware]`
 
 ### Changed
 
