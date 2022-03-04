@@ -2,7 +2,7 @@
 
 ## [Unreleased]
 
-Rebranded to **Laravel MAKE**. This is to reflect the fact, that this extensions does not noly contribute the "File > New" window, but also utilizies other Extension Points of the IDE. In the future I want to expand the scope of this extension even more, so I thought it would be reasonable to rename the extension.
+Rebranded to **Laravel MAKE**. This is to reflect the fact, that this extension does not only contribute the "File > New" window, but also utilizes other Extension Points of the IDE. In the future I want to expand the scope of this extension even more, so I thought it would be reasonable to rename the extension.
 
 ### Added
 

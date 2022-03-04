@@ -1,5 +1,7 @@
-package com.github.niclasvaneyk.laravelmake.plugin.jetbrains.codeInsight
+package com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.codeInsight
 
+import com.github.niclasvaneyk.laravelmake.common.jetbrains.php.psi.isPhpIdentifier
+import com.github.niclasvaneyk.laravelmake.common.jetbrains.php.psi.phpMethods
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.LaravelIcons
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.services.LaravelMakeProjectService
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelApplication
@@ -10,8 +12,6 @@ import com.intellij.codeInsight.daemon.LineMarkerProviderDescriptor
 import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.markup.GutterIconRenderer
 import com.intellij.psi.PsiElement
-import com.intellij.psi.util.elementType
-import com.jetbrains.php.lang.lexer.PhpTokenTypes
 import com.jetbrains.php.lang.psi.elements.Method
 import javax.swing.Icon
 
@@ -62,14 +62,13 @@ class ControllerActionLineMarkerProvider: LineMarkerProviderDescriptor() {
             .filterIsInstance<ControllerRoute>()
             .associateBy { it.method }
 
-        elements
-            .filter { it.elementType == PhpTokenTypes.IDENTIFIER && it.parent is Method }
-            .forEach { identifier: PsiElement ->
-                val method = identifier.parent as Method
-                val route = routesByMethod[method] ?: return
-
-                result.add(ControllerActionLineMarker(identifier, route, icon))
-            }
+        elements.phpMethods().forEach { (identifier, method) ->
+            result.add(ControllerActionLineMarker(
+                identifier,
+                routesByMethod[method] ?: return@forEach,
+                icon,
+            ))
+        }
     }
 }
 

@@ -20,8 +20,12 @@
         />
         <codeInsight.lineMarkerProvider
             language="PHP"
-            implementationClass="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.codeInsight.ControllerActionLineMarkerProvider"
+            implementationClass="com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.codeInsight.ControllerActionLineMarkerProvider"
         />
+<!--        <codeInsight.lineMarkerProvider-->
+<!--            language="PHP"-->
+<!--            implementationClass="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.seeders.RunSeederLineMarkerProvider"-->
+<!--        />-->
     </extensions>
     
     <projectListeners>
