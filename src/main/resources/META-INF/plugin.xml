@@ -22,6 +22,7 @@
             language="PHP"
             implementationClass="com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.codeInsight.ControllerActionLineMarkerProvider"
         />
+<!--        <microservices.endpointsProvider implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.microservices.LaravelEndpointsProvider" />-->
 <!--        <codeInsight.lineMarkerProvider-->
 <!--            language="PHP"-->
 <!--            implementationClass="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.seeders.RunSeederLineMarkerProvider"-->

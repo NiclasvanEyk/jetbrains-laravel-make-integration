@@ -11,13 +11,16 @@ import com.jetbrains.php.lang.psi.elements.PhpClass
  * Whether the element is actually an identifier.
  *
  * This is very useful for [LineMarkerProviderDescriptor]s, as is it considered
- * a best practise to only decorate the identifiers, and not e.g. an entire
+ * a best-practise to only decorate the identifiers, and not e.g. an entire
  * [PhpClass] object spanning multiple lines.
  */
 fun PsiElement.isPhpIdentifier() = elementType == PhpTokenTypes.IDENTIFIER
 
 /**
  * Whether the class extends the given [fqn].
+ *
+ * Note that in general [fqn] should start with a '\', since this is what is
+ * returned by [PhpClass.getFQN].
  */
 fun PhpClass.extends(fqn: String): Boolean = superClasses.any { it.fqn == fqn }
 
