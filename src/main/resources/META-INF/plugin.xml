@@ -6,6 +6,18 @@
 
     <depends>com.intellij.modules.platform</depends>
     <depends>com.jetbrains.php</depends>
+    <depends>org.jetbrains.plugins.node-remote-interpreter</depends>
+    <depends>org.jetbrains.plugins.phpstorm-remote-interpreter</depends>
+    <depends>org.jetbrains.plugins.phpstorm-docker</depends>
+    <depends>Docker</depends>
+
+    <extensionPoints>
+        <extensionPoint
+            interface="com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.SailConfigurationProvider"
+            name="laravelSailConfigurationProvider"
+            dynamic="true"
+        />
+    </extensionPoints>
 
     <extensions defaultExtensionNs="com.intellij">
         <notificationGroup id="Laravel MAKE" displayType="BALLOON" icon="/icons/laravel-logo.svg" />
@@ -22,13 +34,23 @@
             language="PHP"
             implementationClass="com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.codeInsight.ControllerActionLineMarkerProvider"
         />
+<!--        <runConfigurationProducer-->
+<!--            implementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.run.ArtisanRunConfigurationProducer"-->
+<!--        />-->
+        <configurationType implementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.run.ArtisanRunConfigurationType" />
 <!--        <microservices.endpointsProvider implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.microservices.LaravelEndpointsProvider" />-->
 <!--        <codeInsight.lineMarkerProvider-->
 <!--            language="PHP"-->
 <!--            implementationClass="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.seeders.RunSeederLineMarkerProvider"-->
 <!--        />-->
     </extensions>
-    
+
+    <extensions defaultExtensionNs="com.niclas-van-eyk.laravel-make-integration">
+        <laravelSailConfigurationProvider implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.configurationProviders.DockerComposeSailConfigurationProvider" />
+        <laravelSailConfigurationProvider implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.configurationProviders.NodeSailConfigurationProvider" />
+        <laravelSailConfigurationProvider implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.configurationProviders.PhpSailConfigurationProvider" />
+    </extensions>
+
     <projectListeners>
         <listener
             class="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.listener.ProjectOpenedListener"
@@ -77,5 +99,9 @@
         <action class="com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.MakeRuleAction" id="MakeRuleAction"/>
         <action class="com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.MakeSeederAction" id="MakeSeederAction"/>
         <action class="com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.MakeTestAction" id="MakeTestAction"/>
+        <action
+            id="com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.AddSailRunConfigurationsAction"
+            class="com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.AddSailRunConfigurationsAction"
+        />
     </actions>
 </idea-plugin>

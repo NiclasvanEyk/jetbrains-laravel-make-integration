@@ -6,11 +6,17 @@ import com.github.niclasvaneyk.laravelmake.common.laravel.Artisan
 import com.github.niclasvaneyk.laravelmake.common.laravel.DetectLaravelVersion
 import com.github.niclasvaneyk.laravelmake.common.laravel.LaravelProjectPaths
 import com.github.niclasvaneyk.laravelmake.common.php.run.PHPRunnerFactory
+import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.services.LaravelMakeProjectService
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.introspection.LaravelIntrospectionFacade
+import com.intellij.openapi.actionSystem.ActionManager
+import com.intellij.openapi.components.service
+import com.intellij.openapi.extensions.PluginId
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.rd.util.launchUnderModalProgress
-import com.jetbrains.rd.util.lifetime.Lifetime
 import java.io.File
+
+fun Project.laravel(): LaravelApplication? {
+    return service<LaravelMakeProjectService>().application
+}
 
 class LaravelApplication(path: String, val project: Project) {
     val paths: LaravelProjectPaths = LaravelProjectPaths(path)
