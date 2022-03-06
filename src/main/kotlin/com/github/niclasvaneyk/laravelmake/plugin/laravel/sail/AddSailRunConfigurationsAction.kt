@@ -9,7 +9,7 @@ import com.intellij.openapi.diagnostic.logger
 class AddSailRunConfigurationsAction: AnAction() {
     init {
         templatePresentation.apply {
-            icon = LaravelIcons.LaravelLogo // TODO: Use the Sail Icon
+            icon = LaravelIcons.Sail
             text = "Setup Laravel Sail"
             description = "Configures your IDE to use Laravel Sail for PHP, Node and Docker Compose."
             isVisible = false // Will only be enabled for Laravel applications

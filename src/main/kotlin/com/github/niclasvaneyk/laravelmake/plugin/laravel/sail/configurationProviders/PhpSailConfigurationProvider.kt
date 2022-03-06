@@ -2,71 +2,82 @@ package com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.configurationPro
 
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelApplication
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.SailConfigurationProvider
-import com.intellij.docker.remote.DockerComposeCredentialsEditor
+import com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.SailDockerComposeFile
+import com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.inferSailComposeCredentials
 import com.intellij.docker.remote.DockerComposeCredentialsHolder
 import com.intellij.docker.remote.DockerComposeCredentialsType
-import com.intellij.docker.remote.DockerContainerSettings
 import com.jetbrains.php.config.interpreters.PhpInterpreter
 import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl
-import com.jetbrains.php.remote.docker.PhpDockerContainerSettingsManager
-import com.jetbrains.php.remote.interpreter.PhpRemoteInterpreterFactory
+import com.jetbrains.php.remote.docker.PhpDockerHelpersManager
+import com.jetbrains.php.remote.docker.compose.PhpDockerComposeStartCommand
+import com.jetbrains.php.remote.docker.compose.PhpDockerComposeTypeData
 import com.jetbrains.php.remote.interpreter.PhpRemoteSdkAdditionalData
 
+/**
+ * Sets up the PHP interpreter to use the one from the Sail container.
+ */
 class PhpSailConfigurationProvider: SailConfigurationProvider {
     companion object {
-        const val SAIL_INTERPRETER_ID = "laravel-make-sail"
-        const val SAIL_INTERPRETER_NAME = "Laravel Sail"
-        const val SAIL_PHP_SERVICE_NAME = "laravel.test"
-        const val SAIL_PHP_INTERPRETER_PATH = "php"
+        const val SAIL_PHP_INTERPRETER_ID = "laravel-make-sail-php"
     }
 
     override fun apply(application: LaravelApplication) {
-        val interpreters = PhpInterpretersManagerImpl.getInstance(application.project)
+        createSailInterpreterIfNecessary(application)
+    }
 
-        val existingInterpreter = interpreters.findInterpreterId(SAIL_INTERPRETER_ID)
-        if (existingInterpreter != null) {
-            // TODO: Notification
+    private fun createSailInterpreterIfNecessary(application: LaravelApplication) {
+        val interpreters = PhpInterpretersManagerImpl.getInstance(application.project)
+        if (interpreters.interpreters.firstOrNull { it.id == SAIL_PHP_INTERPRETER_ID } != null) {
             return
         }
 
-        createSailInterpreter(application, interpreters)
+        val builder = SailComposePhpInterpreterBuilder(SailDockerComposeFile(application))
+        val sailPhpInterpreter = builder.build(SAIL_PHP_INTERPRETER_ID, "Laravel Sail")
+
+        if (sailPhpInterpreter != null) {
+            interpreters.addInterpreter(sailPhpInterpreter)
+        } else {
+            // TODO: Notify user?
+        }
+    }
+}
+
+class SailComposePhpInterpreterBuilder(private val composeFile: SailDockerComposeFile) {
+    companion object {
+        const val SAIL_PHP_INTERPRETER_PATH = "php"
+        /** See [PhpDockerHelpersManager] */
+        const val PHP_DOCKER_HELPERS_PATH = "/opt/.phpstorm_helpers"
     }
 
-    private fun createSailInterpreter(application: LaravelApplication, interpreters: PhpInterpretersManagerImpl) {
+    fun build(id: String, name: String): PhpInterpreter? {
+        val composeCredentials = composeCredentials() ?: return null
 
-        /** See [DockerComposeCredentialsEditor] */
-        /** Also just set up an interpreter in a fresh Sail app and inspect it via [PhpInterpretersManagerImpl.getInterpreters] */
-
-        val composeFilePath = application.paths.path("docker-compose.yml")
-        val protocol = DockerComposeCredentialsType.DOCKER_COMPOSE_PREFIX
-        val interpreter = PhpInterpreter().apply {
-            id = SAIL_INTERPRETER_ID
-            name = SAIL_INTERPRETER_NAME
-            // There might be a better way to build this, but this is what it looks like when I manually create
-            // an instance of a remote interpreter in a fresh Sail app
-            homePath = "$protocol[$composeFilePath]:$SAIL_PHP_SERVICE_NAME/$SAIL_PHP_INTERPRETER_PATH"
-
-            phpSdkAdditionalData = PhpRemoteSdkAdditionalData().apply {
-                interpreterId = SAIL_INTERPRETER_ID
-            }
+        return PhpInterpreter().apply {
+            this@apply.id = id
+            this@apply.name = name
+            setIsProjectLevel(true)
+            homePath = composeFile.uri(SAIL_PHP_INTERPRETER_PATH)
+            phpSdkAdditionalData = sdkAdditionalData(id, composeCredentials)
         }
+    }
 
+    private fun composeCredentials(): DockerComposeCredentialsHolder? {
+        return inferSailComposeCredentials(composeFile.path)
+    }
 
-
-        val dockerCredentials = DockerComposeCredentialsHolder().apply {
-            accountName = "TODO" // TODO
-            composeFilePaths = arrayListOf(composeFilePath)
-            composeServiceName = SAIL_PHP_SERVICE_NAME
-            remoteProjectPath = "/opt/project"
+    private fun sdkAdditionalData(
+        interpreterId: String,
+        composeCredentials: DockerComposeCredentialsHolder
+    ): PhpRemoteSdkAdditionalData {
+        return PhpRemoteSdkAdditionalData().apply {
+            this@apply.interpreterId = interpreterId
+            typeData = PhpDockerComposeTypeData(PhpDockerComposeStartCommand.RUN)
+            helpersPath = PHP_DOCKER_HELPERS_PATH
+            interpreterPath = SAIL_PHP_INTERPRETER_PATH
+            connectionCredentials().setCredentials(
+                DockerComposeCredentialsType.DOCKER_COMPOSE_CREDENTIALS,
+                composeCredentials,
+            )
         }
-
-        val containerSettings = DockerContainerSettings()
-
-//        val interpreterFactory = PhpRemoteInterpreterFactory().createRemoteSdk<>(project, )
-
-        PhpDockerContainerSettingsManager
-            .getInstance(application.project)
-            .setSettings(SAIL_INTERPRETER_ID, containerSettings)
-        interpreters.addInterpreter(interpreter)
     }
 }

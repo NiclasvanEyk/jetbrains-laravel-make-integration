@@ -6,10 +6,14 @@
 
     <depends>com.intellij.modules.platform</depends>
     <depends>com.jetbrains.php</depends>
+    <depends>JavaScript</depends>
+    <depends>NodeJS</depends>
+    <depends>Docker</depends>
+
+    <depends>org.jetbrains.plugins.remote-run</depends>
     <depends>org.jetbrains.plugins.node-remote-interpreter</depends>
     <depends>org.jetbrains.plugins.phpstorm-remote-interpreter</depends>
     <depends>org.jetbrains.plugins.phpstorm-docker</depends>
-    <depends>Docker</depends>
 
     <extensionPoints>
         <extensionPoint
@@ -26,8 +30,8 @@
         <toolWindow
                 id="Laravel"
                 factoryClass="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.toolWindow.LaravelToolWindowFactory"
-                icon="/icons/laravel-logo-for-tool-window.svg"
-                anchor="bottom"
+                icon="/icons/solid-laravel-logo-for-tool-window.svg"
+                anchor="bottom" order="last"
                 doNotActivateOnStart="true"
         />
         <codeInsight.lineMarkerProvider
@@ -60,6 +64,7 @@
                 class="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.listener.PhpInterpreterListener"
                 topic="com.jetbrains.php.config.PhpProjectWorkspaceConfigurationListener"
         />
+        <listener class="com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.DockerListener" topic="com.intellij.docker.DockerServerRuntimeInstance$DockerServerListener" />
     </projectListeners>
 
     <actions>

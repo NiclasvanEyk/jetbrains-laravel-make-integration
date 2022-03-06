@@ -1,3 +1,45 @@
-<svg width="14" height="14" viewBox="0 0 3.7041666 3.7041668" xmlns="http://www.w3.org/2000/svg">
-  <path d="M.95510293.32132233L.37229071.65594076.36342664 2.6924595l1.18556856.675885 1.1988649-.671453.0022225-.6803168.5916763-.3324025.0022225-.6758849L2.750076.65594076l-.5872443.35013054-.002216.6714529-.6005404.3324024-.006648-1.33404168z" fill="#6e6e6e" stroke="#6e6e6e" stroke-width=".132292" stroke-linejoin="round"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="12.728228"
+   height="13"
+   viewBox="0 0 3.3676768 3.4395835"
+   version="1.1"
+   id="svg1758"
+   sodipodi:docname="solid-laravel-logo-for-tool-window.svg"
+   inkscape:version="1.1 (c4e8f9e, 2021-05-24)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1762" />
+  <sodipodi:namedview
+     id="namedview1760"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="53.785714"
+     inkscape:cx="4.9548473"
+     inkscape:cy="6.5351926"
+     inkscape:window-width="1920"
+     inkscape:window-height="999"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg1758" />
+  <path
+     d="M 0.71167426,0.07155987 0.0811507,0.43357151 0.07156098,2.6368079 1.3541849,3.3680235 2.6511937,2.6416027 2.6535981,1.9055924 3.2937114,1.5459781 3.2961159,0.81476254 2.653591,0.43357151 2.0182725,0.81236513 2.0158751,1.5387859 1.3661721,1.8984001 1.3589798,0.45514838 Z"
+     fill="#6e6e6e"
+     stroke="#6e6e6e"
+     stroke-width="0.143122"
+     stroke-linejoin="round"
+     id="path1756" />
 </svg>
