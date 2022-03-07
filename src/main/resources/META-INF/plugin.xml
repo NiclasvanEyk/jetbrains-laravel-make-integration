@@ -21,16 +21,23 @@
             name="laravelSailConfigurationProvider"
             dynamic="true"
         />
+
+        <extensionPoint
+            interface="com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelApplicationListener"
+            name="laravelApplicationListener"
+            dynamic="true"
+        />
     </extensionPoints>
 
     <extensions defaultExtensionNs="com.intellij">
-        <notificationGroup id="Laravel MAKE" displayType="BALLOON" icon="/icons/laravel-logo.svg" />
+        <notificationGroup id="Laravel Make" displayType="BALLOON" icon="/icons/laravel-logo.svg" />
+        <notificationGroup id="Laravel Sail" displayType="BALLOON" icon="/icons/sail.svg" />
         <directoryProjectGenerator implementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.projectGeneration.LaravelProjectGenerator" />
         <projectTemplatesFactory implementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.projectGeneration.LaravelProjectGeneratorFactory" />
         <toolWindow
                 id="Laravel"
                 factoryClass="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.toolWindow.LaravelToolWindowFactory"
-                icon="/icons/solid-laravel-logo-for-tool-window.svg"
+                icon="/icons/laravel-logo-for-tool-window.svg"
                 anchor="bottom" order="last"
                 doNotActivateOnStart="true"
         />
@@ -41,7 +48,7 @@
 <!--        <runConfigurationProducer-->
 <!--            implementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.run.ArtisanRunConfigurationProducer"-->
 <!--        />-->
-        <configurationType implementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.run.ArtisanRunConfigurationType" />
+<!--        <configurationType implementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.run.ArtisanRunConfigurationType" />-->
 <!--        <microservices.endpointsProvider implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.microservices.LaravelEndpointsProvider" />-->
 <!--        <codeInsight.lineMarkerProvider-->
 <!--            language="PHP"-->
@@ -53,6 +60,8 @@
         <laravelSailConfigurationProvider implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.configurationProviders.DockerComposeSailConfigurationProvider" />
         <laravelSailConfigurationProvider implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.configurationProviders.NodeSailConfigurationProvider" />
         <laravelSailConfigurationProvider implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.configurationProviders.PhpSailConfigurationProvider" />
+
+        <laravelApplicationListener implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.SailLaravelApplicationListener" />
     </extensions>
 
     <projectListeners>
@@ -64,7 +73,6 @@
                 class="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.listener.PhpInterpreterListener"
                 topic="com.jetbrains.php.config.PhpProjectWorkspaceConfigurationListener"
         />
-        <listener class="com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.DockerListener" topic="com.intellij.docker.DockerServerRuntimeInstance$DockerServerListener" />
     </projectListeners>
 
     <actions>
@@ -105,8 +113,8 @@
         <action class="com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.MakeSeederAction" id="MakeSeederAction"/>
         <action class="com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.MakeTestAction" id="MakeTestAction"/>
         <action
-            id="com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.AddSailRunConfigurationsAction"
-            class="com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.AddSailRunConfigurationsAction"
+            id="com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.AutoconfigureLaravelSailAction"
+            class="com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.AutoconfigureLaravelSailAction"
         />
     </actions>
 </idea-plugin>

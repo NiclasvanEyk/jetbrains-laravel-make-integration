@@ -1,4 +1,4 @@
-package com.github.niclasvaneyk.laravelmake.plugin.laravel.sail
+package com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.docker
 
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.docker.findFirstLocalDockerServer
 import com.intellij.docker.remote.DockerComposeCredentialsHolder

@@ -8,5 +8,13 @@ interface SailConfigurationProvider {
         val EP_NAME = LaravelMake.extensionName<SailConfigurationProvider>("laravelSailConfigurationProvider")
     }
 
+    /**
+     * Run the automated setup tasks.
+     */
     fun apply(application: LaravelApplication)
+
+    /**
+     * Whether any automated setup tasks even need to run.
+     */
+    fun configurationExists(application: LaravelApplication): Boolean
 }

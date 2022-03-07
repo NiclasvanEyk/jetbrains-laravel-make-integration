@@ -1,10 +1,10 @@
 package com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.configurationProviders
 
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelApplication
-import com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.SAIL_LARAVEL_SERVICE_NAME
+import com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.docker.SAIL_LARAVEL_SERVICE_NAME
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.SailConfigurationProvider
-import com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.SailDockerComposeFile
-import com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.inferSailComposeCredentials
+import com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.docker.SailDockerComposeFile
+import com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.docker.inferSailComposeCredentials
 import com.intellij.docker.remote.DockerComposeCredentialsHolder
 import com.intellij.docker.remote.DockerComposeCredentialsType
 import com.intellij.javascript.nodejs.interpreter.NodeJsInterpreterManager
@@ -26,6 +26,10 @@ class NodeSailConfigurationProvider: SailConfigurationProvider {
          * The path inside the sail container that needs to be configured.
          */
         const val NPM_PATH = "/usr/lib/node_modules/npm"
+    }
+
+    override fun configurationExists(application: LaravelApplication): Boolean {
+        return hasSailInterpreterConfigured()
     }
 
     override fun apply(application: LaravelApplication) {

@@ -2,8 +2,8 @@ package com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.configurationPro
 
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelApplication
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.SailConfigurationProvider
-import com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.SailDockerComposeFile
-import com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.inferSailComposeCredentials
+import com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.docker.SailDockerComposeFile
+import com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.docker.inferSailComposeCredentials
 import com.intellij.docker.remote.DockerComposeCredentialsHolder
 import com.intellij.docker.remote.DockerComposeCredentialsType
 import com.jetbrains.php.config.interpreters.PhpInterpreter
@@ -21,16 +21,27 @@ class PhpSailConfigurationProvider: SailConfigurationProvider {
         const val SAIL_PHP_INTERPRETER_ID = "laravel-make-sail-php"
     }
 
-    override fun apply(application: LaravelApplication) {
-        createSailInterpreterIfNecessary(application)
+    override fun configurationExists(application: LaravelApplication): Boolean {
+        return sailInterpreterExists(application)
     }
 
-    private fun createSailInterpreterIfNecessary(application: LaravelApplication) {
-        val interpreters = PhpInterpretersManagerImpl.getInstance(application.project)
-        if (interpreters.interpreters.firstOrNull { it.id == SAIL_PHP_INTERPRETER_ID } != null) {
-            return
-        }
+    override fun apply(application: LaravelApplication) {
+        createSailInterpreter(application)
 
+        // TODO: Somehow set the _current_ interpreter to the Sail one like
+        //       it is done in the node configuration provider
+    }
+
+    private fun sailInterpreterExists(application: LaravelApplication): Boolean {
+        val interpreters = PhpInterpretersManagerImpl.getInstance(application.project)
+
+        return interpreters.interpreters.firstOrNull { it.id == SAIL_PHP_INTERPRETER_ID } != null
+    }
+
+    private fun createSailInterpreter(application: LaravelApplication) {
+        if (sailInterpreterExists(application)) return
+
+        val interpreters = PhpInterpretersManagerImpl.getInstance(application.project)
         val builder = SailComposePhpInterpreterBuilder(SailDockerComposeFile(application))
         val sailPhpInterpreter = builder.build(SAIL_PHP_INTERPRETER_ID, "Laravel Sail")
 

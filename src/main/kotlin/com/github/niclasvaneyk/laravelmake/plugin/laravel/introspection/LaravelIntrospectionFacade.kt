@@ -16,4 +16,9 @@ class LaravelIntrospectionFacade(
 
     val commandIntrospecter = CommandIntrospecter(artisan, progressBar)
     val commands get() = commandIntrospecter.introspectionState
+
+    fun refresh() {
+        routeIntrospecter.refresh()
+        commandIntrospecter.refresh()
+    }
 }

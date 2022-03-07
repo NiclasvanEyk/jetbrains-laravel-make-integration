@@ -8,10 +8,8 @@ import com.github.niclasvaneyk.laravelmake.common.laravel.LaravelProjectPaths
 import com.github.niclasvaneyk.laravelmake.common.php.run.PHPRunnerFactory
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.services.LaravelMakeProjectService
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.introspection.LaravelIntrospectionFacade
-import com.intellij.docker.DockerServerRuntimeInstance
-import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.components.service
-import com.intellij.openapi.extensions.PluginId
+import com.intellij.openapi.diagnostic.logger
 import com.intellij.openapi.project.Project
 import java.io.File
 
@@ -33,7 +31,15 @@ class LaravelApplication(path: String, val project: Project) {
 
     fun initialize() {
         validateProjectInterpreter(this@LaravelApplication).then {
-            introspection.commandIntrospecter.refresh()
+            introspection.refresh()
+
+            LaravelApplicationListener.EP_NAME.extensionList.forEach {
+                try {
+                    it.initialized(this@LaravelApplication)
+                } catch (exception: Throwable) {
+                    logger<LaravelApplication>().error(exception)
+                }
+            }
         }
     }
 }
