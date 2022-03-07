@@ -1,6 +1,5 @@
 package com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.codeInsight
 
-import com.github.niclasvaneyk.laravelmake.common.jetbrains.php.psi.isPhpIdentifier
 import com.github.niclasvaneyk.laravelmake.common.jetbrains.php.psi.phpMethods
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.LaravelIcons
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.services.LaravelMakeProjectService
@@ -13,7 +12,6 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.logger
 import com.intellij.openapi.editor.markup.GutterIconRenderer
 import com.intellij.psi.PsiElement
-import com.jetbrains.php.lang.psi.elements.Method
 import javax.swing.Icon
 
 class ControllerActionLineMarker(
@@ -48,14 +46,9 @@ class ControllerActionLineMarker(
 
 class ControllerActionLineMarkerProvider: LineMarkerProviderDescriptor() {
     override fun getName() = "Laravel controller action"
-    // TODO: Replace with L and globe in lower right corner
-    override fun getIcon() = LaravelIcons.LaravelLogo
+    override fun getIcon() = LaravelIcons.RouteForGutter
 
     override fun getLineMarkerInfo(element: PsiElement) = null
-
-    init {
-        logger<ControllerActionLineMarkerProvider>().info("Constructed!")
-    }
 
     override fun collectSlowLineMarkers(
         elements: MutableList<out PsiElement>,

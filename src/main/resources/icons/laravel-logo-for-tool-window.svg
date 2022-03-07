@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   width="14"
-   height="14"
-   viewBox="0 0 3.7041666 3.7041668"
+   width="13"
+   height="13"
+   viewBox="0 0 3.4395833 3.4395835"
    version="1.1"
    id="svg2925"
    sodipodi:docname="laravel-logo-for-tool-window.svg"
@@ -23,17 +23,18 @@
      inkscape:pagecheckerboard="0"
      showgrid="false"
      inkscape:zoom="46.428571"
-     inkscape:cx="5.3092308"
-     inkscape:cy="6.6984615"
+     inkscape:cx="4.1246154"
+     inkscape:cy="6.6876924"
      inkscape:window-width="1440"
-     inkscape:window-height="844"
-     inkscape:window-x="1"
-     inkscape:window-y="0"
+     inkscape:window-height="819"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
      inkscape:window-maximized="0"
-     inkscape:current-layer="svg2925" />
+     inkscape:current-layer="svg2925"
+     width="13px" />
   <g
      id="g2933"
-     transform="translate(0.26034592,0.26458335)">
+     transform="matrix(1.0833334,0,0,1.0833334,-0.03213358,-7.2500001e-8)">
     <path
        fill="#6e6e6e"
        d="M 0.62206926,0 1.160546,0.30992674 0.62206926,0.61998832 0.0836631,0.30999416 Z M 0.02980288,0.40324525 0.02966176,2.4927371 1.2146179,3.1749422 V 2.5552188 L 0.58426492,2.1963306 0.56840576,0.71330683 0.02980288,0.40324525 M 2.561335,0.36581907 2.0228583,0.67581322 2.561335,0.98580894 3.0997412,0.67574659 2.561335,0.36581907"
