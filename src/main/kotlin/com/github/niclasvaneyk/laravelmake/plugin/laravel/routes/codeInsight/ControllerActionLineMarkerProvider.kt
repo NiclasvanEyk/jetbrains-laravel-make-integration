@@ -58,12 +58,12 @@ class ControllerActionLineMarkerProvider: LineMarkerProviderDescriptor() {
         val routes = application.introspection.routeIntrospecter.snapshot ?: return
         val routesByMethod = routes
             .filterIsInstance<ControllerRoute>()
-            .associateBy { it.method }
+            .associateBy { it.method.fqn }
 
         elements.phpMethods().forEach { (identifier, method) ->
             result.add(ControllerActionLineMarker(
                 identifier,
-                routesByMethod[method] ?: return@forEach,
+                routesByMethod[method.fqn] ?: return@forEach,
                 icon,
             ))
         }
