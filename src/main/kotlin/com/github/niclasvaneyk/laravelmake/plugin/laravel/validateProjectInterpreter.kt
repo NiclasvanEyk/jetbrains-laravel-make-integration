@@ -5,6 +5,10 @@ import com.github.niclasvaneyk.laravelmake.common.php.InterpreterInference
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.LaravelMakeIntegrationBundle
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.php.PHPInterpreterValidator
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.php.actions.OpenPHPInterpreterSettingsAction
+import com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.AutoconfigureLaravelSailAction
+import com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.SailAutoconfiguration
+import com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.hasUnconfiguredSailComponents
+import com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.usesSail
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.project.Project
 import org.jetbrains.concurrency.Promise
@@ -16,7 +20,7 @@ fun validateProjectInterpreter(app: LaravelApplication): Promise<Boolean> {
     return runAsync {
         val interpreter = InterpreterInference(project).inferInterpreter()
         if (interpreter == null) {
-            displayInterpreterSetupRequiredNotification(project)
+            displayInterpreterSetupRequiredNotification(app)
 
             return@runAsync false
         }
@@ -34,8 +38,8 @@ fun validateProjectInterpreter(app: LaravelApplication): Promise<Boolean> {
     }
 }
 
-private fun displayInterpreterSetupRequiredNotification(project: Project) {
-    val notifier = ProjectBasedNotifier(project)
+private fun displayInterpreterSetupRequiredNotification(application: LaravelApplication) {
+    val notifier = ProjectBasedNotifier(application.project)
     val notification = notifier.notification {
         it.title = LaravelMakeIntegrationBundle.message("noProjectInterpreterError.modal.title")
         it.content = LaravelMakeIntegrationBundle.message("noProjectInterpreterError.modal.body")
@@ -45,6 +49,9 @@ private fun displayInterpreterSetupRequiredNotification(project: Project) {
         return@notification it
     }
 
+    if (SailAutoconfiguration.shouldBeShownFor(application)) {
+        notification.addAction(SailAutoconfiguration.action)
+    }
     notification.addAction(OpenPHPInterpreterSettingsAction())
     notification.isImportant = true
     notifier.display(notification)

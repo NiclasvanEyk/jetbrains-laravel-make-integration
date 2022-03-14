@@ -30,7 +30,9 @@ class LaravelApplication(path: String, val project: Project) {
     )
 
     fun initialize() {
-        validateProjectInterpreter(this@LaravelApplication).then {
+        validateProjectInterpreter(this@LaravelApplication).then { isValid ->
+            if (!isValid) return@then
+
             introspection.refresh()
 
             LaravelApplicationListener.EP_NAME.extensionList.forEach {

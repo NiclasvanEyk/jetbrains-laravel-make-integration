@@ -2,7 +2,6 @@ package com.github.niclasvaneyk.laravelmake.plugin.laravel.sail
 
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelApplication
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelApplicationListener
-import com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.notifications.offerSailAutoconfiguration
 
 class SailLaravelApplicationListener: LaravelApplicationListener {
     /**
@@ -10,8 +9,6 @@ class SailLaravelApplicationListener: LaravelApplicationListener {
      * the IDE for development using Laravel Sail.
      */
     override fun initialized(application: LaravelApplication) {
-        if (application.usesSail() && application.hasUnconfiguredSailComponents()) {
-            offerSailAutoconfiguration(application.project)
-        }
+        SailAutoconfiguration.promptIfNecessary(application)
     }
 }
