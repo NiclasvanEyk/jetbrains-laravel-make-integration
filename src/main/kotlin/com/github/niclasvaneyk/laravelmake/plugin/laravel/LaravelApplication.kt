@@ -18,6 +18,7 @@ fun Project.laravel(): LaravelApplication? {
 }
 
 class LaravelApplication(path: String, val project: Project) {
+    public var wasInitialized = false
     val paths: LaravelProjectPaths = LaravelProjectPaths(path)
     val version = DetectLaravelVersion.fromLockfile(
         File(paths.path(LaravelProjectPaths.COMPOSER_LOCK))
@@ -31,7 +32,8 @@ class LaravelApplication(path: String, val project: Project) {
 
     fun initialize() {
         validateProjectInterpreter(this@LaravelApplication).then { isValid ->
-            if (!isValid) return@then
+            if (!isValid || wasInitialized) return@then
+            wasInitialized = true
 
             introspection.refresh()
 

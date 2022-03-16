@@ -62,6 +62,7 @@
         <laravelSailConfigurationProvider implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.configurationProviders.PhpSailConfigurationProvider" />
 
         <laravelApplicationListener implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.SailLaravelApplicationListener" />
+        <laravelApplicationListener implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.RoutesLaravelApplicationListener" />
     </extensions>
 
     <projectListeners>

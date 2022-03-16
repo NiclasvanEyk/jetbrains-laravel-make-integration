@@ -16,6 +16,10 @@ class PhpInterpreterListener(private val project: Project): PhpProjectWorkspaceC
     override fun interpreterChanged() {
         val laravel = project.service<LaravelMakeProjectService>().application ?: return
 
-        laravel.initialize()
+        if (!laravel.wasInitialized) {
+            laravel.initialize()
+        } else {
+            laravel.introspection.refresh()
+        }
     }
 }
