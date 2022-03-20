@@ -86,4 +86,12 @@ class ControllerRoute(
     val formRequest: PhpClass?,
 ): IntrospectedRoute(basicRouteInformation, origin) {
     val isInvokableControllerRoute get() = method.name == PhpClass.INVOKE
+
+    /**
+     * This is more reliable than the method object, since the referenced
+     * method can be invalidated when editing the source file. By caching
+     * the fqn here, we can always retrieve a fresh method instance from
+     * the index.
+     */
+    val fqn = method.fqn
 }
