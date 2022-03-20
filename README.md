@@ -25,8 +25,11 @@ In order to the plugin to know how to interact with your application and PHP, yo
 If you plan to develop using Laravel Sail, you can [follow our guide](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/blob/main/docs/setup_with_sail.md) or [the one from Jetbrains](https://www.jetbrains.com/help/phpstorm/configuring-remote-interpreters.html).
 
 The features are described in more detail on their own documentation pages:
-- [`artisan make:*` commands](./docs/make-context-menu.md)
-- [tool windows](./docs/tool-windows.md)
+
+- ["File > New"-menu entries for `artisan make:*` commands](./docs/make-context-menu.md)
+- [Laravel tool window showing routes and commands](./docs/tool-windows.md)
+- [Laravel Sail Autoconfiguration](./docs/sail-autoconfiguration.md)
+- [Gutter icons highlighting route action](./docs/inlay-route-action-hints.md)
 
 ## Installation
 
