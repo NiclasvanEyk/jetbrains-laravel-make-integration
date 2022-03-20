@@ -26,12 +26,18 @@ class PhpSailConfigurationProvider: SailConfigurationProvider {
     }
 
     override fun configurationExists(application: LaravelApplication): Boolean {
-        return sailInterpreterExists(application)
+        return sailInterpreterExists(application) && usesSailInterpreter(application)
     }
 
     override fun apply(application: LaravelApplication) {
         createSailInterpreter(application)
         useSailInterpreterAsProjectInterpreter(application)
+    }
+
+    private fun usesSailInterpreter(application: LaravelApplication): Boolean {
+        val config = PhpProjectConfigurationFacade.getInstance(application.project)
+
+        return config.interpreter?.id == SAIL_PHP_INTERPRETER_ID;
     }
 
     private fun useSailInterpreterAsProjectInterpreter(application: LaravelApplication) {

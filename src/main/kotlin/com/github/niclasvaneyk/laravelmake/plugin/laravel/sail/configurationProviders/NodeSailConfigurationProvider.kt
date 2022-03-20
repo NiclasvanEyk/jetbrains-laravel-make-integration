@@ -18,6 +18,8 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.logger
 import com.jetbrains.nodejs.remote.NodeRemoteInterpreters
 
+private val LaravelApplication.sailNodeRemoteInterpreter get() = NodeJsRemoteInterpreter(SailDockerComposeFile(this).uri("node"))
+
 /**
  * Setups up NodeJs and NPM to use the binaries from the Sail container.
  */
@@ -31,16 +33,32 @@ class NodeSailConfigurationProvider: SailConfigurationProvider {
     }
 
     override fun configurationExists(application: LaravelApplication): Boolean {
-        return hasSailInterpreterConfigured()
+        return findSailInterpreter() != null
+            && usesSailInterpreter(application)
+            && hasNpmPathConfigured(application)
+    }
+
+    private fun usesSailInterpreter(application: LaravelApplication): Boolean {
+        val interpreter = NodeJsInterpreterManager.getInstance(application.project).interpreter ?: false
+        if (interpreter !is NodeJsRemoteInterpreter) return false
+
+        return interpreter.remoteUrl == application.sailNodeRemoteInterpreter.remoteUrl
     }
 
     override fun apply(application: LaravelApplication) {
-        if (!hasSailInterpreterConfigured()) {
+        val sailInterpreter = findSailInterpreter()
+        if (sailInterpreter == null) {
             log.info("No not find existing Sail interpreter, trying to create a new one...")
-            configureSailInterpreter(application)
+            createSailInterpreter(application) ?: return
         }
 
+        configureNodeInterpreter(application)
         configureNpmPath(application)
+    }
+
+    private fun configureNodeInterpreter(application: LaravelApplication) {
+        val interpreterReference = NodeJsInterpreterRef.create(application.sailNodeRemoteInterpreter)
+        NodeJsInterpreterManager.getInstance(application.project).setInterpreterRef(interpreterReference)
     }
 
     private fun configureNpmPath(application: LaravelApplication) {
@@ -48,27 +66,31 @@ class NodeSailConfigurationProvider: SailConfigurationProvider {
         npmManager.packageRef = NodePackageRef.create(NodePackage(NPM_PATH))
     }
 
-    private fun configureSailInterpreter(application: LaravelApplication) {
+    private fun createSailInterpreter(application: LaravelApplication): NodeJSRemoteSdkAdditionalData? {
         val sailRemoteInterpreter = SailComposeNodeInterpreterBuilder(SailDockerComposeFile(application)).build()
-
-        if (sailRemoteInterpreter != null) {
-            NodeRemoteInterpreters.getInstance().add(sailRemoteInterpreter)
-            val sailNodeRemoteInterpreter = NodeJsRemoteInterpreter(SailDockerComposeFile(application).uri("node"))
-            val interpreterReference = NodeJsInterpreterRef.create(sailNodeRemoteInterpreter)
-            NodeJsInterpreterManager.getInstance(application.project).setInterpreterRef(interpreterReference)
-        } else {
+        if (sailRemoteInterpreter == null) {
             log.warn("Could not build Sail interpreter. Maybe somethings wrong with the docker-compose plugin is not available/accessible?")
             // TODO: maybe throw?
+            return null
+        }
+
+        return sailRemoteInterpreter.also {
+            NodeRemoteInterpreters.getInstance().add(it)
         }
     }
 
-    private fun hasSailInterpreterConfigured(): Boolean {
+    private fun findSailInterpreter(): NodeJSRemoteSdkAdditionalData? {
         return NodeRemoteInterpreters.getInstance().interpreters.firstOrNull {
             val credentials = it.connectionCredentials().credentials
-            if (credentials !is DockerComposeCredentialsHolder) return false
+            if (credentials !is DockerComposeCredentialsHolder) return@firstOrNull false
 
-            return credentials.composeServiceName == SAIL_LARAVEL_SERVICE_NAME
-        } != null
+            return@firstOrNull credentials.composeServiceName == SAIL_LARAVEL_SERVICE_NAME
+        }
+    }
+
+    private fun hasNpmPathConfigured(application: LaravelApplication): Boolean {
+        val npmManager = application.project.service<NpmManager>()
+        return npmManager.packageRef.constantPackage?.systemIndependentPath == NPM_PATH
     }
 }
 

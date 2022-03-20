@@ -52,18 +52,7 @@ class SailAutoconfiguration {
             if (!shouldBeShownFor(application)) return
 
             hasAlreadyBeenPrompted = true
-            SailNotificationGroup.info(
-                title = "Laravel Sail Setup",
-                content = """
-                    It seems like this project uses the default Laravel Sail setup.
-                    To get a better development experience, the IDE can be 
-                    automatically configured to use the PHP and NPM installations from
-                    the Sail container.
-                """.trimIndent()
-            ).apply {
-                isImportant = true
-                addAction(AutoconfigureLaravelSailAction(hideIcon = true))
-            }.notify(application.project)
+            AutoconfigureLaravelSailAction.notification().notify(application.project)
         }
     }
 }
