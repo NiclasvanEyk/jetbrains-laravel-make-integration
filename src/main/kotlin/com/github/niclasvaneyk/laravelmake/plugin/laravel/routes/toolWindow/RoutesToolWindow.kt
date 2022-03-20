@@ -1,5 +1,6 @@
 package com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.toolWindow
 
+import com.github.niclasvaneyk.laravelmake.common.jetbrains.ui.toolBar.refreshToolbars
 import com.intellij.openapi.ui.SimpleToolWindowPanel
 import com.intellij.ui.components.JBPanelWithEmptyText
 import com.intellij.ui.components.JBScrollPane
@@ -73,6 +74,7 @@ class RoutesToolWindow(
 
             is LoadedState -> {
                 setContent(masterListPanel)
+                refreshToolbars()
 //                documentation.showMessage()
             }
 
@@ -80,6 +82,7 @@ class RoutesToolWindow(
 
             is RevalidatedState -> {
                 setContent(masterListPanel)
+                refreshToolbars()
 //                documentation.showMessage()
             }
 
