@@ -38,9 +38,9 @@ intellij {
     pluginName.set(properties("pluginName"))
     version.set(properties("platformVersion"))
     type.set(properties("platformType"))
-    if (System.getenv("PHPSTORM_LOCAL_PATH") != null) {
-        localPath.set(System.getenv("PHPSTORM_LOCAL_PATH"))
-    }
+//    if (System.getenv("PHPSTORM_LOCAL_PATH") != null) {
+//        localPath.set(System.getenv("PHPSTORM_LOCAL_PATH"))
+//    }
 
     // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
     plugins.set(properties("platformPlugins").split(',').map(String::trim).filter(String::isNotEmpty))

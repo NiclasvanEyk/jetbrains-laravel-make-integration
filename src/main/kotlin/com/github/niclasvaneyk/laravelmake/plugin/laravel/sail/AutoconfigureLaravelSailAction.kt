@@ -5,8 +5,9 @@ import com.github.niclasvaneyk.laravelmake.plugin.laravel.laravel
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.diagnostic.logger
+import com.intellij.openapi.project.DumbAwareAction
 
-class AutoconfigureLaravelSailAction(private val hideIcon: Boolean = false): AnAction() {
+class AutoconfigureLaravelSailAction(private val hideIcon: Boolean = false): DumbAwareAction() {
     init {
         templatePresentation.apply {
             icon = if (hideIcon) null else LaravelIcons.Sail
@@ -29,10 +30,12 @@ class AutoconfigureLaravelSailAction(private val hideIcon: Boolean = false): AnA
     }
 
     override fun actionPerformed(e: AnActionEvent) {
+        val log = logger<AutoconfigureLaravelSailAction>()
         val application = e.project?.laravel() ?: return // TODO: Notification?
 
         SailConfigurationProvider.EP_NAME.extensionList.forEach {
             try {
+                log.debug("Executing '${it.javaClass.name}'...")
                 it.apply(application)
             } catch (exception: Throwable) {
                 logger<AutoconfigureLaravelSailAction>().error(exception)

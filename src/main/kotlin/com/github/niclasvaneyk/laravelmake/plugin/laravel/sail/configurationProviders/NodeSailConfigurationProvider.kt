@@ -15,6 +15,7 @@ import com.intellij.javascript.nodejs.npm.NpmManager
 import com.intellij.javascript.nodejs.util.NodePackage
 import com.intellij.javascript.nodejs.util.NodePackageRef
 import com.intellij.openapi.components.service
+import com.intellij.openapi.diagnostic.logger
 import com.jetbrains.nodejs.remote.NodeRemoteInterpreters
 
 /**
@@ -26,6 +27,7 @@ class NodeSailConfigurationProvider: SailConfigurationProvider {
          * The path inside the sail container that needs to be configured.
          */
         const val NPM_PATH = "/usr/lib/node_modules/npm"
+        private val log = logger<NodeSailConfigurationProvider>()
     }
 
     override fun configurationExists(application: LaravelApplication): Boolean {
@@ -34,6 +36,7 @@ class NodeSailConfigurationProvider: SailConfigurationProvider {
 
     override fun apply(application: LaravelApplication) {
         if (!hasSailInterpreterConfigured()) {
+            log.info("No not find existing Sail interpreter, trying to create a new one...")
             configureSailInterpreter(application)
         }
 
@@ -48,12 +51,14 @@ class NodeSailConfigurationProvider: SailConfigurationProvider {
     private fun configureSailInterpreter(application: LaravelApplication) {
         val sailRemoteInterpreter = SailComposeNodeInterpreterBuilder(SailDockerComposeFile(application)).build()
 
-        // TODO: maybe throw?
         if (sailRemoteInterpreter != null) {
             NodeRemoteInterpreters.getInstance().add(sailRemoteInterpreter)
             val sailNodeRemoteInterpreter = NodeJsRemoteInterpreter(SailDockerComposeFile(application).uri("node"))
             val interpreterReference = NodeJsInterpreterRef.create(sailNodeRemoteInterpreter)
             NodeJsInterpreterManager.getInstance(application.project).setInterpreterRef(interpreterReference)
+        } else {
+            log.warn("Could not build Sail interpreter. Maybe somethings wrong with the docker-compose plugin is not available/accessible?")
+            // TODO: maybe throw?
         }
     }
 
