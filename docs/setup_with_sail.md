@@ -2,6 +2,8 @@
 
 We will walk through the process of creating a new Laravel application using Laravel Sail as our local development environment and connecting it to PHPStorm.
 
+> Note: This process has been automated and can be automatically executed as an IDE action. Visit the [Laravel Sail Autoconfiguration guide](sail-autoconfiguration.md) for more information.
+
 ## Prerequisites
 
 I assume you already have the PHPStorm, the [plugin](https://plugins.jetbrains.com/plugin/14612-laravel-make-integration) and docker installed.
