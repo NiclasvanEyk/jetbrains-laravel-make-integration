@@ -24,7 +24,7 @@
 
 - Using IDE built-in plugin system:
   
-  <kbd>Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "jetbrains-laravel-make-integration"</kbd> >
+  <kbd>Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "Laravel Make"</kbd> >
   <kbd>Install Plugin</kbd>
   
 - Manually:
