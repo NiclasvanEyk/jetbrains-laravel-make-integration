@@ -1,23 +1,8 @@
-# Feature Overview
+# `artisan:make` Commands for the context menu
 
-This serves as a complete list of the features / documentation this plugin provides.
+Because this plugin internally executes `php artisan make`, most features just work as you would expect.
 
-## Contents
-
-* [Awesome features of `artisan`](#awesome-features-of-artisan)
-    + [🏳️‍🌈 Flags](#-flags)
-    + [📝 Stub file support](#-stub-file-support)
-* [Improvements over the CLI](#improvements-over-the-cli)
-    + [🎯 Command Filtering](#-command-filtering)
-    + [🤖 Auto filled namespaces](#-auto-filled-namespaces)
-* [PHPStorm specific features](#phpstorm-specific-features)
-    + [🐳 Remote Interpreters](#-remote-interpreters)
-
-## Awesome features of `artisan`
-
-Because this plugin internally executes `php artisan make`, a few features just work as you would expect.
-
-### 🏳️‍🌈 Flags
+## 🏳️‍🌈 Flags
 
 You can pass every flag that is supported by the artisan sub-command of your choice. Just write all flags
 *after* the name of the class you want to generate, and they will be passed along. 
@@ -35,7 +20,7 @@ following labels to them:
 > specified model cannot be found). This 
 > cannot be handled correctly at this moment, see #13 for more information.
 
-### 📝 Stub file support
+## 📝 Stub file support
 
 As Laravel Make Integration is basically only a GUI for `php artisan make`, if you [customized the stub files](https://laravel.com/docs/artisan#stub-customization) or prefer [Spaties defaults](https://github.com/spatie/laravel-stubs#opinionated-laravel-stubs) the code generation will just work as expected. No more fiddling with PHPStorm file templates needed and everyone one the team is using the same templates for file creation!
 
@@ -75,18 +60,3 @@ namespace, as you can see in the image below. Now the artisan command to be exec
 so your new class will also be created in the `app/Http/Controllers/A/Deeply/Nested/Namespace/In/Your/Controllers/Folder`.
 
 ![The namespace was initially filled, as the action was triggered from a sub-folder of app/Http](https://plugins.jetbrains.com/files/14612/screenshot_22854.png)
-
-<!---------------------------------------------------------------------------->
-
-## PHPStorm specific features
-
-As Jetbrains already has a rich plugin ecosystem in place, we can take advantage of some of them. 
-
-### 🐳 Remote Interpreters
-
-If you are using Docker to run your local development environment, and you have specified path mappings for your project PHP interpreter, everything will just work fine (just make sure you have your path mappings setup). The extension uses the interpreter specified in the project settings, or the first local one it can find, if none is configured.
-
-Because the IDE has to launch a Docker container in the background, which takes some time, you will see a popup like the one below, if you are using a remote interpreter.
-
-<img src="https://plugins.jetbrains.com/files/14612/screenshot_22855.png" alt="A waiting modal, that indicates that the extension connects to a docker container" width="50%"></img>
-
