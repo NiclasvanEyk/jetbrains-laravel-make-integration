@@ -29,9 +29,13 @@ class AutoconfigureLaravelSailAction(private val hideIcon: Boolean = false): Dum
             icon = if (hideIcon) null else LaravelIcons.Sail
             text = "Autoconfigure Laravel Sail"
             description = "Configures your IDE to use Laravel Sail for PHP, Node and Docker Compose."
-            isVisible = true // Will only be enabled for Laravel applications
+            isVisible = false // Will only be enabled for Laravel applications
             isEnabled = true
         }
+    }
+
+    override fun update(e: AnActionEvent) {
+        templatePresentation.isVisible = e.project?.laravel() != null
     }
 
     override fun actionPerformed(e: AnActionEvent) {
