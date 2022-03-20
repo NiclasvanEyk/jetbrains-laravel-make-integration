@@ -10,7 +10,7 @@
 <!-- Plugin description -->
 !["New File" menu with Laravel group provided by this plugin](https://plugins.jetbrains.com/files/14612/screenshot_b321b1b4-2b8d-45d4-92a0-8d24af629349)
 
-Laravel MAKE provides a set of integration points that connect your Laravel application to PhpStorm.
+Laravel Make provides a set of integration points that connect your Laravel application to PhpStorm.
 
 - `artisan make:*` commands are integrated into the "File > New" context menu, including autocomplete for flags and pre-filled namespaces
 - Laravel tool window, providing native, auto-refreshing views for `artisan route:list` supporting search-as-you-type other kinds of filters 

@@ -13,7 +13,7 @@ class NotificationFactory {
 
     fun build(): Notification {
         val notification =  Notification(
-            "Laravel MAKE",
+            "Laravel Make",
             title ?: "",
             content ?: "",
             type
