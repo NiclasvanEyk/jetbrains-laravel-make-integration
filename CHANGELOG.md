@@ -1,6 +1,13 @@
 # Laravel Make Integration Changelog
 
 ## [Unreleased]
+### Added
+
+### Changed
+
+### Fixed
+
+## [3.0.0]
 
 ### Added
 
