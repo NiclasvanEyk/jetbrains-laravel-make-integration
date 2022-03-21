@@ -43,7 +43,16 @@ intellij {
 //    }
 
     // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
-    plugins.set(properties("platformPlugins").split(',').map(String::trim).filter(String::isNotEmpty))
+    plugins.set(listOf(
+        "com.jetbrains.php:213.6461.83",
+        "org.jetbrains.plugins.node-remote-interpreter:213.6461.6",
+        "org.jetbrains.plugins.phpstorm-remote-interpreter:213.5744.125",
+        "org.jetbrains.plugins.phpstorm-docker:213.5744.125",
+        "Docker:213.6461.58",
+        "NodeJS:213.6461.6",
+        "JavaScript",
+        "org.jetbrains.plugins.remote-run",
+    ).map(String::trim).filter(String::isNotEmpty))
 }
 
 // Configure Gradle Changelog Plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
