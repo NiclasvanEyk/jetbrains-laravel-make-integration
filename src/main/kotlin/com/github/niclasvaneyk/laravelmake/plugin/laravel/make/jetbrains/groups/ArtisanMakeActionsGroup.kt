@@ -3,6 +3,8 @@ package com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.groups
 import com.intellij.ide.actions.NonEmptyActionGroup
 import com.intellij.openapi.actionSystem.*
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.services.LaravelMakeProjectService
+import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.settings.DisplayUnAvailableActionsInContextMenuStrategy
+import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.settings.settings
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.*
 
 enum class DescriptionMode {

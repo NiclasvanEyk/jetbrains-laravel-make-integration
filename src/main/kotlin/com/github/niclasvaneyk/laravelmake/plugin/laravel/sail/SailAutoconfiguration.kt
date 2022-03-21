@@ -1,5 +1,6 @@
 package com.github.niclasvaneyk.laravelmake.plugin.laravel.sail
 
+import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.settings.settings
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelApplication
 import java.io.File
 
@@ -41,6 +42,7 @@ class SailAutoconfiguration {
             return application.usesSail()
                 && application.hasUnconfiguredSailComponents()
                 && !hasAlreadyBeenPrompted
+                && application.settings.shouldDisplaySailAutoconfigurationPopup
         }
 
         val action get() = AutoconfigureLaravelSailAction()

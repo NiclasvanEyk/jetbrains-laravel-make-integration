@@ -1,6 +1,8 @@
 package com.github.niclasvaneyk.laravelmake.plugin.laravel.sail
 
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.LaravelIcons
+import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.LaravelMakeIntegrationBundle
+import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.settings.settings
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.laravel
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.docker.DockerSetupForSailAutoconfiguration
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -21,6 +23,12 @@ class AutoconfigureLaravelSailAction(private val hideIcon: Boolean = false): Dum
         ).apply {
             isImportant = true
             addAction(AutoconfigureLaravelSailAction(hideIcon = true))
+            addAction(object: DumbAwareAction(LaravelMakeIntegrationBundle.message("notification.dont-ask-again")) {
+                override fun actionPerformed(e: AnActionEvent) {
+                    e.project?.laravel()?.settings?.shouldDisplaySailAutoconfigurationPopup = false
+                    this@apply.expire()
+                }
+            })
         }
     }
 

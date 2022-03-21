@@ -8,6 +8,9 @@ import com.github.niclasvaneyk.laravelmake.plugin.laravel.make.DirectoryResolver
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelApplication
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.ArtisanMakeSubCommandActionExecution
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.services.LaravelMakeProjectService
+import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.settings.DisplayUnAvailableActionsInContextMenuStrategy
+import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.settings.LaravelMakeProjectSettingsState
+import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.settings.settings
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.make.SubCommand
 import com.intellij.openapi.actionSystem.LangDataKeys
 import com.intellij.openapi.components.service
@@ -44,13 +47,8 @@ abstract class ArtisanMakeSubCommandAction(
     override fun actionPerformed(event: AnActionEvent) {
         val project = event.project ?: return
         val service = project.getService(LaravelMakeProjectService::class.java)
-
-        if (!service.isLaravelProject) {
-            return
-        }
-
+        val laravelProject = service?.application ?: return
         val targetFilePath = targetFileFromEvent(event)?.canonicalPath
-        val laravelProject = service.application!!
 
         val execution = buildExecution(
             command, project, laravelProject, targetFilePath
@@ -90,10 +88,21 @@ abstract class ArtisanMakeSubCommandAction(
 
         val targetFilePath = targetFileFromEvent(event)?.canonicalPath ?: return
         val relativeTargetPath = app.paths.fromProjectRoot(targetFilePath)
+        if (shouldBeActivatedWhenRightClickedOn(relativeTargetPath)) return
 
-        event.presentation.isEnabled = shouldBeActivatedWhenRightClickedOn(relativeTargetPath)
-        event.presentation.description = command.description
-            .plus(" (disabled, as this is not the directory where artisan:make would create files of this type)")
+        when (app.settings.displayUnAvailableActionsInContextMenuStrategy) {
+            DisplayUnAvailableActionsInContextMenuStrategy.Disable -> {
+                event.presentation.isEnabled = false
+                event.presentation.description = command.description
+                    .plus(" (disabled, as this is not the directory where artisan:make would create files of this type)")
+            }
+
+            DisplayUnAvailableActionsInContextMenuStrategy.Hide -> {
+                event.presentation.isEnabledAndVisible = false
+            }
+
+            DisplayUnAvailableActionsInContextMenuStrategy.Keep -> {}
+        }
     }
 
     open fun shouldBeActivatedWhenRightClickedOn(relativePathFromProjectRoot: String): Boolean {

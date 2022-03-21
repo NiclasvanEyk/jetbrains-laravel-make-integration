@@ -30,6 +30,11 @@
     </extensionPoints>
 
     <extensions defaultExtensionNs="com.intellij">
+        <projectService serviceImplementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.settings.LaravelMakeProjectSettings"/>
+        <projectConfigurable
+            instance="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.settings.LaravelMakeProjectConfigurable"
+            parentId="reference.webide.settings.project.settings.php"
+        />
         <notificationGroup id="Laravel Make" displayType="BALLOON" icon="/icons/laravel-logo.svg" />
         <notificationGroup id="Laravel Sail" displayType="BALLOON" icon="/icons/sail.svg" />
         <directoryProjectGenerator implementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.projectGeneration.LaravelProjectGenerator" />
