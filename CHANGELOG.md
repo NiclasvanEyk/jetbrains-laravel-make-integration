@@ -1,23 +1,15 @@
 # Laravel Make Integration Changelog
 
 ## [Unreleased]
-### Added
-
-- Settings! Check them out under "Languages & Frameworks > PHP > Laravel Make"
-- Setting for disabling the "Autoconfigure Laravel Sail" notification
-- Setting for hiding/disabling/keeping irrelevant artisan:make entries in the "File > New > Laravel" context menu 
-
-### Changed
-
-### Fixed
-
-## [3.0.0]
 
 ### Added
 
 - **Laravel tool window.** See all your routes and commands at a glance. No need to run `artisan route:list` and search through the output. The automatic reloading of the contents can still be improved, but I still think it provides enough value to release it.
 - **Gutter icons for controller actions.** Highlights controller methods that handle requests, to make them more distinguishable from normal class methods. You can also hover over the icon to see more information, such as the HTTP verb, the path and registered middleware: `POST /api/blog/{article_id}/comments [api, Authenticate, AnotherMiddleware]`
 - **Autoconfiguration for Laravel Sail.** Automatically configures the PHP and Node interpreters to use the ones inside the Sail `laravel.test` service.
+- **Settings**! Check them out under "Languages & Frameworks > PHP > Laravel Make"
+- Setting for disabling the "Autoconfigure Laravel Sail" notification
+- Setting for hiding/disabling/keeping irrelevant artisan:make entries in the "File > New > Laravel" context menu
 
 ### Changed
 
