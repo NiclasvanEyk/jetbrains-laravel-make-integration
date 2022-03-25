@@ -5,6 +5,7 @@
     <vendor>Niclas van Eyk</vendor>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.database</depends>
     <depends>com.jetbrains.php</depends>
     <depends>JavaScript</depends>
     <depends>NodeJS</depends>
