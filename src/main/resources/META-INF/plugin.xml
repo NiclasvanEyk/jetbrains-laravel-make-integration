@@ -38,6 +38,9 @@
         />
         <notificationGroup id="Laravel Make" displayType="BALLOON" icon="/icons/laravel-logo.svg" />
         <notificationGroup id="Laravel Sail" displayType="BALLOON" icon="/icons/sail.svg" />
+        <editorNotificationProvider
+            implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.dataSources.SyncLaravelDataSourcesNotificationProvider"
+        />
         <directoryProjectGenerator implementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.projectGeneration.LaravelProjectGenerator" />
         <projectTemplatesFactory implementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.projectGeneration.LaravelProjectGeneratorFactory" />
         <toolWindow
@@ -124,8 +127,8 @@
             class="com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.AutoconfigureLaravelSailAction"
         />
         <action
-            id="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.dataSources.AutoconfigureDefaultDatasourceAction"
-            class="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.dataSources.AutoconfigureDefaultDatasourceAction"
+            id="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.dataSources.SyncLaravelDataSourcesAction"
+            class="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.dataSources.SyncLaravelDataSourcesAction"
             text="Autoconfigure Default Database Connection"
             description="Adds or updates the default database connection from your Laravel application to the Database tool window of your IDE"
         />

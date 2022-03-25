@@ -1,6 +1,7 @@
 package com.github.niclasvaneyk.laravelmake.plugin.jetbrains.settings
 
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelApplication
+import com.github.niclasvaneyk.laravelmake.plugin.laravel.database.dataSources.SyncLaravelDataSourcesNotificationProvider
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.SailAutoconfiguration
 import com.intellij.openapi.components.*
 import com.intellij.openapi.project.Project
@@ -27,12 +28,18 @@ data class LaravelMakeProjectSettingsState(
     var shouldDisplaySailAutoconfigurationPopup: Boolean = true,
 
     /**
+     * See [SyncLaravelDataSourcesNotificationProvider].
+     */
+    var shouldDisplayDefaultDatabaseConnectionSyncBanner: Boolean = true,
+
+    /**
      * What to do with actions not matching the current path when using the "File > New > Laravel" Make actions.
      */
     var displayUnAvailableActionsInContextMenuStrategy: DisplayUnAvailableActionsInContextMenuStrategy = DisplayUnAvailableActionsInContextMenuStrategy.Disable,
 ) {
     fun fill(other: LaravelMakeProjectSettingsState) {
         shouldDisplaySailAutoconfigurationPopup = other.shouldDisplaySailAutoconfigurationPopup
+        shouldDisplayDefaultDatabaseConnectionSyncBanner = other.shouldDisplaySailAutoconfigurationPopup
         displayUnAvailableActionsInContextMenuStrategy = other.displayUnAvailableActionsInContextMenuStrategy
     }
 }
