@@ -1,4 +1,4 @@
-package com.github.niclasvaneyk.laravelmake.plugin.jetbrains.actions.make
+package com.github.niclasvaneyk.laravelmake.plugin.jetbrains.actionSystem.make
 
 internal class MakeCastActionTest {
     // TODO: Create Integration Tests.

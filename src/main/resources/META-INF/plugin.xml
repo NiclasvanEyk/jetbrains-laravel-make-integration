@@ -123,5 +123,11 @@
             id="com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.AutoconfigureLaravelSailAction"
             class="com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.AutoconfigureLaravelSailAction"
         />
+        <action
+            id="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.dataSources.AutoconfigureDefaultDatasourceAction"
+            class="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.dataSources.AutoconfigureDefaultDatasourceAction"
+            text="Autoconfigure Default Database Connection"
+            description="Adds or updates the default database connection from your Laravel application to the Database tool window of your IDE"
+        />
     </actions>
 </idea-plugin>

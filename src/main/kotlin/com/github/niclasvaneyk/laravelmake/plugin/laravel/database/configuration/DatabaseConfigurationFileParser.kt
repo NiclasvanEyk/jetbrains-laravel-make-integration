@@ -9,12 +9,11 @@ enum class LaravelDatabaseDriver {
 
 data class DatabaseConnection(
     val driver: LaravelDatabaseDriver,
-    val url: String?,
-    val host: String?,
-    val port: String?,
-    val database: String?,
-    val username: String?,
-    val password: String?,
+    val host: String,
+    val port: String,
+    val database: String,
+    val username: String,
+    val password: String,
 )
 
 data class DatabaseConfigurationFile(

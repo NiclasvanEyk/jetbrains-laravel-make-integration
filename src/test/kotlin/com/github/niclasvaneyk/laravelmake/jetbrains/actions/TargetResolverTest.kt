@@ -1,4 +1,4 @@
-package com.github.niclasvaneyk.laravelmake.plugin.jetbrains.actions
+package com.github.niclasvaneyk.laravelmake.plugin.jetbrains.actionSystem
 
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.make.DirectoryResolver
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.TargetResolver

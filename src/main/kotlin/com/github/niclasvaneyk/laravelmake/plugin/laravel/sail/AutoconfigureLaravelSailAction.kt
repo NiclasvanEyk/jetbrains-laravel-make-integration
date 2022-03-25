@@ -2,15 +2,18 @@ package com.github.niclasvaneyk.laravelmake.plugin.laravel.sail
 
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.LaravelIcons
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.LaravelMakeIntegrationBundle
+import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.actionSystem.LaravelAction
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.settings.settings
+import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelApplication
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.laravel
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.docker.DockerSetupForSailAutoconfiguration
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.logger
+import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.DumbAwareAction
 
-class AutoconfigureLaravelSailAction(private val hideIcon: Boolean = false): DumbAwareAction() {
+class AutoconfigureLaravelSailAction(private val hideIcon: Boolean = false): LaravelAction(), DumbAware {
     companion object {
         fun notification() = SailNotificationGroup.info(
             title = "Laravel Sail Setup",
@@ -42,15 +45,9 @@ class AutoconfigureLaravelSailAction(private val hideIcon: Boolean = false): Dum
         }
     }
 
-    override fun update(e: AnActionEvent) {
-        templatePresentation.isVisible = e.project?.laravel() != null
-    }
-
-    override fun actionPerformed(e: AnActionEvent) {
+    override fun run(application: LaravelApplication) {
         val log = logger<AutoconfigureLaravelSailAction>()
-        val project = e.project ?: return
-        val application = project.laravel() ?: return
-        val dockerSetup = project.service<DockerSetupForSailAutoconfiguration>()
+        val dockerSetup = application.project.service<DockerSetupForSailAutoconfiguration>()
 
         if (!dockerSetup.hasBeenCompleted) {
             dockerSetup.begin()

@@ -1,21 +1,21 @@
 package com.github.niclasvaneyk.laravelmake.plugin.laravel.database.dataSources
 
+import com.github.niclasvaneyk.laravelmake.common.collection.humanReadableKeys
+import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.notifications.LaravelMakeNotificationGroup
+import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelApplication
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.database.configuration.DatabaseConfigurationFile
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.database.configuration.DatabaseConnection
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.database.configuration.LaravelDatabaseDriver
-import com.github.niclasvaneyk.laravelmake.plugin.laravel.laravel
 import com.intellij.database.dataSource.DatabaseDriver
 import com.intellij.database.dataSource.DatabaseDriverManager
-import com.intellij.openapi.project.Project
-import com.intellij.database.dataSource.LocalDataSource;
+import com.intellij.database.dataSource.LocalDataSource
 import com.intellij.database.dataSource.LocalDataSourceManager
 import com.intellij.database.dataSource.SchemaControl.AUTOMATIC
 import com.intellij.database.introspection.DBIntrospectionOptions.SourceLoading.USER_AND_SYSTEM_SOURCES
 import com.intellij.database.util.DataSourceUtil
-import com.intellij.javascript.nodejs.execution.runExecutionUnderProgress
 import com.intellij.notification.Notification
 import com.intellij.openapi.application.invokeLater
-import com.intellij.openapi.rd.util.withModalProgressContext
+import com.intellij.openapi.wm.ToolWindowManager
 
 /**
  * Responsible for managing a [LocalDataSource], which connects to the default
@@ -25,7 +25,7 @@ import com.intellij.openapi.rd.util.withModalProgressContext
  * detected in the application and let the user decide which one to create.
  */
 class LaravelDataSourceAutoConfigurer(
-    project: Project,
+    private val application: LaravelApplication,
 
     /**
      * An optional notification that should be hidden after the action terminates.
@@ -39,7 +39,6 @@ class LaravelDataSourceAutoConfigurer(
         const val MANAGED_DATA_SOURCE_MARKER_COMMENT = "Managed by Laravel Make."
     }
 
-    private val application = project.laravel()!!
     private val dataSourceManager get() = LocalDataSourceManager.getInstance(application.project)
 
     /**
@@ -55,10 +54,17 @@ class LaravelDataSourceAutoConfigurer(
      */
     fun updateManagedDataSource() {
         val laravelDatabaseConfiguration = introspectConfiguration()
+        val defaultConnectionName = laravelDatabaseConfiguration.default
         val defaultConnection = laravelDatabaseConfiguration.defaultConnection
         if (defaultConnection == null) {
-            return
-            // TODO: Display a notification stating that the app is likely misconfigured?
+            val availableConnections = laravelDatabaseConfiguration.connections.humanReadableKeys
+
+            return LaravelMakeNotificationGroup.error(
+                title = "Invalid config/database.php",
+                content = "Default connection '$defaultConnectionName' " +
+                    "could not be found in available connections " +
+                    "$availableConnections!"
+            ).notify(application.project)
         }
 
         val dataSource = createDataSourceFromConnection(defaultConnection)
@@ -70,14 +76,35 @@ class LaravelDataSourceAutoConfigurer(
             DataSourceUtil.performAutoSyncTask(application.project, dataSource)
 
             parentNotification?.expire()
-
-            // Notification that everything went as planned?
+            openDatabaseToolWindow()
+            LaravelMakeNotificationGroup
+                .info("Successfully added connection '$defaultConnectionName' to the Database tool window!")
+                .notify(application.project)
             // Or just open the database tool window and focus the newly created schema?
         }
     }
 
+    private fun openDatabaseToolWindow() {
+        ToolWindowManager
+            .getInstance(application.project)
+            .getToolWindow("Database")
+            ?.show()
+    }
+
     private fun introspectConfiguration(): DatabaseConfigurationFile {
-        TODO("")
+        return DatabaseConfigurationFile(
+            default = "mysql",
+            connections = mapOf(
+                "mysql" to DatabaseConnection(
+                    driver = LaravelDatabaseDriver.mysql,
+                    host = "127.0.0.1",
+                    port = "3306",
+                    database = "example_app",
+                    username = "sail",
+                    password = "password",
+                )
+            )
+        )
     }
 
     private val DatabaseConfigurationFile.defaultConnection get() = connections[default]
@@ -86,7 +113,7 @@ class LaravelDataSourceAutoConfigurer(
         return connection.deriveDataSource().apply {
             name = "Laravel"
             comment = MANAGED_DATA_SOURCE_MARKER_COMMENT
-            username = "db" // TODO: why? Might need some adjustments
+//            username = connection.username
             isConfiguredByUrl = true
             isAutoSynchronize = true
             setSourceLoading(USER_AND_SYSTEM_SOURCES)
