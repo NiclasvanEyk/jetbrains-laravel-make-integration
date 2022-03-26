@@ -3,6 +3,11 @@
 ## [Unreleased]
 
 ### Added
+- **Database connection autoconfiguration**. Adds the default Laravel database connection from `config/datbase.php` to the ['Database' tool window](https://www.jetbrains.com/help/phpstorm/database-tool-window.html). Also shows a banner while editing `config/database.php` that offers to do this to make this feature more visible, which can also be turned off from within the banner or from the plugin settings. Only supports the `pgsql` and `mysql` (includes `mariadb`) database drivers, so no `sqlite` support at the moment.
+
+## [3.0.0]
+
+### Added
 
 - **Laravel tool window.** See all your routes and commands at a glance. No need to run `artisan route:list` and search through the output. The automatic reloading of the contents can still be improved, but I still think it provides enough value to release it.
 - **Gutter icons for controller actions.** Highlights controller methods that handle requests, to make them more distinguishable from normal class methods. You can also hover over the icon to see more information, such as the HTTP verb, the path and registered middleware: `POST /api/blog/{article_id}/comments [api, Authenticate, AnotherMiddleware]`

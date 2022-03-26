@@ -45,6 +45,7 @@ intellij {
     // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
     plugins.set(listOf(
         "com.jetbrains.php:213.6461.83",
+        "com.intellij.database",
         "org.jetbrains.plugins.node-remote-interpreter:213.6461.6",
         "org.jetbrains.plugins.phpstorm-remote-interpreter:213.5744.125",
         "org.jetbrains.plugins.phpstorm-docker:213.5744.125",
