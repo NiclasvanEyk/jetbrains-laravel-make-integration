@@ -6,17 +6,17 @@ As we already have to configure our database connections in Laravel using the `.
 
 When you open the `config/database.php` and installed the extension, you will see a banner at the top of the file:
 
-![](../images/data-sources/banner.png)
+![](images/data-sources/banner.png)
 
 This signals, that Laravel Make correctly identified the Laravel application in your project. If you click `Add`, or alternatively manually trigger the `Autoconfigure Default Database Connection` action, a progress bar will open, and Laravel Make will read your current database configuration as it would be returned by executing `config('datbase')` when using Laravel Tinker. This might take a few seconds, if you are using Docker, but otherwise should be pretty quick.
 
-![](../images/data-sources/introspection.png)
+![](images/data-sources/introspection.png)
 
 After this is completed, the `Database` tool window opens from the right and now includes a new `Laravel` entry, which is connected to your database. It might be necessary to download additional JDBC driver files, so PhpStorm is able to connect to the database, but the IDE will guide you through the process, which only takes a few clicks and only needs to be done once.
 
 If the connection was successful and all driver files are present, you can explore the contents of your database as seen on the screenshot below:
 
-![](../images/data-sources/success.png)
+![](images/data-sources/success.png)
 
 As you may have noticed, the banner at the top still remains. It now can be used to update the managed data source, when the database configuration changes. If you don't like the banner, you can always hide it by clicking on `Don't ask again` or unchecking the corresponding checkbox in the plugin settings.
 

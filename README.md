@@ -16,6 +16,7 @@
 - **[Laravel tool window.](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/blob/main/docs/tool-windows.md)** View all available routes and commands at a glance. Includes the usual Jetbrains goodies such as search-as-you-type, go to definition and more.
 - **[Laravel Sail Autoconfiguration.](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/blob/main/docs/sail-autoconfiguration.md)** Debugging, running tests and npm scripts all work magically when developing locally, but quickly falls apart when using containers. Sail Autoconfiguration teaches PHPStorm to use the containerized versions instead, so everything just works again.
 - **[Gutter icons highlighting route action.](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/blob/main/docs/inlay-route-action-hints.md)** Are you struggling with large controllers and don't know which methods are actual endpoints? Laravel Make annotates them using an icon, which also displays the mapped URL, HTTP verb and additional Middleware.
+- **[Database Autoconfiguration](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/blob/main/docs/managed-data-sources.md)** Automatically add and update the default database used by your Laravel application to the `Database` tool window.
 
 > For additional details visit the [project on GitHub](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration).
 <!-- Plugin description end -->
