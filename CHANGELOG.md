@@ -5,6 +5,12 @@
 ### Added
 - **Database connection autoconfiguration**. Adds the default Laravel database connection from `config/datbase.php` to the ['Database' tool window](https://www.jetbrains.com/help/phpstorm/database-tool-window.html). Also shows a banner while editing `config/database.php` that offers to do this to make this feature more visible, which can also be turned off from within the banner or from the plugin settings. Only supports the `pgsql` and `mysql` (includes `mariadb`) database drivers, so no `sqlite` support at the moment.
 
+### Fixed
+- Project detection. See [#42](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/issues/42) for more information.
+
+### Removed
+- Project templates to create a new Laravel Project using "File > New > Project". This was a WIP feature that should have not been published yet. 
+
 ## [3.0.0]
 
 ### Added
