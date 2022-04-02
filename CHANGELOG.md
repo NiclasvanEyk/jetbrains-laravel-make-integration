@@ -7,6 +7,7 @@
 
 ### Fixed
 - Project detection. See [#42](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/issues/42) for more information.
+- Creating a migration no longer results in an error
 
 ### Removed
 - Project templates to create a new Laravel Project using "File > New > Project". This was a WIP feature that should have not been published yet. 

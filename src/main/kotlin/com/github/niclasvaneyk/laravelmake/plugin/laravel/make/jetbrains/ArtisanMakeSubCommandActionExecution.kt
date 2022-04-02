@@ -12,6 +12,7 @@ import com.github.niclasvaneyk.laravelmake.common.laravel.ArtisanMakeParameters
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelApplication
 import com.github.niclasvaneyk.laravelmake.common.php.run.NoInterpreterSetException
 import com.github.niclasvaneyk.laravelmake.common.php.run.PHPRunner
+import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.notifications.LaravelMakeNotificationGroup
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.make.CreatedFileResolver
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.make.DirectoryResolver
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.make.SubCommand
@@ -35,8 +36,6 @@ open class ArtisanMakeSubCommandActionExecution(
 
     protected open val createdFileResolver: CreatedFileResolver
         get() = CreatedFileResolver(laravelApplication.paths.base)
-
-    private val notifications = ProjectBasedNotifier(project)
 
     @Suppress("SwallowedException")
     fun execute() {
@@ -89,15 +88,17 @@ open class ArtisanMakeSubCommandActionExecution(
         if (cancelled || makeResult == null) return
 
         if (makeResult!!.wasFailure) {
-            notifications.error(content = makeResult!!.log)
+            LaravelMakeNotificationGroup
+                .error(makeResult?.log ?: "Unknown error while running '$commandLine'")
+                .notify(project)
         }
 
         val createdFilePath = createdFileResolver.getCreatedFilePath(command, parameters)
 
         if (createdFilePath == null) {
-            notifications.warning(
+            LaravelMakeNotificationGroup.warn(
                 "The artisan:make run succeeded, but we were unable to locate the newly created file!"
-            )
+            ).notify(project)
             return
         }
 
