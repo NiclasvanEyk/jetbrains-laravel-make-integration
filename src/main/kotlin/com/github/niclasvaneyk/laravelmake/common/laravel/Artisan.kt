@@ -3,6 +3,7 @@ package com.github.niclasvaneyk.laravelmake.common.laravel
 import com.github.niclasvaneyk.laravelmake.common.php.run.PHPRunner
 import com.github.niclasvaneyk.laravelmake.common.php.run.PHPRunnerFactory
 import java.io.File
+import java.nio.file.Path
 
 /**
  * Wrapper to execute artisan commands.
@@ -15,8 +16,8 @@ class Artisan(
     private val runnerFactory: PHPRunnerFactory,
 ) {
     companion object {
-        fun existsAt(path: String) = File(path).exists()
-        fun binaryPath(path: String) ="${path}${LaravelProjectPaths.ARTISAN}"
+        fun existsAt(path: String) = File(binaryPath(path)).exists()
+        fun binaryPath(path: String) = Path.of(path, LaravelProjectPaths.ARTISAN).toString()
     }
 
     private val runner: PHPRunner get() = runnerFactory.runner()

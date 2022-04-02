@@ -8,5 +8,4 @@ import com.intellij.openapi.project.Project
 @Service(Level.PROJECT)
 class LaravelMakeProjectService(val project: Project) {
     val application = LaravelApplicationFactory(project).build()
-    val isLaravelProject: Boolean get() = application != null
 }
