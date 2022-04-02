@@ -41,8 +41,8 @@
         <editorNotificationProvider
             implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.dataSources.SyncLaravelDataSourcesNotificationProvider"
         />
-        <directoryProjectGenerator implementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.projectGeneration.LaravelProjectGenerator" />
-        <projectTemplatesFactory implementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.projectGeneration.LaravelProjectGeneratorFactory" />
+<!--        <directoryProjectGenerator implementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.projectGeneration.LaravelProjectGenerator" />-->
+<!--        <projectTemplatesFactory implementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.projectGeneration.LaravelProjectGeneratorFactory" />-->
         <toolWindow
                 id="Laravel"
                 factoryClass="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.toolWindow.LaravelToolWindowFactory"
