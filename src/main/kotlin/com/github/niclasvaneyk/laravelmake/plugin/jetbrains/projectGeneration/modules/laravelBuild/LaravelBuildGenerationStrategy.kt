@@ -12,6 +12,6 @@ class LaravelBuildGenerationStrategy(override val settings: LaravelBuildSettings
         path: String,
         module: com.intellij.openapi.module.Module
     ) {
-        TODO("Not yet implemented")
+        TODO()
     }
 }

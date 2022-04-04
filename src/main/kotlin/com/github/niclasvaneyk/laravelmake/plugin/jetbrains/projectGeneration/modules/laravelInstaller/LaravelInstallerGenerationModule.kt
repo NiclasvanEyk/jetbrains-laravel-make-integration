@@ -7,8 +7,10 @@ import com.intellij.ui.dsl.builder.*
 import kotlin.reflect.KClass
 
 @Suppress("UnstableApiUsage")
-class LaravelInstallerGenerationModule: LaravelProjectGenerationModule<LaravelInstallerSettings>() {
-    override val settingsClass: KClass<LaravelInstallerSettings> get() = LaravelInstallerSettings::class
+class LaravelInstallerGenerationModule
+    : LaravelProjectGenerationModule<LaravelInstallerSettings>() {
+    override val settingsClass: KClass<LaravelInstallerSettings>
+    get() = LaravelInstallerSettings::class
     override val label: String get() = "Laravel Installer"
     override val key: String get() = "installer"
 
@@ -20,8 +22,7 @@ class LaravelInstallerGenerationModule: LaravelProjectGenerationModule<LaravelIn
         }
     }
 
-    override fun strategy(settings: LaravelInstallerSettings): LaravelProjectGenerationStrategy<LaravelInstallerSettings> {
-        return LaravelInstallerGenerationStrategy(settings)
-    }
+    override fun strategy(settings: LaravelInstallerSettings)
+        = LaravelInstallerGenerationStrategy(settings)
 }
 

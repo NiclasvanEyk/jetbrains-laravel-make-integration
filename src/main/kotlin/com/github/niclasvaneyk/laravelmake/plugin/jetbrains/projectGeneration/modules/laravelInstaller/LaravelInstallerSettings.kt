@@ -28,8 +28,11 @@ data class GitOptions (
 
 /** https://github.com/laravel/installer/blob/master/src/NewCommand.php */
 data class LaravelInstallerSettings(
+    /** Path to the globally installed laravel installer */
+    val executablePath: String,
+
     /** The name of the generated application */
-    val nam: String,
+    val projectName: String,
 
     /** Installs the latest "development" release */
     val dev: Boolean,

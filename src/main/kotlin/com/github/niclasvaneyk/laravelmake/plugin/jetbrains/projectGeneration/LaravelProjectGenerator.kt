@@ -1,13 +1,16 @@
 package com.github.niclasvaneyk.laravelmake.plugin.jetbrains.projectGeneration
 
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.LaravelIcons
-import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.projectGeneration.platform.LaravelProjectGenerationModule
+import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.projectGeneration.modules.composer.ComposerGenerationModule
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.projectGeneration.modules.laravelBuild.LaravelBuildGenerationModule
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.projectGeneration.modules.laravelInstaller.LaravelInstallerGenerationModule
+import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.projectGeneration.platform.LaravelProjectGenerationModule
+import com.intellij.ide.util.projectWizard.ModuleBuilder
 import com.intellij.ide.util.projectWizard.WebProjectTemplate
 import com.intellij.ide.util.projectWizard.WizardContext
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.NotNullLazyValue
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.platform.ProjectGeneratorPeer
 import com.intellij.platform.ProjectTemplate
@@ -45,24 +48,20 @@ class LaravelProjectGenerator: WebProjectTemplate<LaravelProjectGeneratorSetting
     override fun getName() = "Laravel"
     override fun getIcon() = LaravelIcons.LaravelLogo
     override fun getDescription() = "Generate a new Laravel application"
+    override fun createPeer() = LaravelProjectGeneratorPeer(generationModules)
 
     private val generationModules = listOf<LaravelProjectGenerationModule<*>>(
         LaravelBuildGenerationModule(),
         LaravelInstallerGenerationModule(),
+        ComposerGenerationModule(),
     )
-
-    override fun createPeer(): ProjectGeneratorPeer<LaravelProjectGeneratorSettings<*>> {
-        return LaravelProjectGeneratorPeer(generationModules)
-    }
 
     override fun generateProject(
         project: Project,
         baseDir: VirtualFile,
         settings: LaravelProjectGeneratorSettings<*>,
         module: Module
-    ) {
-        generationModules
-            .firstNotNullOf { it.buildStrategyIfApplicable(settings.strategySettings) }
-            .generateProject(project, baseDir, settings.path, module)
-    }
+    ) = generationModules
+        .firstNotNullOf { it.buildStrategyIfApplicable(settings.strategySettings) }
+        .generateProject(project, baseDir, settings.path, module)
 }

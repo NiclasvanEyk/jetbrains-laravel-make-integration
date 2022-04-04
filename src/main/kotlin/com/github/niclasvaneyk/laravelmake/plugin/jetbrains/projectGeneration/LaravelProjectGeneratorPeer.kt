@@ -1,5 +1,6 @@
 package com.github.niclasvaneyk.laravelmake.plugin.jetbrains.projectGeneration
 
+import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.projectGeneration.modules.composer.ComposerSettings
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.projectGeneration.modules.laravelBuild.LaravelBuildGenerationModule
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.projectGeneration.modules.laravelBuild.LaravelBuildSettings
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.projectGeneration.platform.LaravelProjectGenerationModule
@@ -17,9 +18,9 @@ class LaravelProjectGeneratorPeer(
 ): ProjectGeneratorPeer<LaravelProjectGeneratorSettings<*>> {
     private var selectedModule = LaravelBuildGenerationModule.KEY
     private val moduleUisByKey = mutableMapOf<String, DialogPanel>()
+    private val container = JPanel()
 
     override fun getComponent(): JComponent {
-        val container = JPanel()
         container.add(panel {
             buttonGroup({ selectedModule }, { newSelectedModule ->
                 selectedModule = newSelectedModule
@@ -31,7 +32,6 @@ class LaravelProjectGeneratorPeer(
                     }
                 }
             }
-
         })
 
         for (module in modules) {
@@ -43,6 +43,10 @@ class LaravelProjectGeneratorPeer(
         return container
     }
 
+    override fun buildUI(step: SettingsStep) {
+        step.addSettingsComponent(container)
+    }
+
     private fun onModuleChanged(newModule: String) {
         moduleUisByKey.values.forEach { it.isVisible = false }
         moduleUisByKey[newModule]!!.isVisible = true
@@ -50,8 +54,11 @@ class LaravelProjectGeneratorPeer(
 
     override fun getSettings(): LaravelProjectGeneratorSettings<*> {
         return LaravelProjectGeneratorSettings(
-            path = "Test",
-            strategySettings = LaravelBuildSettings()
+            "~/IdeaProjects",
+            ComposerSettings(
+                executablePath = "/usr/local/bin/composer",
+                projectName = "example",
+            )
         )
     }
 
@@ -61,9 +68,5 @@ class LaravelProjectGeneratorPeer(
 
     override fun isBackgroundJobRunning(): Boolean {
         return false
-    }
-
-    override fun buildUI(p0: SettingsStep) {
-        //
     }
 }
