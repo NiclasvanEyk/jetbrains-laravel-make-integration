@@ -9,7 +9,6 @@ import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelApplication
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.ArtisanMakeSubCommandActionExecution
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.services.LaravelMakeProjectService
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.settings.DisplayUnAvailableActionsInContextMenuStrategy
-import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.settings.LaravelMakeProjectSettingsState
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.settings.settings
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.make.SubCommand
 import com.intellij.openapi.actionSystem.LangDataKeys
@@ -88,7 +87,7 @@ abstract class ArtisanMakeSubCommandAction(
 
         val targetFilePath = targetFileFromEvent(event)?.canonicalPath ?: return
         val relativeTargetPath = app.paths.fromProjectRoot(targetFilePath)
-        if (shouldBeActivatedWhenRightClickedOn(relativeTargetPath)) return
+        if (shouldBeActivatedWhenRightClickedOn(relativeTargetPath, app)) return
 
         when (app.settings.displayUnAvailableActionsInContextMenuStrategy) {
             DisplayUnAvailableActionsInContextMenuStrategy.Disable -> {
@@ -105,7 +104,7 @@ abstract class ArtisanMakeSubCommandAction(
         }
     }
 
-    open fun shouldBeActivatedWhenRightClickedOn(relativePathFromProjectRoot: String): Boolean {
+    open fun shouldBeActivatedWhenRightClickedOn(relativePathFromProjectRoot: String, app: LaravelApplication): Boolean {
         return DirectoryResolver(command.location).couldPointToDefaultFolder(relativePathFromProjectRoot)
     }
 

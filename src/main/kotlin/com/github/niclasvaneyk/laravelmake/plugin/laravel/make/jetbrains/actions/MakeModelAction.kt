@@ -99,7 +99,7 @@ class MakeModelAction : ArtisanMakeSubCommandAction(
     // which is not where one would expect a model.
     // An exception is made for the /app/Models directory, as Laravel stores models there in
     // versions after 8.0.0
-    override fun shouldBeActivatedWhenRightClickedOn(relativePathFromProjectRoot: String): Boolean {
+    override fun shouldBeActivatedWhenRightClickedOn(relativePathFromProjectRoot: String, app: LaravelApplication): Boolean {
         return arrayOf(LaravelProjectPaths.APP, LaravelProjectPaths.MODELS).contains(relativePathFromProjectRoot)
     }
 }

@@ -84,10 +84,6 @@ class MakeRuleAction : ArtisanMakeSubCommandAction(
     SubCommand("rule", LaravelProjectPaths.RULES)
 )
 
-class MakeSeederAction : ArtisanMakeSubCommandAction(
-    SubCommand("seeder", LaravelProjectPaths.SEEDS)
-)
-
 // VENDOR
 class MakeLivewireAction : ArtisanMakeSubCommandAction(
     SubCommand("livewire", LaravelProjectPaths.LIVEWIRE)

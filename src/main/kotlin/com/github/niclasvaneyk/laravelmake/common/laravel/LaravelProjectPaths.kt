@@ -1,5 +1,7 @@
 package com.github.niclasvaneyk.laravelmake.common.laravel
 
+import java.io.File
+
 /**
  * The conventions, so where to put files in a Laravel project.
  *
@@ -53,7 +55,8 @@ class LaravelProjectPaths(val base: String) {
         const val DATABASE = "/database"
         const val MIGRATIONS = "$DATABASE/migrations"
         const val FACTORIES = "$DATABASE/factories"
-        const val SEEDS = "$DATABASE/seeds"
+        const val SEEDERS = "$DATABASE/seeders"
+        const val LEGACY_SEEDERS = "$DATABASE/seeds"
 
         const val TESTS = "/tests"
         const val FEATURE_TESTS = "$TESTS/Feature"
@@ -74,5 +77,9 @@ class LaravelProjectPaths(val base: String) {
 
     fun path(relativePath: String): String {
         return "$base/$relativePath"
+    }
+
+    fun exists(relativePath: String): Boolean {
+        return File(path(relativePath)).exists()
     }
 }

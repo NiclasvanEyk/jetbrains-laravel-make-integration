@@ -1,6 +1,8 @@
 # Laravel Make Integration Changelog
 
 ## [Unreleased]
+### Fixed
+- The `make:seeder` action now properly works with the new `database/seeders` directory.
 
 ## [3.1.0]
 ### Added
