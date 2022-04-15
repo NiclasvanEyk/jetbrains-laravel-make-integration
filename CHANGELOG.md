@@ -1,6 +1,11 @@
 # Laravel Make Integration Changelog
 
 ## [Unreleased]
+
+### Changed
+- Require & support 2022.1 platform
+- Use new [suggestion notifications](https://blog.jetbrains.com/idea/2022/01/intellij-idea-2022-1-eap-1/#New_Notifications_tool_window) for Sail autoconfiguration and PHP Interpreter notifications
+
 ### Fixed
 - The `make:seeder` action now properly works with the new `database/seeders` directory.
 
