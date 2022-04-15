@@ -41,7 +41,6 @@
         <editorNotificationProvider
             implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.dataSources.SyncLaravelDataSourcesNotificationProvider"
         />
-        <runLineMarkerContributor language="PHP" implementationClass="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.seeders.SeederRunLineMarkerContributor" />
 <!--        <directoryProjectGenerator implementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.projectGeneration.LaravelProjectGenerator" />-->
 <!--        <projectTemplatesFactory implementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.projectGeneration.LaravelProjectGeneratorFactory" />-->
         <toolWindow

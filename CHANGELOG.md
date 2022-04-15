@@ -1,6 +1,8 @@
 # Laravel Make Integration Changelog
 
 ## [Unreleased]
+### Added
+- **Runnable Seeders.** Press the usual green arrow next to a seeder to run/debug a seeder. 
 
 ### Changed
 - Require & support 2022.1 platform
