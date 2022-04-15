@@ -4,7 +4,6 @@ import com.intellij.openapi.util.SystemInfo
 import com.github.niclasvaneyk.laravelmake.common.macos.filesystem.MacOsDirectories
 import java.awt.Desktop
 import java.nio.file.Paths
-import java.util.*
 
 class DockerForMac {
     companion object {
@@ -13,9 +12,6 @@ class DockerForMac {
             .toFile()
 
         fun isAvailable() = SystemInfo.isMac && appDirectory.exists()
-
-        fun start() {
-            Desktop.getDesktop().open(appDirectory)
-        }
+        fun start() = Desktop.getDesktop().open(appDirectory)
     }
 }

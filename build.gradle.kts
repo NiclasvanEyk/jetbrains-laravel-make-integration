@@ -9,7 +9,7 @@ plugins {
     // Kotlin support
     id("org.jetbrains.kotlin.jvm") version "1.6.10"
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.4.0"
+    id("org.jetbrains.intellij") version "1.5.2"
     // Gradle Changelog Plugin
     id("org.jetbrains.changelog") version "1.3.1"
     // Gradle Qodana Plugin
@@ -42,15 +42,23 @@ intellij {
 //        localPath.set(System.getenv("PHPSTORM_LOCAL_PATH"))
 //    }
 
+    // This is the build number usually shared by most first-party JB plugins.
+    val build = "221.5080.169"
     // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
     plugins.set(listOf(
-        "com.jetbrains.php:213.6461.83",
+        // https://plugins.jetbrains.com/plugin/6610-php/versions
+        "com.jetbrains.php:$build",
+        // https://plugins.jetbrains.com/plugin/8116-node-js-remote-interpreter/versions
+        "org.jetbrains.plugins.node-remote-interpreter:$build",
+        // https://plugins.jetbrains.com/plugin/7511-php-remote-interpreter/versions
+        "org.jetbrains.plugins.phpstorm-remote-interpreter:$build",
+        // https://plugins.jetbrains.com/plugin/8595-php-docker/versions
+        "org.jetbrains.plugins.phpstorm-docker:$build",
+
+        // These seem to be bundled and do not require a specific version?
         "com.intellij.database",
-        "org.jetbrains.plugins.node-remote-interpreter:213.6461.6",
-        "org.jetbrains.plugins.phpstorm-remote-interpreter:213.5744.125",
-        "org.jetbrains.plugins.phpstorm-docker:213.5744.125",
-        "Docker:213.6461.58",
-        "NodeJS:213.6461.6",
+        "Docker",
+        "NodeJS",
         "JavaScript",
         "org.jetbrains.plugins.remote-run",
     ).map(String::trim).filter(String::isNotEmpty))

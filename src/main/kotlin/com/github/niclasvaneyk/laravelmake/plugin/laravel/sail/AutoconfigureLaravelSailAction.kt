@@ -7,13 +7,17 @@ import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.settings.settings
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelApplication
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.laravel
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.docker.DockerSetupForSailAutoconfiguration
+import com.intellij.notification.Notification
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.logger
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.DumbAwareAction
 
-class AutoconfigureLaravelSailAction(private val hideIcon: Boolean = false): LaravelAction(), DumbAware {
+class AutoconfigureLaravelSailAction(
+    private val hideIcon: Boolean = false,
+    private val notification: Notification? = null,
+): LaravelAction(), DumbAware {
     companion object {
         fun notification() = SailNotificationGroup.info(
             title = "Laravel Sail Setup",
@@ -24,8 +28,8 @@ class AutoconfigureLaravelSailAction(private val hideIcon: Boolean = false): Lar
                     the Sail container.
                 """.trimIndent()
         ).apply {
-            isImportant = true
-            addAction(AutoconfigureLaravelSailAction(hideIcon = true))
+            isSuggestionType = true
+            addAction(AutoconfigureLaravelSailAction(hideIcon = true, this@apply))
             addAction(object: DumbAwareAction(LaravelMakeIntegrationBundle.message("notification.dont-ask-again")) {
                 override fun actionPerformed(e: AnActionEvent) {
                     e.project?.laravel()?.settings?.shouldDisplaySailAutoconfigurationPopup = false
@@ -65,6 +69,7 @@ class AutoconfigureLaravelSailAction(private val hideIcon: Boolean = false): Lar
 
         application.initialize()
 
+        notification?.expire()
         SailNotificationGroup
             .info(
                 title = "Laravel Sail Setup Completed",

@@ -12,7 +12,6 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.platform.ProjectGeneratorPeer
 import com.intellij.platform.ProjectTemplate
 import com.intellij.platform.ProjectTemplatesFactory
-import com.jetbrains.php.config.generation.PhpEmptyTemplatesFactory
 import icons.PhpIcons
 import javax.swing.Icon
 
@@ -22,9 +21,7 @@ class LaravelProjectGeneratorSettings<S: Any>(
 )
 
 class LaravelProjectGeneratorFactory: ProjectTemplatesFactory() {
-    override fun getGroups(): Array<String> = arrayOf(
-        PhpEmptyTemplatesFactory.PHP_PROJECT_TEMPLATE_GROUP
-    )
+    override fun getGroups(): Array<String> = arrayOf("php")
 
     override fun getGroupIcon(group: String?): Icon = PhpIcons.PhpIcon
 

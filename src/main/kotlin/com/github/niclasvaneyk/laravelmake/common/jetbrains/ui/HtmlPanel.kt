@@ -45,18 +45,17 @@ class HtmlPanel: JEditorPane(UIUtil.HTML_MIME, ""), HyperlinkListener {
     }
 
     private fun customizeStyleSheet(styles: StyleSheet) {
-        styles.addStyleSheet(
-            StartupUiUtil.createStyleSheet("""
-                a { 
-                    color: $linkColor; 
-                    text-decoration: none;
-                }
-                
-                body { 
-                    padding-left: 1rem; 
-                } 
-            """.trimIndent())
-        )
+        styles.addRule("""
+            a { 
+                color: $linkColor; 
+                text-decoration: none;
+            }
+        """.trimIndent())
+        styles.addRule("""
+            body { 
+                padding-left: 1rem; 
+            } 
+        """.trimIndent())
     }
 
     private val bodyFont get() = FontUtil.getCommitMessageFont()

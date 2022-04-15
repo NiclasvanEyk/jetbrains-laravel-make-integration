@@ -9,7 +9,6 @@ import com.github.niclasvaneyk.laravelmake.common.php.run.PHPRunnerFactory
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.services.LaravelMakeProjectService
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.introspection.LaravelIntrospectionFacade
 import com.intellij.openapi.components.service
-import com.intellij.openapi.diagnostic.logger
 import com.intellij.openapi.project.Project
 import java.io.File
 
@@ -18,7 +17,7 @@ fun Project.laravel(): LaravelApplication? {
 }
 
 class LaravelApplication(path: String, val project: Project) {
-    public var wasInitialized = false
+    var wasInitialized = false
     val paths: LaravelProjectPaths = LaravelProjectPaths(path)
     val version = DetectLaravelVersion.fromLockfile(
         File(paths.path(LaravelProjectPaths.COMPOSER_LOCK))
@@ -37,13 +36,7 @@ class LaravelApplication(path: String, val project: Project) {
 
             introspection.refresh()
 
-            LaravelApplicationListener.EP_NAME.extensionList.forEach {
-                try {
-                    it.initialized(this@LaravelApplication)
-                } catch (exception: Throwable) {
-                    logger<LaravelApplication>().error(exception)
-                }
-            }
+            LaravelApplicationListener.runAll(this)
         }
     }
 }

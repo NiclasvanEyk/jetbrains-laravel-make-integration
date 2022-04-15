@@ -55,6 +55,7 @@ class PHPInterpreterValidator(private val project: LaravelApplication) {
                 notification.addAction(OpenPHPInterpreterSettingsAction())
             }
 
+            notification.isSuggestionType = true
             notification.isImportant = true
 
             // TODO: Be more helpful / specific by adding actions or a link to
