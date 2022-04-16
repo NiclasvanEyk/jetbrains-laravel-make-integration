@@ -21,17 +21,16 @@ class LaravelProjectGeneratorPeer(
     override fun getComponent(): JComponent {
         val container = JPanel()
         container.add(panel {
-            buttonGroup({ selectedModule }, { newSelectedModule ->
-                selectedModule = newSelectedModule
-                onModuleChanged(newSelectedModule)
-            }) {
+            buttonsGroup {
                 row {
                     for (module in modules) {
                         radioButton(module.label, module.key)
                     }
                 }
-            }
-
+            }.bind({ selectedModule }, { newSelectedModule ->
+                selectedModule = newSelectedModule
+                onModuleChanged(newSelectedModule)
+            })
         })
 
         for (module in modules) {

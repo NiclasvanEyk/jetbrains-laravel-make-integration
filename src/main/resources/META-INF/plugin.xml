@@ -63,6 +63,11 @@
 <!--            language="PHP"-->
 <!--            implementationClass="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.seeders.RunSeederLineMarkerProvider"-->
 <!--        />-->
+            <runConfigurationProducer implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.seeders.SeederRunConfigurationProducer" />
+            <runLineMarkerContributor
+                language="PHP"
+                implementationClass="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.seeders.SeederRunLineMarkerContributor"
+            />
     </extensions>
 
     <extensions defaultExtensionNs="com.niclas-van-eyk.laravel-make-integration">
