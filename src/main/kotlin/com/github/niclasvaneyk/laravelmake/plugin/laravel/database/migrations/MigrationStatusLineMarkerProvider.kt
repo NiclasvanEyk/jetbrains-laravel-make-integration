@@ -1,5 +1,6 @@
 package com.github.niclasvaneyk.laravelmake.plugin.laravel.database.migrations
 
+import com.github.niclasvaneyk.laravelmake.common.jetbrains.codeInsight.daemon.SimpleTooltipLineMarkerInfo
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.LaravelIcons
 import com.intellij.codeInsight.daemon.LineMarkerInfo
 import com.intellij.codeInsight.daemon.LineMarkerProviderDescriptor
@@ -23,27 +24,12 @@ class MigrationStatusLineMarkerProvider: LineMarkerProviderDescriptor() {
         val inferredName = File(file.name).nameWithoutExtension
         val migration = migrations.current.find { it.name == inferredName} ?: return null
 
-        return MigrationStatusLineMarker(element, migration)
-    }
-}
-
-class MigrationStatusLineMarker(
-    element: PsiElement,
-    private val migration: Migration,
-): LineMarkerInfo<PsiElement>(
-    element,
-    element.textRange,
-    if (migration.ran) AllIcons.Actions.Commit
-    else AllIcons.Hierarchy.MethodNotDefined,
-    { text(migration) },
-    null,
-    GutterIconRenderer.Alignment.LEFT,
-    { text(migration) },
-)  {
-    companion object {
-        fun text(migration: Migration): String {
-            return if (migration.ran) "Migration ran"
-            else "Migration still needs to be run"
-        }
+        return SimpleTooltipLineMarkerInfo(
+            element,
+            tooltip = if (migration.ran) "Migration already ran"
+            else "Migration still needs to be run",
+            icon = if (migration.ran) AllIcons.Actions.Commit
+            else AllIcons.Hierarchy.MethodNotDefined,
+        )
     }
 }

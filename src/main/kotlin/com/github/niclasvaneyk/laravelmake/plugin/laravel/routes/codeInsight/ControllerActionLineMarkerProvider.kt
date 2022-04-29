@@ -1,5 +1,6 @@
 package com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.codeInsight
 
+import com.github.niclasvaneyk.laravelmake.common.jetbrains.codeInsight.daemon.SimpleTooltipLineMarkerInfo
 import com.github.niclasvaneyk.laravelmake.common.jetbrains.php.psi.phpMethods
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.LaravelIcons
 import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.services.LaravelMakeProjectService
@@ -27,11 +28,11 @@ class ControllerActionLineMarkerProvider: LineMarkerProviderDescriptor() {
             .associateBy { it.fqn }
 
         elements.phpMethods().forEach { (identifier, method) ->
-            result.add(ControllerActionLineMarker(
-                identifier,
-                routesByMethod[method.fqn] ?: return@forEach,
-                icon,
-            ))
+            val route = routesByMethod[method.fqn] ?: return@forEach
+            val middleware = route.middleware.joinToString(", ") { it.basename }
+            val tooltip = "${route.normalizedHttpMethod} <b>${route.path}</b> [$middleware]"
+
+            result.add(SimpleTooltipLineMarkerInfo(identifier, tooltip, icon))
         }
     }
 
