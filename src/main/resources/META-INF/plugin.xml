@@ -54,10 +54,10 @@
             language="PHP"
             implementationClass="com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.codeInsight.ControllerActionLineMarkerProvider"
         />
-<!--        <runConfigurationProducer-->
-<!--            implementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.run.ArtisanRunConfigurationProducer"-->
-<!--        />-->
-<!--        <configurationType implementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.run.ArtisanRunConfigurationType" />-->
+        <codeInsight.lineMarkerProvider
+            language="PHP"
+            implementationClass="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.migrations.MigrationStatusLineMarkerProvider"
+        />
 <!--        <microservices.endpointsProvider implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.microservices.LaravelEndpointsProvider" />-->
 <!--        <codeInsight.lineMarkerProvider-->
 <!--            language="PHP"-->
@@ -77,6 +77,7 @@
 
         <laravelApplicationListener implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.SailLaravelApplicationListener" />
         <laravelApplicationListener implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.RoutesLaravelApplicationListener" />
+        <laravelApplicationListener implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.migrations.MigrationsLaravelApplicationListener" />
     </extensions>
 
     <projectListeners>
@@ -137,5 +138,8 @@
             text="Autoconfigure Default Database Connection"
             description="Adds or updates the default database connection from your Laravel application to the Database tool window of your IDE"
         />
+        <action id="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.migrations.RefreshMigrationAction"
+                class="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.migrations.RefreshMigrationAction"
+                text="Refresh Migrations" description="Honestly more of a test than a real action"/>
     </actions>
 </idea-plugin>
