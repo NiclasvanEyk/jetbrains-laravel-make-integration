@@ -36,8 +36,9 @@ class MigrationService(private val project: Project) {
      * Refreshes the migrations and calls [done] upon termination.
      */
     fun refresh(done: ((List<Migration>) -> Unit)? = null) {
+        val db = laravel.dataSources.managed ?: return
+
         runExecutionUnderProgress(project, "Introspecting migrations...") {
-            val db = laravel.dataSources.managed ?: return@runExecutionUnderProgress
             val manager = DatabaseConnectionManager.getInstance()
             val connection = manager.build(project, db).create()?.get() ?: return@runExecutionUnderProgress
 
