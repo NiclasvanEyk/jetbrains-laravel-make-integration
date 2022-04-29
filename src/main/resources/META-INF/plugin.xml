@@ -32,6 +32,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <projectService serviceImplementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.settings.LaravelMakeProjectSettings"/>
+        <projectService serviceImplementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.migrations.MigrationService" />
         <projectConfigurable
             instance="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.settings.LaravelMakeProjectConfigurable"
             parentId="reference.webide.settings.project.settings.php"
@@ -64,9 +65,14 @@
 <!--            implementationClass="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.seeders.RunSeederLineMarkerProvider"-->
 <!--        />-->
             <runConfigurationProducer implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.seeders.SeederRunConfigurationProducer" />
-            <runLineMarkerContributor
+            <runConfigurationProducer implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.migrations.MigrationRunConfigurationProducer" />
+        <runLineMarkerContributor
                 language="PHP"
                 implementationClass="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.seeders.SeederRunLineMarkerContributor"
+            />
+            <runLineMarkerContributor
+                language="PHP"
+                implementationClass="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.migrations.MigrationRunLineMarkerContributor"
             />
     </extensions>
 
@@ -138,8 +144,8 @@
             text="Autoconfigure Default Database Connection"
             description="Adds or updates the default database connection from your Laravel application to the Database tool window of your IDE"
         />
-        <action id="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.migrations.RefreshMigrationAction"
-                class="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.migrations.RefreshMigrationAction"
-                text="Refresh Migrations" description="Honestly more of a test than a real action"/>
+        <action id="com.github.niclasvaneyk.laravelmake.plugin.laravel.actions.UpdateLaravelMakeDataAction"
+                class="com.github.niclasvaneyk.laravelmake.plugin.laravel.actions.UpdateLaravelMakeDataAction"
+                text="Update Laravel Application Insights"/>
     </actions>
 </idea-plugin>

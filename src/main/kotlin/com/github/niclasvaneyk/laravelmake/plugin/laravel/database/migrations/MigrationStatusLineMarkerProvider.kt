@@ -9,27 +9,25 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.markup.GutterIconRenderer
 import com.intellij.psi.PsiElement
 import com.jetbrains.php.lang.psi.elements.PhpClass
+import icons.DatabaseIcons
 import java.io.File
 
 class MigrationStatusLineMarkerProvider: LineMarkerProviderDescriptor() {
-    override fun getName() = "Laravel migration status"
-    override fun getIcon() = LaravelIcons.LaravelLogo
+    override fun getName() = "Laravel migrations, that were executed"
+    override fun getIcon() = DatabaseIcons.ToolwindowDatabaseChanges
 
     override fun getLineMarkerInfo(element: PsiElement): LineMarkerInfo<*>? {
-        val file = element.containingFile
-        if (file.parent?.name != "migrations") return null
-        if (element !is PhpClass) return null
+        val migration = element.migration ?: return null
 
-        val migrations = element.project.service<MigrationService>()
-        val inferredName = File(file.name).nameWithoutExtension
-        val migration = migrations.current.find { it.name == inferredName} ?: return null
+        // This case is handled by another contributor
+        if (!migration.ran) {
+            return null
+        }
 
         return SimpleTooltipLineMarkerInfo(
             element,
-            tooltip = if (migration.ran) "Migration already ran"
-            else "Migration still needs to be run",
-            icon = if (migration.ran) AllIcons.Actions.Commit
-            else AllIcons.Hierarchy.MethodNotDefined,
+            tooltip = "Migration already ran",
+            icon = DatabaseIcons.ToolwindowDatabaseChanges,
         )
     }
 }

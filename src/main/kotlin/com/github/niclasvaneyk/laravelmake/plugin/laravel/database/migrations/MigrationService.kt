@@ -7,29 +7,21 @@ import com.intellij.javascript.nodejs.execution.runExecutionUnderProgress
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
+import com.intellij.openapi.progress.runBackgroundableTask
 import com.intellij.openapi.project.DumbAwareAction
 import com.intellij.openapi.project.Project
 import java.io.File
 
-data class Migration(
-    val file: File,
-    val batch: Int?,
-) {
+data class Migration(val file: File, val batch: Int?) {
     val name get() = file.nameWithoutExtension
     val ran get() = batch != null
 }
 
-class RefreshMigrationAction: DumbAwareAction() {
-    override fun actionPerformed(e: AnActionEvent) {
-        val migrations = e.project?.service<MigrationService>() ?: return
-        migrations.refresh()
-    }
-}
-
-@Service
+@Service(Service.Level.PROJECT)
 class MigrationService(private val project: Project) {
     private val laravel = project.laravel()!!
     private var migrations = emptyList<Migration>()
+
     val current get() = migrations
 
     /**
@@ -38,9 +30,9 @@ class MigrationService(private val project: Project) {
     fun refresh(done: ((List<Migration>) -> Unit)? = null) {
         val db = laravel.dataSources.managed ?: return
 
-        runExecutionUnderProgress(project, "Introspecting migrations...") {
+        runBackgroundableTask("Introspecting migrations...", project) {
             val manager = DatabaseConnectionManager.getInstance()
-            val connection = manager.build(project, db).create()?.get() ?: return@runExecutionUnderProgress
+            val connection = manager.build(project, db).create()?.get() ?: return@runBackgroundableTask
 
             connection.getDatabaseMigrations { migrationTableEntries ->
                 val byName = migrationTableEntries.associateBy { it.name }
