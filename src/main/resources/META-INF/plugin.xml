@@ -31,6 +31,10 @@
     </extensionPoints>
 
     <extensions defaultExtensionNs="com.intellij">
+        <codeInsight.inlayProvider
+            implementationClass="com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.codeVision.RouteInlayHintsProvider"
+            language="PHP"
+        />
         <projectService serviceImplementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.settings.LaravelMakeProjectSettings"/>
         <projectConfigurable
             instance="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.settings.LaravelMakeProjectConfigurable"
