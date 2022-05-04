@@ -15,4 +15,7 @@ class MigrationsLaravelApplicationListener: LaravelApplicationListener {
             application.project,
         )
     }
+
+    override fun event(name: String) {
+    }
 }

@@ -37,8 +37,8 @@
             instance="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.settings.LaravelMakeProjectConfigurable"
             parentId="reference.webide.settings.project.settings.php"
         />
-        <notificationGroup id="Laravel Make" displayType="BALLOON" icon="/icons/laravel-logo.svg" />
-        <notificationGroup id="Laravel Sail" displayType="BALLOON" icon="/icons/sail.svg" />
+        <notificationGroup id="Laravel Make" displayType="BALLOON" />
+        <notificationGroup id="Laravel Sail" displayType="BALLOON" />
         <editorNotificationProvider
             implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.dataSources.SyncLaravelDataSourcesNotificationProvider"
         />
@@ -84,6 +84,7 @@
         <laravelApplicationListener implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.SailLaravelApplicationListener" />
         <laravelApplicationListener implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.RoutesLaravelApplicationListener" />
         <laravelApplicationListener implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.migrations.MigrationsLaravelApplicationListener" />
+        <laravelApplicationListener implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.events.EventsLaravelApplicationListener" />
     </extensions>
 
     <projectListeners>

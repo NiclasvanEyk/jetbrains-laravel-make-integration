@@ -11,4 +11,6 @@ class RoutesLaravelApplicationListener: LaravelApplicationListener {
 
         routeService.initialize(introspecter)
     }
+
+    override fun event(name: String) {}
 }

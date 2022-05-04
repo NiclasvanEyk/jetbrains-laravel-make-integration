@@ -68,6 +68,13 @@ class LaravelProjectPaths(val base: String) {
     }
 
     /**
+     * Directory where this plugin writes some files.
+     */
+    val pluginFiles: File get() {
+        return File(path("vendor/_laravel_make"))
+    }
+
+    /**
      * Returns the path from the project root or null,
      * if the given path is not inside the project.
      */

@@ -36,7 +36,7 @@ class LaravelApplication(path: String, val project: Project) {
 
             introspection.refresh()
 
-            LaravelApplicationListener.runAll(this)
+            LaravelApplicationListener.initializeAll(this)
         }
     }
 }
