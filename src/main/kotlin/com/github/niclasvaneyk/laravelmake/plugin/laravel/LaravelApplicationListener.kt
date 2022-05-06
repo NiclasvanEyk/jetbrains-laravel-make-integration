@@ -7,7 +7,7 @@ interface LaravelApplicationListener {
     companion object {
         val EP_NAME = LaravelMake.extensionName<LaravelApplicationListener>("laravelApplicationListener")
 
-        fun initializeAll(app: LaravelApplication) {
+        fun runAll(app: LaravelApplication) {
             EP_NAME.extensionList.forEach {
                 try {
                     it.initialized(app)
