@@ -27,6 +27,7 @@ class MigrationsLaravelApplicationListener: LaravelApplicationListener {
                 application.project,
                 application.dataSources.managed ?: return@subscribe
             )
+            service.refresh()
         }
     }
 }
