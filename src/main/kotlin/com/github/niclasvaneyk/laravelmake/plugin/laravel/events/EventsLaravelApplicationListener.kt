@@ -2,15 +2,15 @@ package com.github.niclasvaneyk.laravelmake.plugin.laravel.events
 
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelApplication
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelApplicationListener
-import com.github.niclasvaneyk.laravelmake.plugin.laravel.events.connector.EventBusConnector
-import com.intellij.openapi.progress.runBackgroundableTask
+import com.github.niclasvaneyk.laravelmake.plugin.laravel.events.connector.events
+import com.github.niclasvaneyk.laravelmake.plugin.laravel.events.connector.installation.PhpEventPublisherInstaller
 
 class EventsLaravelApplicationListener: LaravelApplicationListener {
     override fun initialized(application: LaravelApplication) {
-        runBackgroundableTask("Laravel Make IDE Connector", application.project) {
-            EventBusConnector(application) { it.isCanceled }.install()
+        PhpEventPublisherInstaller(application).install().listen { eventBatch ->
+            eventBatch.lines().forEach { event ->
+                application.events.dispatch(event)
+            }
         }
     }
-
-    override fun event(name: String) {}
 }

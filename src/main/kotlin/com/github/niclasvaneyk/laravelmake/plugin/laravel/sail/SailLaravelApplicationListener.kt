@@ -11,6 +11,4 @@ class SailLaravelApplicationListener: LaravelApplicationListener {
     override fun initialized(application: LaravelApplication) {
         SailAutoconfiguration.promptIfNecessary(application)
     }
-
-    override fun event(name: String) {}
 }

@@ -145,8 +145,8 @@
             text="Autoconfigure Default Database Connection"
             description="Adds or updates the default database connection from your Laravel application to the Database tool window of your IDE"
         />
-        <action id="com.github.niclasvaneyk.laravelmake.plugin.laravel.actions.UpdateLaravelMakeDataAction"
-                class="com.github.niclasvaneyk.laravelmake.plugin.laravel.actions.UpdateLaravelMakeDataAction"
+        <action id="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.actionSystem.UpdateLaravelMakeDataAction"
+                class="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.actionSystem.UpdateLaravelMakeDataAction"
                 text="Update Laravel Application Insights"/>
     </actions>
 </idea-plugin>

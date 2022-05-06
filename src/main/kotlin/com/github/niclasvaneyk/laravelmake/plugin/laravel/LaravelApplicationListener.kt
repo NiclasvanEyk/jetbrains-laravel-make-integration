@@ -16,16 +16,6 @@ interface LaravelApplicationListener {
                 }
             }
         }
-
-        fun publishEvent(event: String) {
-            EP_NAME.extensionList.forEach {
-                try {
-                    it.event(event)
-                } catch (exception: Throwable) {
-                    logger<LaravelApplication>().error(exception)
-                }
-            }
-        }
     }
 
     /**
@@ -33,9 +23,4 @@ interface LaravelApplicationListener {
      * and we made sure that the user has configured a valid project interpreter.
      */
     fun initialized(application: LaravelApplication)
-
-    /**
-     * Will be called when an event happens.
-     */
-    fun event(name: String)
 }

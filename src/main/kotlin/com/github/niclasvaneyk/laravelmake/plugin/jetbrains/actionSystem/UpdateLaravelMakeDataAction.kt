@@ -1,6 +1,5 @@
-package com.github.niclasvaneyk.laravelmake.plugin.laravel.actions
+package com.github.niclasvaneyk.laravelmake.plugin.jetbrains.actionSystem
 
-import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.actionSystem.LaravelAction
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelApplication
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.database.migrations.MigrationService
 import com.intellij.openapi.components.service
