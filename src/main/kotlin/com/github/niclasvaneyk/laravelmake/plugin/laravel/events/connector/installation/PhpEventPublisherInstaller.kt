@@ -26,6 +26,7 @@ class PhpEventPublisherInstaller(private val app: LaravelApplication) {
     private val vendorPseudoPackage = VendorPseudoPackage(
         connectorPhpScript,
         connectorScriptContents,
+        app,
     )
 
     fun install(): PhpEventPublisherInstallation {
@@ -36,9 +37,16 @@ class PhpEventPublisherInstaller(private val app: LaravelApplication) {
             bootstrapCache.update()
         }
 
-        vendorPseudoPackage.createWhenComposerInstalled(app)
+        vendorPseudoPackage.createWhenComposerInstalled()
         bootstrapCache.updateWhenChanged(app.project)
 
         return PhpEventPublisherInstallation(app.project)
+    }
+
+    fun uninstall() {
+        vendorPseudoPackage.apply {
+            remove()
+            removeComposerInstallationListener()
+        }
     }
 }

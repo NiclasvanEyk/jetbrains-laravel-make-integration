@@ -3,6 +3,7 @@ package com.github.niclasvaneyk.laravelmake.plugin.laravel.database.dataSources
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelApplication
 import com.intellij.database.dataSource.LocalDataSource
 import com.intellij.database.dataSource.LocalDataSourceManager
+import com.intellij.database.util.DataSourceUtil
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
@@ -20,4 +21,8 @@ class LaravelDatasourceService(private val project: Project) {
         .getInstance(project)
         .dataSources
         .firstOrNull { it.comment == LaravelDataSourceAutoConfigurer.MANAGED_DATA_SOURCE_MARKER_COMMENT }
+
+    fun syncManaged() {
+        DataSourceUtil.performAutoSyncTask(project, managed ?: return)
+    }
 }

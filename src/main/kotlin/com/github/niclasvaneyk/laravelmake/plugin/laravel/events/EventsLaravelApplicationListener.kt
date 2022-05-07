@@ -7,10 +7,8 @@ import com.github.niclasvaneyk.laravelmake.plugin.laravel.events.connector.insta
 
 class EventsLaravelApplicationListener: LaravelApplicationListener {
     override fun initialized(application: LaravelApplication) {
-        PhpEventPublisherInstaller(application).install().listen { eventBatch ->
-            eventBatch.lines().forEach { event ->
-                application.events.dispatch(event)
-            }
+        PhpEventPublisherInstaller(application).install().listen {
+            application.events.dispatch(it)
         }
     }
 }
