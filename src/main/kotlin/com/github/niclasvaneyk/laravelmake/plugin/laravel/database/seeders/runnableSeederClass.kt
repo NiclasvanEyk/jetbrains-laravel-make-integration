@@ -15,7 +15,7 @@ val PsiElement.runnableSeederClass: PhpClass?
         if (`class`.isAbstract) return null
         if (!`class`.extends("\\Illuminate\\Database\\Seeder")) return null
 
-        project.laravel() ?: return null
+        project.laravel ?: return null
 
         return `class`
     }

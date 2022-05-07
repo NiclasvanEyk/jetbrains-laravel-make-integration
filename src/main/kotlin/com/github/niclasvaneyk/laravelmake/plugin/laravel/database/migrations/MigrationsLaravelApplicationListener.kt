@@ -24,5 +24,4 @@ class MigrationsLaravelApplicationListener: LaravelApplicationListener {
             migrations.refresh()
         }
     }
-
 }
