@@ -32,12 +32,13 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <projectService serviceImplementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.settings.LaravelMakeProjectSettings"/>
+        <projectService serviceImplementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.migrations.MigrationService" />
         <projectConfigurable
             instance="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.settings.LaravelMakeProjectConfigurable"
             parentId="reference.webide.settings.project.settings.php"
         />
-        <notificationGroup id="Laravel Make" displayType="BALLOON" icon="/icons/laravel-logo.svg" />
-        <notificationGroup id="Laravel Sail" displayType="BALLOON" icon="/icons/sail.svg" />
+        <notificationGroup id="Laravel Make" displayType="BALLOON" />
+        <notificationGroup id="Laravel Sail" displayType="BALLOON" />
         <editorNotificationProvider
             implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.dataSources.SyncLaravelDataSourcesNotificationProvider"
         />
@@ -54,19 +55,24 @@
             language="PHP"
             implementationClass="com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.codeInsight.ControllerActionLineMarkerProvider"
         />
-<!--        <runConfigurationProducer-->
-<!--            implementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.run.ArtisanRunConfigurationProducer"-->
-<!--        />-->
-<!--        <configurationType implementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.run.ArtisanRunConfigurationType" />-->
+        <codeInsight.lineMarkerProvider
+            language="PHP"
+            implementationClass="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.migrations.MigrationStatusLineMarkerProvider"
+        />
 <!--        <microservices.endpointsProvider implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.microservices.LaravelEndpointsProvider" />-->
 <!--        <codeInsight.lineMarkerProvider-->
 <!--            language="PHP"-->
 <!--            implementationClass="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.seeders.RunSeederLineMarkerProvider"-->
 <!--        />-->
             <runConfigurationProducer implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.seeders.SeederRunConfigurationProducer" />
-            <runLineMarkerContributor
+            <runConfigurationProducer implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.migrations.MigrationRunConfigurationProducer" />
+        <runLineMarkerContributor
                 language="PHP"
                 implementationClass="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.seeders.SeederRunLineMarkerContributor"
+            />
+            <runLineMarkerContributor
+                language="PHP"
+                implementationClass="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.migrations.MigrationRunLineMarkerContributor"
             />
     </extensions>
 
@@ -77,6 +83,8 @@
 
         <laravelApplicationListener implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.SailLaravelApplicationListener" />
         <laravelApplicationListener implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.RoutesLaravelApplicationListener" />
+        <laravelApplicationListener implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.migrations.MigrationsLaravelApplicationListener" />
+        <laravelApplicationListener implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.events.EventsLaravelApplicationListener" />
     </extensions>
 
     <projectListeners>
@@ -137,5 +145,8 @@
             text="Autoconfigure Default Database Connection"
             description="Adds or updates the default database connection from your Laravel application to the Database tool window of your IDE"
         />
+        <action id="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.actionSystem.UpdateLaravelMakeDataAction"
+                class="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.actionSystem.UpdateLaravelMakeDataAction"
+                text="Update Laravel Application Insights"/>
     </actions>
 </idea-plugin>

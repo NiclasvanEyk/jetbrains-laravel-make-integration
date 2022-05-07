@@ -12,16 +12,15 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import java.io.File
 
-fun Project.laravel(): LaravelApplication? {
+val Project.laravel: LaravelApplication? get() {
     return service<LaravelMakeProjectService>().application
 }
 
 class LaravelApplication(path: String, val project: Project) {
     var wasInitialized = false
     val paths: LaravelProjectPaths = LaravelProjectPaths(path)
-    val version = DetectLaravelVersion.fromLockfile(
-        File(paths.path(LaravelProjectPaths.COMPOSER_LOCK))
-    ) ?: ComposerVersion(0, 0, 0)
+    private val lockFile = File(paths.path(LaravelProjectPaths.COMPOSER_LOCK))
+    val version = DetectLaravelVersion.fromLockfile(lockFile) ?: ComposerVersion(0, 0, 0)
     val artisan: Artisan = Artisan(path, PHPRunnerFactory(project))
     val introspection = LaravelIntrospectionFacade(
         artisan,

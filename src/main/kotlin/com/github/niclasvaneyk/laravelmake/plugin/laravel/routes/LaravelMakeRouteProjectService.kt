@@ -21,13 +21,9 @@ import java.util.*
  */
 @Service(PROJECT)
 class LaravelMakeRouteProjectService(private val project: Project): Disposable {
-    private lateinit var introspecter: RouteIntrospecter
     private lateinit var refreshLineMarkersDisposable: io.reactivex.rxjava3.disposables.Disposable
 
     fun initialize(introspecter: RouteIntrospecter) {
-        if (this::introspecter.isInitialized) return
-        this.introspecter = introspecter
-
         refreshRoutesOnRouteFileChanges(introspecter)
         refreshLineMarkersOnRouteUpdate(introspecter)
     }
