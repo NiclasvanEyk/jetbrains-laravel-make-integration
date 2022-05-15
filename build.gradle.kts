@@ -48,6 +48,8 @@ intellij {
     plugins.set(listOf(
         // https://plugins.jetbrains.com/plugin/6610-php/versions
         "com.jetbrains.php:$build",
+        // https://plugins.jetbrains.com/plugin/7569-blade/versions
+        "com.jetbrains.php.blade:$build",
         // https://plugins.jetbrains.com/plugin/8116-node-js-remote-interpreter/versions
         "org.jetbrains.plugins.node-remote-interpreter:$build",
         // https://plugins.jetbrains.com/plugin/7511-php-remote-interpreter/versions
