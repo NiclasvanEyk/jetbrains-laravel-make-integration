@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 
+## [3.3.0]
 ### Changed
 - Require & support 2022.2 platform
 
