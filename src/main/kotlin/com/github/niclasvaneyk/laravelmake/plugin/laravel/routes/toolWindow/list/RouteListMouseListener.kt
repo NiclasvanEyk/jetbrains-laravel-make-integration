@@ -18,7 +18,7 @@ class RouteListMouseListener(private val list: RouteList) : MouseListener {
         if (e.clickCount >= 2) {
             val selectedRoute = list.selectedValue
             if (selectedRoute is ControllerRoute) {
-                selectedRoute.method.navigate(true)
+                selectedRoute.navigate()
             }
         }
     }

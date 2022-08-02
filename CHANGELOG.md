@@ -1,6 +1,11 @@
 # Laravel Make Integration Changelog
 
 ## [Unreleased]
+### Added
+- **Gutter icons for Livewire components.** Similar to the ones for controller actions.
+
+### Changed
+- When navigating to the relevant code for a route from the list, it now takes you to the Livewire component class, instead of the generic `Livewire\Component::__invoke` method, if the route is handled by Livewire.
 
 ## [3.3.0]
 ### Changed

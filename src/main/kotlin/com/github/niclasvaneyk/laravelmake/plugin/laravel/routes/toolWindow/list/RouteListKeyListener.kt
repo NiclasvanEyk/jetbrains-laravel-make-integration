@@ -15,7 +15,7 @@ class RouteListKeyListener(private val list: RouteList) : KeyListener {
 
         val selectedRoute = list.selectedValue ?: return
         if (selectedRoute is ControllerRoute) {
-            selectedRoute.method.navigate(false)
+            selectedRoute.navigate()
         }
     }
 }
