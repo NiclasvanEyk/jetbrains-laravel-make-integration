@@ -43,7 +43,7 @@ intellij {
 //    }
 
     // This is the build number usually shared by most first-party JB plugins.
-    val build = "221.5080.169"
+    val build = "222.3345.108"
     // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
     plugins.set(listOf(
         // https://plugins.jetbrains.com/plugin/6610-php/versions

@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Changed
+- Require & support 2022.2 platform
+
 ## [3.2.0]
 ### Added
 - **Runnable Seeders.** Press the usual green arrow next to a seeder to run/debug a seeder. 
