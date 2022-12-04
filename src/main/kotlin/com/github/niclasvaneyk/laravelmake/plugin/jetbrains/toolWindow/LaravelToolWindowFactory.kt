@@ -15,7 +15,6 @@ class MyListener: ToolWindowManagerListener {
     override fun toolWindowShown(toolWindow: ToolWindow) {
         super.toolWindowShown(toolWindow)
 
-
         logger<MyListener>().warn("Shown: ${toolWindow.id}");
     }
 }
@@ -25,7 +24,7 @@ class LaravelToolWindowFactory : ToolWindowFactory {
         project: Project,
         toolWindow: ToolWindow,
     ) {
-        val contentFactory = ContentFactory.SERVICE.getInstance()
+        val contentFactory = ContentFactory.getInstance()
         val projectService = project.getService(
             LaravelMakeProjectService::class.java
         )
