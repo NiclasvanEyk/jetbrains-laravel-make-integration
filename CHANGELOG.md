@@ -6,6 +6,7 @@
 
 ### Changed
 - When navigating to the relevant code for a route from the list, it now takes you to the Livewire component class, instead of the generic `Livewire\Component::__invoke` method, if the route is handled by Livewire.
+- Require & support 2022.3 platform
 
 ## [3.3.0]
 ### Changed
