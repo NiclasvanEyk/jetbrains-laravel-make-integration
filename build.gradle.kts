@@ -27,7 +27,7 @@ repositories {
 dependencies {
     implementation("io.reactivex.rxjava3:rxkotlin:3.0.1")
     implementation("org.junit.jupiter:junit-jupiter:5.8.2")
-    implementation("org.assertj:assertj-core:3.22.0")
+    implementation("org.assertj:assertj-core:3.24.0")
     implementation("org.jetbrains.kotlinx:kotlinx-html:0.7.3")
     implementation("org.jetbrains.kotlin:kotlin-test:1.6.0")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.0")
