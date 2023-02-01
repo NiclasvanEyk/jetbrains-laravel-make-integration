@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 3.4.1 - 2023-02-01
+
 ### Fixed
 - Parsing `artisan route:list` when Docker also prints to the console ([\#92](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/issues/92))
 
