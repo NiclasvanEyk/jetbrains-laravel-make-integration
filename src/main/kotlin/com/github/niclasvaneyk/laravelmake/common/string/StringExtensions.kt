@@ -14,10 +14,14 @@ fun String.containedJson(): String? {
     // though if we remove the newlines everything works fine.
     // This is kinda hacky, but works for routes.
     val output = this
+        .lines()
         // Pretty hacky, but for some reason a proper regex does not work.
         // Tried it.matches("\\[.*\\] Xdebug".toRegex())), but as soon as \\] is
         // introduced, nothing matches anymore. Weird.
-        .lines().filter { !it.contains("] Xdebug:") }
+        .filter { !it.contains("] Xdebug:") }
+        // Again, pretty hacky but docker sometimes prints such a message
+        // while starting containers which trips up JSON parsing.
+        .filter { !it.trim().startsWith("[+]") }
         .joinToString("")
 
     val beginOfJson = output.indexOfAny(listOf("{", "["))
