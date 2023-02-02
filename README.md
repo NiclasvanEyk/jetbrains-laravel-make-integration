@@ -1,4 +1,4 @@
-# Laravel Make
+# Make for Laravel
 
 <p align="center">
     <a href="https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/actions"><img alt="Build" src="https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/workflows/Build/badge.svg"/></a>
@@ -10,12 +10,12 @@
 !["New File" menu with Laravel group provided by this plugin](https://plugins.jetbrains.com/files/14612/screenshot_b321b1b4-2b8d-45d4-92a0-8d24af629349)
 
 <!-- Plugin description -->
-**Laravel Make** connects your Laravel application to PhpStorm:
+**Make for Laravel** connects your Laravel application to PhpStorm:
 
 - **["File > New"-menu entries for `artisan make:*` commands.](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/blob/main/docs/make-context-menu.md)** Generate Laravel components the way you also would create new PHP classes. Includes handy features like pre-filling namespaces based on the file hierarchy and autocompletion for command line options, such as `artisan make:controller --api`. 
 - **[Laravel tool window.](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/blob/main/docs/tool-windows.md)** View all available routes and commands at a glance. Includes the usual Jetbrains goodies such as search-as-you-type, go to definition and more.
 - **[Laravel Sail Autoconfiguration.](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/blob/main/docs/sail-autoconfiguration.md)** Debugging, running tests and npm scripts all work magically when developing locally, but quickly falls apart when using containers. Sail Autoconfiguration teaches PHPStorm to use the containerized versions instead, so everything just works again.
-- **[Gutter icons highlighting route action.](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/blob/main/docs/route-action-icons.md)** Are you struggling with large controllers and don't know which methods are actual endpoints? Laravel Make annotates them using an icon, which also displays the mapped URL, HTTP verb and additional Middleware.
+- **[Gutter icons highlighting route action.](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/blob/main/docs/route-action-icons.md)** Are you struggling with large controllers and don't know which methods are actual endpoints? Make for Laravel annotates them using an icon, which also displays the mapped URL, HTTP verb and additional Middleware.
 - **[Database Autoconfiguration](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/blob/main/docs/managed-data-sources.md)** Automatically add and update the default database used by your Laravel application to the `Database` tool window.
 
 > For additional details visit the [project on GitHub](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration).
@@ -25,7 +25,7 @@
 
 - Using IDE built-in plugin system:
   
-  <kbd>Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "Laravel Make"</kbd> >
+  <kbd>Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "Make for Laravel"</kbd> >
   <kbd>Install Plugin</kbd>
   
 - Manually:
