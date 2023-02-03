@@ -9,7 +9,7 @@
     <a href="https://github.com/sponsors/NiclasvanEyk"><img alt="Sponsors" src="https://img.shields.io/github/sponsors/NiclasvanEyk"/></a>
 </p>
 
-# Make for Laravel
+<h1 align="center"> Make for Laravel </h1>
 
 !["New File" menu with Laravel group provided by this plugin](https://plugins.jetbrains.com/files/14612/screenshot_b321b1b4-2b8d-45d4-92a0-8d24af629349)
 
