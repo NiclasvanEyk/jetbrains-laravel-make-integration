@@ -9,7 +9,7 @@ import com.intellij.docker.remote.DockerComposeCredentialsHolder
 import com.intellij.docker.remote.DockerComposeCredentialsType
 import com.intellij.javascript.nodejs.interpreter.NodeJsInterpreterManager
 import com.intellij.javascript.nodejs.interpreter.NodeJsInterpreterRef
-import com.intellij.javascript.nodejs.interpreter.remote.NodeJSRemoteSdkAdditionalData
+import com.jetbrains.nodejs.remote.NodeJSRemoteSdkAdditionalData
 import com.intellij.javascript.nodejs.interpreter.remote.NodeJsRemoteInterpreter
 import com.intellij.javascript.nodejs.npm.NpmManager
 import com.intellij.javascript.nodejs.util.NodePackage

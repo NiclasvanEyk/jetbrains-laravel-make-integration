@@ -66,9 +66,6 @@ class PHPRunner(private val project: Project) {
             }
         } catch (e: ExecutionException) {
             when (e.message) {
-                PhpCommandSettingsBuilder.getProjectInterpreterNotSpecified() ->
-                    throw NoProjectInterpreterException(e)
-
                 PhpCommandSettingsBuilder.getInterpreterNotFoundError() ->
                     throw ProjectInterpreterNotFoundException(e)
 

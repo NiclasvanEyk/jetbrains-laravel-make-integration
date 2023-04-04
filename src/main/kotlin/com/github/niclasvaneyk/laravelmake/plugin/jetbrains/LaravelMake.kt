@@ -8,7 +8,7 @@ class LaravelMake {
         // See plugin.xml
         val PLUGIN_ID = PluginId.getId("com.niclas-van-eyk.laravel-make-integration")
 
-        fun <T> extensionName(name: String): ExtensionPointName<T> = ExtensionPointName.create(
+        fun <T : Any> extensionName(name: String): ExtensionPointName<T> = ExtensionPointName.create(
             "com.niclas-van-eyk.laravel-make-integration.$name"
         )
     }
