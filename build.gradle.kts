@@ -46,18 +46,15 @@ intellij {
 //        localPath.set(System.getenv("PHPSTORM_LOCAL_PATH"))
 //    }
 
-    // This is the build number usually shared by most first-party JB plugins.
-    val build = "223.7571.58"
-    // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
     plugins.set(listOf(
         // https://plugins.jetbrains.com/plugin/6610-php/versions
-        "com.jetbrains.php:$build",
+        "com.jetbrains.php:231.8109.199",
         // https://plugins.jetbrains.com/plugin/8116-node-js-remote-interpreter/versions
-        "org.jetbrains.plugins.node-remote-interpreter:$build",
+        "org.jetbrains.plugins.node-remote-interpreter:231.8109.147",
         // https://plugins.jetbrains.com/plugin/7511-php-remote-interpreter/versions
-        "org.jetbrains.plugins.phpstorm-remote-interpreter:$build",
+        "org.jetbrains.plugins.phpstorm-remote-interpreter:231.8109.90",
         // https://plugins.jetbrains.com/plugin/8595-php-docker/versions
-        "org.jetbrains.plugins.phpstorm-docker:$build",
+        "org.jetbrains.plugins.phpstorm-docker:231.8109.90",
 
         // These seem to be bundled and do not require a specific version?
         "com.intellij.database",
