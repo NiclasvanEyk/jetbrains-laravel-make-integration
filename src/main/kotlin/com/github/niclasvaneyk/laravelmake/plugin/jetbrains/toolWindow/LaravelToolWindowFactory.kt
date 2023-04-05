@@ -1,5 +1,6 @@
 package com.github.niclasvaneyk.laravelmake.plugin.jetbrains.toolWindow
 
+import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.LaravelIcons
 import com.intellij.openapi.diagnostic.logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
@@ -9,7 +10,9 @@ import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.services.LaravelMake
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.commands.toolWindow.CommandsToolWindow
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.toolWindow.RoutesToolWindow
 import com.intellij.openapi.components.service
+import com.intellij.openapi.util.registry.Registry
 import com.intellij.openapi.wm.ex.ToolWindowManagerListener
+import javax.swing.Icon
 
 class MyListener: ToolWindowManagerListener {
     override fun toolWindowShown(toolWindow: ToolWindow) {
@@ -20,6 +23,14 @@ class MyListener: ToolWindowManagerListener {
 }
 
 class LaravelToolWindowFactory : ToolWindowFactory {
+    override fun getIcon(): Icon? {
+        if (Registry.get("ide.experimental.ui").asBoolean()) {
+            return LaravelIcons.LaravelLogoForToolWindowForNewUI;
+        }
+
+        return super.getIcon()
+    }
+
     override fun createToolWindowContent(
         project: Project,
         toolWindow: ToolWindow,

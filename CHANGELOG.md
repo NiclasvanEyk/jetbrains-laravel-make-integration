@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Added
+- New tool window icons for the new UI
+
 ### Changed
 - Updated plugin & platform versions
 
