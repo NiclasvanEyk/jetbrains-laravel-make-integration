@@ -2,11 +2,13 @@
 
 ## Unreleased
 
+## 3.5.0 - 2023-04-05
+
 ### Added
 - New tool window icons for the new UI
 
 ### Changed
-- Updated plugin & platform versions
+- Updated plugin & platform versions (support for 2023.1)
 
 ## 3.4.1 - 2023-02-01
 
