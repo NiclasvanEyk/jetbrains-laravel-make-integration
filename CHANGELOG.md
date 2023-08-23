@@ -3,6 +3,7 @@
 ## Unreleased
 
 ### Added
+- Support for 2023.2 platform
 - New tool window icons for the new UI
 
 ### Changed
