@@ -2,10 +2,15 @@
 
 ## Unreleased
 
+### Added
+- Support for 2023.2 platform
+
+### Changed
+- Renamed to "Make for Laravel" to comply with Laravel's third party naming preferences
+
 ## 3.5.0 - 2023-04-05
 
 ### Added
-- Support for 2023.2 platform
 - New tool window icons for the new UI
 
 ### Changed
