@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [3.7.0]
 
 ### Added
 - Closure-based routes can now be navigated to (thanks to the new custom script)
