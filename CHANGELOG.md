@@ -9,9 +9,6 @@
 - Require 2023.3 platform
 - Use custom script for extracting route information
 
-### Changed
-- Updated plugin & platform versions (support for 2023.1)
-
 ## 3.4.1 - 2023-02-01
 
 ### Fixed
