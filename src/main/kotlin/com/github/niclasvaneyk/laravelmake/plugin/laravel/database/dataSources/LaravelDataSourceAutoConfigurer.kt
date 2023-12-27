@@ -15,7 +15,8 @@ import com.intellij.database.dataSource.LocalDataSourceManager
 import com.intellij.database.dataSource.SchemaControl.AUTOMATIC
 import com.intellij.database.introspection.DBIntrospectionOptions.SourceLoading.USER_AND_SYSTEM_SOURCES
 import com.intellij.database.util.DataSourceUtil
-import com.intellij.javascript.nodejs.execution.runExecutionUnderProgress
+import com.intellij.docker.agent.util.findDockerComposeConfigurationFiles
+import com.intellij.docker.remote.compose.DockerComposeProjectService
 import com.intellij.notification.Notification
 import com.intellij.openapi.application.invokeLater
 import com.intellij.openapi.progress.runModalTask
@@ -151,7 +152,7 @@ class LaravelDataSourceAutoConfigurer(
         return when(this) {
             LaravelDatabaseDriver.mysql -> drivers.getDriver("mysql.8")
             LaravelDatabaseDriver.pgsql -> drivers.getDriver("postgresql")
-            LaravelDatabaseDriver.sqlite -> TODO()
+            LaravelDatabaseDriver.sqlite -> drivers.getDriver("sqlite3")
         }
     }
 

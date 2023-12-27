@@ -31,3 +31,9 @@ fun String.containedJson(): String? {
 
     return output.substring(beginOfJson, endOfJson + 1).trim()
 }
+
+fun String.makeForLaravelOutput(): String {
+    return this
+        .substringAfterLast("<MAKE_FOR_LARAVEL_OUTPUT:BEGIN>")
+        .substringBefore("<MAKE_FOR_LARAVEL_OUTPUT:END>")
+}

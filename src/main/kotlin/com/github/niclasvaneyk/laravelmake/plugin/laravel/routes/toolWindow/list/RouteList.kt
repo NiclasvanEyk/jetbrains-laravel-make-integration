@@ -29,8 +29,8 @@ class RouteList(
         }
 
     init {
-        addMouseListener(RouteListMouseListener(this))
-        addKeyListener(RouteListKeyListener(this))
+        addMouseListener(RouteListMouseListener(this, project))
+        addKeyListener(RouteListKeyListener(this, project))
         selectionMode = ListSelectionModel.SINGLE_SELECTION
         selectionModel.addListSelectionListener {
             onRouteSelected(selectedValue)

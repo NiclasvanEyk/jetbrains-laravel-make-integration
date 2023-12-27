@@ -17,38 +17,35 @@ class RouteListEntryEnhancer(
     private fun enhance(route: RouteListEntry): IntrospectedRoute? {
         val basicRouteInformation = BasicRouteInformation(
             // I personally think it's nicer if *all* routes start with a /
-            path = if (route.uri.startsWith("/")) route.uri else "/${route.uri}",
-            httpMethod = route.method,
+            path = if (route.path.startsWith("/")) route.path else "/${route.path}",
+            httpMethod = route.verbs.joinToString("|"),
             name = route.name,
             middleware = route.middleware.map { IntrospectedMiddleware.fromString(it) }
         )
 
-        if (route.rawAction.equals("closure", ignoreCase = true)) {
-            return ClosureRoute(basicRouteInformation)
+        when (val action = route.action) {
+            is ClosureRouteAction -> return ClosureRoute(basicRouteInformation, action)
+            is ControllerRouteAction -> {
+                val controller = index.getClassesByFQN(action.controller).firstOrNull() ?: return null
+                val method = controller.findMethodByName(action.method) ?: return null
+
+                return ControllerRoute(
+                    basicRouteInformation,
+                    origin = findRouteOrigin(controller),
+                    controller,
+                    method,
+                    formRequest = findFormRequestFor(method)
+                )
+            }
         }
-
-        val actionParts = route.rawAction.split("@")
-        val fqn = actionParts[0]
-        val methodName = actionParts.getOrNull(1) ?: PhpClass.INVOKE
-        val `class` = index.getClassesByFQN(fqn).firstOrNull() ?: return null
-        val method = `class`.findMethodByName(methodName) ?: return null
-
-
-        return ControllerRoute(
-            basicRouteInformation,
-            origin = findRouteOrigin(`class`),
-            `class`,
-            method,
-            formRequest = findFormRequestFor(method)
-        )
     }
 
-    private fun findRouteOrigin(`class`: PhpClass): RouteOrigin {
-        if (`class`.fqn.startsWith("\\App\\")) {
+    private fun findRouteOrigin(controller: PhpClass): RouteOrigin {
+        if (controller.fqn.startsWith("\\App\\")) {
             return RouteOrigin.PROJECT
         }
 
-        val classFile = `class`.containingFile.virtualFile
+        val classFile = controller.containingFile.virtualFile
 
         for (module in moduleManager.modules) {
             if (module.moduleContentScope.contains(classFile)) {

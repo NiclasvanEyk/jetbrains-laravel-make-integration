@@ -23,13 +23,14 @@ class MyListener: ToolWindowManagerListener {
 }
 
 class LaravelToolWindowFactory : ToolWindowFactory {
-    override fun getIcon(): Icon? {
-        if (Registry.get("ide.experimental.ui").asBoolean()) {
-            return LaravelIcons.LaravelLogoForToolWindowForNewUI;
-        }
+    override val icon: Icon?
+        get() {
+            if (Registry.get("ide.experimental.ui").asBoolean()) {
+                return LaravelIcons.LaravelLogoForToolWindowForNewUI
+            }
 
-        return super.getIcon()
-    }
+            return super.icon
+        }
 
     override fun createToolWindowContent(
         project: Project,

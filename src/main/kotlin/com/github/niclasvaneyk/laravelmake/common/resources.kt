@@ -1,0 +1,1 @@
+package com.github.niclasvaneyk.laravelmake.common

@@ -11,7 +11,7 @@ class IntrospectionBasedToolWindowRevalidator<T: List<*>>(
         val currentState = introspecter.introspectionStateSource.value
         val hasNotBeenLoadedYet = currentState is InitialState
         val isStale = introspecter.staleDataDetector.isStale
-        val isLoading = currentState.loading
+        val isLoading = currentState?.loading ?: true
 
         if (!isLoading && (hasNotBeenLoadedYet || isStale)) {
             introspecter.refresh()

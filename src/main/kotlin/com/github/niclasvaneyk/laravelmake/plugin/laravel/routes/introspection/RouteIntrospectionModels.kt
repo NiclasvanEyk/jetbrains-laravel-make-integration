@@ -1,32 +1,64 @@
 package com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.introspection
 
+import com.google.gson.JsonDeserializationContext
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonElement
+import com.google.gson.JsonParseException
 import com.google.gson.annotations.SerializedName
+import com.intellij.bigdatatools.visualization.charts.utils.getAsStringOrNull
 import com.jetbrains.php.lang.psi.elements.Method
 import com.jetbrains.php.lang.psi.elements.PhpClass
+import java.lang.reflect.Type
+
+sealed class RouteAction
+
+class ControllerRouteAction(
+    @SerializedName("controller") val controller: String,
+    @SerializedName("method") val method: String,
+): RouteAction()
+
+class ClosureRouteAction(
+    @SerializedName("file") val file: String,
+    @SerializedName("start") val start: Int,
+    @SerializedName("end") val end: Int,
+): RouteAction()
+
+class RouteActionAdapter: JsonDeserializer<RouteAction> {
+    override fun deserialize(
+        element: JsonElement?,
+        type: Type?,
+        context: JsonDeserializationContext?
+    ): RouteAction {
+        if (element === null) throw JsonParseException("empty json element")
+        val json = element.asJsonObject
+        val actionType = json.getAsStringOrNull("type") ?: throw JsonParseException("missing type specifier")
+
+        return when (actionType) {
+            "method" -> ControllerRouteAction(
+                controller = json.get("controller").asString,
+                method = json.get("method").asString,
+            )
+            "closure" -> ClosureRouteAction(
+                file = json.get("file").asString,
+                start = json.get("start").asInt,
+                end = json.get("end").asInt,
+            )
+
+            else -> throw JsonParseException("unknown type '$type'")
+        }
+    }
+}
 
 /**
  * As returned by `artisan route:list --json`.
  */
 data class RouteListEntry(
-    @SerializedName("domain") val domain: String?,
-    @SerializedName("method") val method: String,
-    @SerializedName("uri") val uri: String,
+    @SerializedName("verbs") val verbs: List<String>,
+    @SerializedName("path") val path: String,
     @SerializedName("name") val name: String?,
-    @SerializedName("action") val rawAction: String,
-    @SerializedName("middleware") private val rawMiddleware: Any,
-) {
-    val middleware get(): List<String> {
-        if (rawMiddleware is ArrayList<*>) {
-            return rawMiddleware.toList() as List<String>
-        }
-
-        if (rawMiddleware is String) {
-            return rawMiddleware.split("\n")
-        }
-
-        return emptyList()
-    }
-}
+    @SerializedName("action") val action: RouteAction,
+    @SerializedName("middleware") val middleware: List<String>,
+)
 
 enum class RouteOrigin {
     VENDOR,
@@ -75,8 +107,8 @@ sealed class IntrospectedRoute (
 
 class ClosureRoute(
     basicRouteInformation: BasicRouteInformation,
-): IntrospectedRoute(basicRouteInformation, RouteOrigin.UNKNOWN) {
-}
+    val action: ClosureRouteAction,
+): IntrospectedRoute(basicRouteInformation, RouteOrigin.UNKNOWN)
 
 class ControllerRoute(
     basicRouteInformation: BasicRouteInformation,

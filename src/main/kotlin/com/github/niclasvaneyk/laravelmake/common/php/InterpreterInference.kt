@@ -1,5 +1,6 @@
 package com.github.niclasvaneyk.laravelmake.common.php
 
+import com.github.niclasvaneyk.laravelmake.plugin.jetbrains.php.desiredPhpInterpreter
 import com.intellij.openapi.project.Project
 import com.jetbrains.php.config.PhpProjectConfigurationFacade
 import com.jetbrains.php.config.interpreters.PhpInterpreter
@@ -7,10 +8,14 @@ import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl
 
 class InterpreterInference(private val project: Project) {
     fun inferInterpreter(): PhpInterpreter? {
-        val configuredInterpreter = inferConfiguredInterpreter()
+        val desiredInterpreter = project.desiredPhpInterpreter
+        if (desiredInterpreter != null) {
+            return desiredInterpreter
+        }
 
-        if (configuredInterpreter != null) {
-            return configuredInterpreter
+        val projectInterpreter = inferProjectInterpreter()
+        if (projectInterpreter != null) {
+            return projectInterpreter
         }
 
         // It could be, that the user has not specified an interpreter.
@@ -23,7 +28,7 @@ class InterpreterInference(private val project: Project) {
         return inferLocalInterpreter()
     }
 
-    private fun inferConfiguredInterpreter(): PhpInterpreter? {
+    private fun inferProjectInterpreter(): PhpInterpreter? {
         return PhpProjectConfigurationFacade
             .getInstance(project)
             .interpreter

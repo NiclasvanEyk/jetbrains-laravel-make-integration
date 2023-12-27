@@ -13,7 +13,7 @@ open class SubCommand(
      */
     open val location: String
 ) {
-    val capitalized: String get() = command.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+    val capitalized: String get() = command.first().toUpperCase() + command.substring(1)
     val description: String get() = "Create a new Laravel $capitalized"
     val asArtisanCommand: String get() = "make:$command"
 }

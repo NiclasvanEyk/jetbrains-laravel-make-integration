@@ -1,12 +1,17 @@
 package com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.toolWindow.list
 
+import com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.introspection.ClosureRoute
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.introspection.ControllerRoute
+import com.intellij.openapi.project.Project
 import java.awt.event.MouseEvent
 import java.awt.event.MouseListener
 import javax.swing.SwingUtilities
 
 @Suppress("EmptyFunctionBlock")
-class RouteListMouseListener(private val list: RouteList) : MouseListener {
+class RouteListMouseListener(
+    private val list: RouteList,
+    private val project: Project,
+) : MouseListener {
     override fun mousePressed(e: MouseEvent?) {
         val point = e?.point ?: return
 
@@ -19,6 +24,8 @@ class RouteListMouseListener(private val list: RouteList) : MouseListener {
             val selectedRoute = list.selectedValue
             if (selectedRoute is ControllerRoute) {
                 selectedRoute.navigate()
+            } else if (selectedRoute is ClosureRoute) {
+                selectedRoute.navigate(project)
             }
         }
     }

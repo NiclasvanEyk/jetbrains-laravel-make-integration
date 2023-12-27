@@ -1,17 +1,13 @@
-# Laravel Make Integration Changelog
+# Changelog
 
-## Unreleased
+## [Unreleased]
 
 ### Added
-- Support for 2023.2 platform
+- Closure-based routes can now be navigated to (thanks to the new custom script)
 
 ### Changed
-- Renamed to "Make for Laravel" to comply with Laravel's third party naming preferences
-
-## 3.5.0 - 2023-04-05
-
-### Added
-- New tool window icons for the new UI
+- Require 2023.3 platform
+- Use custom script for extracting route information
 
 ### Changed
 - Updated plugin & platform versions (support for 2023.1)
@@ -94,17 +90,17 @@
 ## 2.3.3
 
 ### Added
-- Experimental support for Laravel Livewire. This is one is only available from the "File > New" menu for now and only 
+- Experimental support for Laravel Livewire. This is one is only available from the "File > New" menu for now and only
   after all artisan commands were detected. See [issue 10](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/issues/10) for more information about this.
 
 ### Changed
-- The `--no-interaction` flag is automatically appended for each command. This prevents hanging, e.g. when a command 
+- The `--no-interaction` flag is automatically appended for each command. This prevents hanging, e.g. when a command
   expects input from stdin, which is not possible in our context.
 
 ## 2.3.2
 
 ### Added
-- Support for the new `artisan make:test` command. Automatically adds the `--unit` flag, if you have 
+- Support for the new `artisan make:test` command. Automatically adds the `--unit` flag, if you have
   right-clicked a folder below `tests/Unit`!
 - A [step-by-step guide](https://github.com/NiclasvanEyk/jetbrains-laravel-make-integration/tree/master/docs/setup_with_sail.md) on how to use the plugin with Docker and Laravel Sail
 
@@ -145,9 +141,9 @@
 
 ### Changed
 - - This fixes the message `Plugin 'Laravel Make Integration' version 2.1.0 is incompatible with this installation: until build 201.SNAPSHOT < PS-202.6397.115`
-    that popped up on for example PHPStorm `2020.2`. 
-  - This will not happen again in the future, because the plugin does not specify the `build-until` property anymore. 
-  - This fixes the problem reported in https://plugins.jetbrains.com/plugin/14612-laravel-make-integration/reviews#review=43639 Thank you RJFares for reporting this issue!
+    that popped up on for example PHPStorm `2020.2`.
+- This will not happen again in the future, because the plugin does not specify the `build-until` property anymore.
+- This fixes the problem reported in https://plugins.jetbrains.com/plugin/14612-laravel-make-integration/reviews#review=43639 Thank you RJFares for reporting this issue!
 
 ## 2.1.0
 
