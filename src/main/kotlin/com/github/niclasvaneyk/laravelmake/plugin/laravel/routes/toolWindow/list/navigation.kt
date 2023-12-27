@@ -1,7 +1,14 @@
 package com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.toolWindow.list
 
 import com.github.niclasvaneyk.laravelmake.common.laravel.Livewire
+import com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.introspection.ClosureRoute
 import com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.introspection.ControllerRoute
+import com.intellij.openapi.components.service
+import com.intellij.openapi.fileEditor.OpenFileDescriptor
+import com.intellij.openapi.project.Project
+import com.intellij.openapi.vfs.LocalFileSystem
+import com.intellij.openapi.vfs.VirtualFile
+import java.nio.file.Path
 
 /**
  * Handles the navigation from an entry in the route list.
@@ -13,6 +20,12 @@ fun ControllerRoute.navigate(requestFocus: Boolean = true) {
     }
 
     method.navigate(requestFocus)
+}
+
+fun ClosureRoute.navigate(project: Project, requestFocus: Boolean = true) {
+    val fs = LocalFileSystem.getInstance()
+    val virtualFile = fs.findFileByNioFile(Path.of(project.basePath, action.file)) ?: return
+    OpenFileDescriptor(project, virtualFile, action.start, 0).navigate(requestFocus)
 }
 
 private val ControllerRoute.isHandledByLivewire: Boolean  get() {

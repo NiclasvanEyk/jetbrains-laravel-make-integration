@@ -8,11 +8,11 @@ import javax.swing.JComponent
  * Connects the settings dialog to [LaravelMakeProjectSettingsComponent].
  */
 class LaravelMakeProjectConfigurable(private val project: Project): Configurable {
-    override fun getDisplayName() = "Laravel Make"
+    override fun getDisplayName() = "Make for Laravel"
     private var settingsComponent: LaravelMakeProjectSettingsComponent? = null
 
     override fun createComponent(): JComponent {
-        settingsComponent = LaravelMakeProjectSettingsComponent(project.settings)
+        settingsComponent = LaravelMakeProjectSettingsComponent(project.settings, project)
         return settingsComponent!!.mainPanel
     }
 

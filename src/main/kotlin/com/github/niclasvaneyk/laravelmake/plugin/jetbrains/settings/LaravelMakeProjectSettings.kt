@@ -6,6 +6,8 @@ import com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.SailAutoconfigura
 import com.intellij.openapi.components.*
 import com.intellij.openapi.project.Project
 import com.intellij.util.xmlb.XmlSerializerUtil
+import com.jetbrains.php.config.interpreters.PhpInterpreter
+import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl
 
 val Project.settings get() = this.service<LaravelMakeProjectSettings>().state
 val LaravelApplication.settings get() = project.settings
@@ -36,11 +38,17 @@ data class LaravelMakeProjectSettingsState(
      * What to do with actions not matching the current path when using the "File > New > Laravel" Make actions.
      */
     var displayUnAvailableActionsInContextMenuStrategy: DisplayUnAvailableActionsInContextMenuStrategy = DisplayUnAvailableActionsInContextMenuStrategy.Disable,
+
+    /**
+     * Id of the interpreter that was chosen by the user for executing commands etc..
+     */
+    var interpreterId: String? = null,
 ) {
     fun fill(other: LaravelMakeProjectSettingsState) {
         shouldDisplaySailAutoconfigurationPopup = other.shouldDisplaySailAutoconfigurationPopup
         shouldDisplayDefaultDatabaseConnectionSyncBanner = other.shouldDisplaySailAutoconfigurationPopup
         displayUnAvailableActionsInContextMenuStrategy = other.displayUnAvailableActionsInContextMenuStrategy
+        interpreterId = other.interpreterId
     }
 }
 

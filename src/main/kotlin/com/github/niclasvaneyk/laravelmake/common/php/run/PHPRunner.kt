@@ -94,7 +94,7 @@ class PHPRunner(private val project: Project) {
         try {
             processHandler = runConfiguration.createProcessHandler(project, command)
         } catch (exception: PhpEditInterpreterExecutionException) {
-            if (exception.localizedMessage.lowercase(Locale.getDefault()).contains("docker")) {
+            if (exception.localizedMessage.toLowerCase(Locale.getDefault()).contains("docker")) {
                 throw DockerNotStartedException(exception)
             } else {
                 throw exception

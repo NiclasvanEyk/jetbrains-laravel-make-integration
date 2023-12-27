@@ -16,33 +16,36 @@
     <depends>org.jetbrains.plugins.phpstorm-remote-interpreter</depends>
     <depends>org.jetbrains.plugins.phpstorm-docker</depends>
 
+    <resource-bundle>messages.LaravelMakeBundle</resource-bundle>
+
     <extensionPoints>
         <extensionPoint
-            interface="com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.SailConfigurationProvider"
-            name="laravelSailConfigurationProvider"
-            dynamic="true"
+                interface="com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.SailConfigurationProvider"
+                name="laravelSailConfigurationProvider"
+                dynamic="true"
         />
 
         <extensionPoint
-            interface="com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelApplicationListener"
-            name="laravelApplicationListener"
-            dynamic="true"
+                interface="com.github.niclasvaneyk.laravelmake.plugin.laravel.LaravelApplicationListener"
+                name="laravelApplicationListener"
+                dynamic="true"
         />
     </extensionPoints>
 
     <extensions defaultExtensionNs="com.intellij">
+
         <projectService serviceImplementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.settings.LaravelMakeProjectSettings"/>
         <projectConfigurable
-            instance="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.settings.LaravelMakeProjectConfigurable"
-            parentId="reference.webide.settings.project.settings.php"
+                instance="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.settings.LaravelMakeProjectConfigurable"
+                parentId="reference.webide.settings.project.settings.php"
         />
         <notificationGroup id="Laravel Make" displayType="BALLOON" icon="/icons/laravel-logo.svg" />
         <notificationGroup id="Laravel Sail" displayType="BALLOON" icon="/icons/sail.svg" />
         <editorNotificationProvider
-            implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.dataSources.SyncLaravelDataSourcesNotificationProvider"
+                implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.dataSources.SyncLaravelDataSourcesNotificationProvider"
         />
-<!--        <directoryProjectGenerator implementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.projectGeneration.LaravelProjectGenerator" />-->
-<!--        <projectTemplatesFactory implementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.projectGeneration.LaravelProjectGeneratorFactory" />-->
+        <!--        <directoryProjectGenerator implementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.projectGeneration.LaravelProjectGenerator" />-->
+        <!--        <projectTemplatesFactory implementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.projectGeneration.LaravelProjectGeneratorFactory" />-->
         <toolWindow
                 id="Laravel"
                 factoryClass="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.toolWindow.LaravelToolWindowFactory"
@@ -50,24 +53,28 @@
                 anchor="bottom" order="last"
                 doNotActivateOnStart="true"
         />
-        <codeInsight.lineMarkerProvider
-            language="PHP"
-            implementationClass="com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.codeInsight.ControllerActionLineMarkerProvider"
+        <codeInsight.inlayProvider
+                implementationClass="com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.codeVision.RouteInlayHintsProvider"
+                language="PHP"
         />
-<!--        <runConfigurationProducer-->
-<!--            implementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.run.ArtisanRunConfigurationProducer"-->
-<!--        />-->
-<!--        <configurationType implementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.run.ArtisanRunConfigurationType" />-->
-<!--        <microservices.endpointsProvider implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.microservices.LaravelEndpointsProvider" />-->
-<!--        <codeInsight.lineMarkerProvider-->
-<!--            language="PHP"-->
-<!--            implementationClass="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.seeders.RunSeederLineMarkerProvider"-->
-<!--        />-->
-            <runConfigurationProducer implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.seeders.SeederRunConfigurationProducer" />
-            <runLineMarkerContributor
+        <codeInsight.lineMarkerProvider
+                language="PHP"
+                implementationClass="com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.codeInsight.ControllerActionLineMarkerProvider"
+        />
+        <!--        <runConfigurationProducer-->
+        <!--            implementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.run.ArtisanRunConfigurationProducer"-->
+        <!--        />-->
+        <!--        <configurationType implementation="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.run.ArtisanRunConfigurationType" />-->
+        <!--        <microservices.endpointsProvider implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.routes.microservices.LaravelEndpointsProvider" />-->
+        <!--        <codeInsight.lineMarkerProvider-->
+        <!--            language="PHP"-->
+        <!--            implementationClass="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.seeders.RunSeederLineMarkerProvider"-->
+        <!--        />-->
+        <runConfigurationProducer implementation="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.seeders.SeederRunConfigurationProducer" />
+        <runLineMarkerContributor
                 language="PHP"
                 implementationClass="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.seeders.SeederRunLineMarkerContributor"
-            />
+        />
     </extensions>
 
     <extensions defaultExtensionNs="com.niclas-van-eyk.laravel-make-integration">
@@ -81,8 +88,8 @@
 
     <projectListeners>
         <listener
-            class="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.listener.ProjectOpenedListener"
-            topic="com.intellij.openapi.project.ProjectManagerListener"
+                class="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.listener.ProjectOpenedListener"
+                topic="com.intellij.openapi.project.ProjectManagerListener"
         />
         <listener
                 class="com.github.niclasvaneyk.laravelmake.plugin.jetbrains.listener.PhpInterpreterListener"
@@ -128,14 +135,14 @@
         <action class="com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.MakeSeederAction" id="MakeSeederAction"/>
         <action class="com.github.niclasvaneyk.laravelmake.plugin.laravel.make.jetbrains.actions.MakeTestAction" id="MakeTestAction"/>
         <action
-            id="com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.AutoconfigureLaravelSailAction"
-            class="com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.AutoconfigureLaravelSailAction"
+                id="com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.AutoconfigureLaravelSailAction"
+                class="com.github.niclasvaneyk.laravelmake.plugin.laravel.sail.AutoconfigureLaravelSailAction"
         />
         <action
-            id="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.dataSources.SyncLaravelDataSourcesAction"
-            class="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.dataSources.SyncLaravelDataSourcesAction"
-            text="Autoconfigure Default Database Connection"
-            description="Adds or updates the default database connection from your Laravel application to the Database tool window of your IDE"
+                id="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.dataSources.SyncLaravelDataSourcesAction"
+                class="com.github.niclasvaneyk.laravelmake.plugin.laravel.database.dataSources.SyncLaravelDataSourcesAction"
+                text="Autoconfigure Default Database Connection"
+                description="Adds or updates the default database connection from your Laravel application to the Database tool window of your IDE"
         />
     </actions>
 </idea-plugin>
