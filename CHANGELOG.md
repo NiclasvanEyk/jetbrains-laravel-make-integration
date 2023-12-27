@@ -2,8 +2,6 @@
 
 ## [Unreleased]
 
-## 3.7.0 - 2023-12-27
-
 ### Added
 - Closure-based routes can now be navigated to (thanks to the new custom script)
 
