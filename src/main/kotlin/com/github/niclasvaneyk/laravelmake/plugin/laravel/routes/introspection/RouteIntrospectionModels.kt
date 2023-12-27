@@ -5,7 +5,6 @@ import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
 import com.google.gson.JsonParseException
 import com.google.gson.annotations.SerializedName
-import com.intellij.bigdatatools.visualization.charts.utils.getAsStringOrNull
 import com.jetbrains.php.lang.psi.elements.Method
 import com.jetbrains.php.lang.psi.elements.PhpClass
 import java.lang.reflect.Type
@@ -31,7 +30,7 @@ class RouteActionAdapter: JsonDeserializer<RouteAction> {
     ): RouteAction {
         if (element === null) throw JsonParseException("empty json element")
         val json = element.asJsonObject
-        val actionType = json.getAsStringOrNull("type") ?: throw JsonParseException("missing type specifier")
+        val actionType = json.get("type")?.asString ?: throw JsonParseException("missing type specifier")
 
         return when (actionType) {
             "method" -> ControllerRouteAction(
